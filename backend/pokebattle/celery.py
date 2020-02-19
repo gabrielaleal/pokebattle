@@ -6,9 +6,9 @@ import os
 
 from django.apps import apps
 
-from celery import Celery
+from celery import Celery  # noqa
 
-from .celerybeat_schedule import CELERYBEAT_SCHEDULE
+from .celerybeat_schedule import CELERYBEAT_SCHEDULE  # noqa
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pokebattle.settings.local")

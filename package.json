@@ -6,7 +6,7 @@
   "main": "index.js",
   "prettier": "eslint-config-vinta/prettier",
   "scripts": {
-    "test": "jest",
+    "test": "echo 'no test'",
     "test:watch": "npm test -- --watch",
     "test:update": "npm test -- --u",
     "start": "babel-node server.js",
