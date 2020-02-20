@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "import_export",
     "common",
     "users",
+    "battles",
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [
