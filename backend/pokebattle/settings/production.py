@@ -6,7 +6,7 @@ from sentry_sdk.integrations.django import DjangoIntegration
 from .base import *  # noqa
 
 
-DEBUG = True
+DEBUG = False
 
 SECRET_KEY = config("SECRET_KEY")
 
