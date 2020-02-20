@@ -1,8 +1,9 @@
 const autoprefixer = require('autoprefixer');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const BundleTracker = require('webpack-bundle-tracker');
+// eslint-disable-next-line import/no-extraneous-dependencies
 const path = require('path');
+const webpack = require('webpack');
+const BundleTracker = require('webpack-bundle-tracker');
 
 const baseConfig = require('./webpack.base.config');
 
