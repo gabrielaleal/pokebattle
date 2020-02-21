@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     "common",
     "users",
     "battles",
-    "widget_tweaks",
+    "pokemon",
+    "widget_tweaks"
 ]
 
 MIDDLEWARE = [
