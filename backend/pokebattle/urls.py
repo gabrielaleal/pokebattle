@@ -10,6 +10,6 @@ urlpatterns = [
     url(r"^jsreverse/$", django_js_reverse.views.urls_js, name="js_reverse"),
     url(r"^$", TemplateView.as_view(template_name="itworks.html"), name="home"),
     url(
-        r"^battles/", include("battles.urls", namespace="battles")
+        r"^battle/", include("battles.urls", namespace="battles")
     ),  # import all urls from battles app
 ]
