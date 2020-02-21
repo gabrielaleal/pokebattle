@@ -5,17 +5,21 @@
 
 {% block body %}
 <div class='create-battle'>
-  <h1>Create Battle</h1>
+  <h2 class='title'>Create Battle</h2>
   {% if form.errors %}
     {% for error in form.non_field_errors %}
       <p class="error">{{error}}</p>
     {% endfor %}
   {% endif %}
-  <form method="post">
-    {% csrf_token %}
-    Choose your opponent:
-    {% render_field form.opponent %}
-    <button type='submit'>Battle!</button>
-  </form>
+  <div class='content'>
+    <form method="post">
+      {% csrf_token %}
+      Choose your opponent:
+      {% render_field form.opponent %}
+      <div class='battle-btn'>
+        <button type='submit'>Battle!</button>
+      </div>
+    </form>
+  </div>
 </div>
 {% endblock %}
