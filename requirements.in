@@ -14,3 +14,4 @@ whitenoise
 psutil
 ipython
 sentry-sdk
+django-widget-tweaks
