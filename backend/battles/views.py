@@ -17,4 +17,4 @@ class CreateBattleView(generic.CreateView):  # noqa
         return super().form_valid(form)
 
     def get_initial(self):
-        return {"creator": self.request.user.id}
+        return {"creator_id": self.request.user.id}

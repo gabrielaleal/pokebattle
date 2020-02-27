@@ -12,4 +12,4 @@ class CreateBattleForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["opponent"].queryset = User.objects.exclude(id=self.initial["creator"])
+        self.fields["opponent"].queryset = User.objects.exclude(id=self.initial["creator_id"])
