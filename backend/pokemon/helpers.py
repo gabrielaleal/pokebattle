@@ -9,6 +9,7 @@ POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
 def get_pokemon(name):
     response = requests.get(f"{POKE_API_URL}{name.lower()}")
     data = response.json()
+    # response.status_code may be useful to treat data
     return data
 
 
