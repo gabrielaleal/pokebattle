@@ -6,3 +6,6 @@ class Pokemon(models.Model):
     attack = models.IntegerField()
     defense = models.IntegerField()
     hitpoints = models.IntegerField()
+
+    def __str__(self):
+        return self.name
