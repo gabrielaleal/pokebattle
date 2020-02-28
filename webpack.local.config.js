@@ -34,9 +34,13 @@ baseConfig.module.rules.push(
     exclude: [nodeModulesDir],
     loader: require.resolve('babel-loader'),
   },
+  // {
+  //   test: /\.(woff(2)?|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+  //   loader: 'url-loader?limit=100000',
+  // },
   {
-    test: /\.(woff(2)?|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url-loader?limit=100000',
+    test: /\.(woff|woff2|eot|ttf|otf)$/,
+    loader: ['file-loader'],
   }
 );
 
