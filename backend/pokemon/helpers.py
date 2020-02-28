@@ -6,19 +6,19 @@ from .models import Pokemon  # noqa
 POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
 
 
-def get_pokemon(name):
-    response = requests.get(f"{POKE_API_URL}{name.lower()}")
+def get_pokemon(poke_id):
+    response = requests.get(f"{POKE_API_URL}{poke_id.lower()}")
     data = response.json()
     # response.status_code may be useful to treat data
     return data
 
 
-def save_pokemon(name):
-    data = get_pokemon(name)
+def save_pokemon(poke_id):
+    data = get_pokemon(poke_id)
 
     pokemon = Pokemon.objects.filter(
-        name__iexact=name
-    ).first()  # __iexect makes name case insensitive (database lookups)
+        id__iexact=poke_id
+    ).first()  # __iexect makes poke_id case insensitive (database lookups)
 
     if pokemon:
         return pokemon
