@@ -7,5 +7,8 @@ class Pokemon(models.Model):
     defense = models.IntegerField()
     hitpoints = models.IntegerField()
 
+    class Meta:
+        verbose_name_plural = "Pokemon"
+
     def __str__(self):
         return self.name
