@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle - Create Battle{% endblock %}
+
+{% block body %}
+<div class='create-battle'>
+  <h2 class='title'>Create Battle</h2>
+  {% if form.errors %}
+    {% for error in form.non_field_errors %}
+      <p class="error">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+  <div class='content'>
+    <form method="post">
+      {% csrf_token %}
+      Choose your opponent:
+      {% render_field form.opponent %}
+      <div class='battle-btn'>
+        <button type='submit'>Battle!</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
