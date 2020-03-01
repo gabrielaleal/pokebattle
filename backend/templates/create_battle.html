@@ -6,11 +6,12 @@
 {% block body %}
 <div class='create-battle'>
   <h2 class='title'>Create Battle</h2>
-  {% if form.errors %}
+  <!-- {% if form.errors %}
     {% for error in form.non_field_errors %}
-      <p class="error">{{error}}</p>
+      <p class="error" style="color: red">{{error}}</p>
     {% endfor %}
-  {% endif %}
+  {% endif %} -->
+
   <div class='content'>
     <form method="post">
       {% csrf_token %}
@@ -21,14 +22,17 @@
       <div>
         <span>Choose a Pokemon: </span>
         {% render_field form.pokemon_1 %}
+        {{ form.pokemon_1.errors|escape }}
       </div>
       <div>
         <span>Choose a Pokemon: </span>
         {% render_field form.pokemon_2 %}
+        {{ form.pokemon_2.errors }}
       </div>
       <div>
         <span>Choose a Pokemon: </span>
         {% render_field form.pokemon_3 %}
+        {{ form.pokemon_3.errors }}
       </div>
       <div class='battle-btn'>
         <button type='submit'>Battle!</button>
