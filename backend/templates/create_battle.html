@@ -15,25 +15,13 @@
   <div class='content'>
     <form method="post">
       {% csrf_token %}
-      <div>
-        <span>Choose your opponent:</span>
-        {% render_field form.opponent %}
-      </div>
-      <div>
-        <span>Choose a Pokemon: </span>
-        {% render_field form.pokemon_1 %}
-        {{ form.pokemon_1.errors|escape }}
-      </div>
-      <div>
-        <span>Choose a Pokemon: </span>
-        {% render_field form.pokemon_2 %}
-        {{ form.pokemon_2.errors }}
-      </div>
-      <div>
-        <span>Choose a Pokemon: </span>
-        {% render_field form.pokemon_3 %}
-        {{ form.pokemon_3.errors }}
-      </div>
+      {% for field in form %}
+        <div>
+          <span>{{ field.label }}: </span>
+          {% render_field field %}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
       <div class='battle-btn'>
         <button type='submit'>Battle!</button>
       </div>
