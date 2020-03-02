@@ -8,8 +8,12 @@ POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
 
 def get_pokemon(poke_id):
     response = requests.get(f"{POKE_API_URL}{poke_id}")
-    # data = response.json()
-    # response.status_code may be useful to treat data
+    data = response.json()
+    return data
+
+
+def pokemon_exists(poke_id):
+    response = requests.head(f"{POKE_API_URL}{poke_id}")
     return response
 
 
@@ -19,9 +23,7 @@ def save_pokemon(poke_id):
     if pokemon:  # if it does, return it
         return pokemon
 
-    response = get_pokemon(poke_id)  # otherwise, request this new pokemon
-
-    data = response.json()
+    data = get_pokemon(poke_id)  # otherwise, request this new pokemon
 
     defense = data["stats"][3]["base_stat"]
     attack = data["stats"][4]["base_stat"]
