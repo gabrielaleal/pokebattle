@@ -1,6 +1,6 @@
 from django import forms
 
-from pokemon.helpers import get_pokemon  # noqa
+from pokemon.helpers import pokemon_exists  # noqa
 from users.models import User  # noqa
 
 from .models import Battle  # noqa
@@ -23,9 +23,9 @@ class CreateBattleForm(forms.ModelForm):
         cleaned_data = super().clean()
 
         for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
-            response = get_pokemon(self.cleaned_data[field])  # requests from the API
+            response = pokemon_exists(self.cleaned_data[field])
 
-            if response.status_code != 200:  # in case the pokemon does not exist on the API
+            if not response:  # in case the pokemon does not exist on the API
                 self.add_error(field, "Sorry, we couldn't find this Pokemon.")
 
         return cleaned_data
