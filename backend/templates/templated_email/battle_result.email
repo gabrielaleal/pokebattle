@@ -1,10 +1,10 @@
 {% block subject %}PokeBattle: Battle result!{% endblock %}
-{% block plain %}
-  Hello, players!
+{% block html %}
+  <p>Hello, players!</p>
 
-  {{battle_creator}} challenged {{battle_oponent}} on a battle and now we have the results!
+  <p>{{battle_creator}} challenged {{battle_oponent}} on a battle and now we have the results!</p>
 
-  So... The winner of Battle #{{battle_id}} is...
+  <p>So... The winner of Battle #{{battle_id}} is...</p>
 
-  {{battle_winner}}!!!
+  <p><b>{{battle_winner}}</b>!!!</p>
 {% endblock %}
