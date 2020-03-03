@@ -7,9 +7,10 @@ from users.models import User  # noqa
 class Battle(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE, related_name="battles_as_creator")
     opponent = models.ForeignKey(User, on_delete=models.CASCADE, related_name="battles_as_opponent")
+    winner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="+", null=True)
 
     def __str__(self):
-        return f"{self.creator.email} X {self.opponent.email}"
+        return f"Battle #{self.id}: {self.creator.email} X {self.opponent.email}"
 
 
 class BattleTeam(models.Model):
