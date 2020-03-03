@@ -1,13 +1,11 @@
-from django.conf import settings
-
-from templated_email import send_templated_mail
+from templated_email import send_templated_mail  # noqa
 
 
 def send_battle_result(battle):
     # import ipdb;ipdb.set_trace();
     send_templated_mail(
         template_name="battle_result",
-        from_email=settings.SERVER_EMAIL,  # change it
+        from_email="gabriela@vinta.com.br",
         recipient_list=[battle.creator.email, battle.opponent.email],
         context={
             "battle_creator": battle.creator.email,
