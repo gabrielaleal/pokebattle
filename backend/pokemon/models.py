@@ -6,7 +6,7 @@ class Pokemon(models.Model):
     name = models.CharField(max_length=50)
     attack = models.IntegerField()
     defense = models.IntegerField()
-    hitpoints = models.IntegerField()
+    hp = models.IntegerField()
 
     class Meta:
         verbose_name_plural = "Pokemon"
