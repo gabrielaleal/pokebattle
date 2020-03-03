@@ -1,8 +1,0 @@
-{% block subject %}PokeBattle: Battle result!{% endblock %}
-{% block plain %}
-  Hi, {{name}},
-
-  We are here to announce that the winner of Battle {{battle_id}} is...
-
-  {{battle_winner}}!!!
-{% endblock %}

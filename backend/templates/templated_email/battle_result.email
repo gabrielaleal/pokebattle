@@ -1,0 +1,10 @@
+{% block subject %}PokeBattle: Battle result!{% endblock %}
+{% block plain %}
+  Hello, players!
+
+  {{battle_creator}} challenged {{battle_oponent}} on a battle and now we have the results!
+
+  So... The winner of Battle #{{battle_id}} is...
+
+  {{battle_winner}}!!!
+{% endblock %}
