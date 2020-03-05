@@ -1,4 +1,6 @@
-# from django.shortcuts import render
+from django.contrib import messages
+from django.urls import reverse_lazy
+from django.utils.html import format_html
 from django.views import generic
 
 from pokemon.helpers import save_pokemon  # noqa
@@ -11,12 +13,11 @@ class CreateBattleView(generic.CreateView):  # noqa
     model = Battle
     template_name = "create_battle.html"
     form_class = CreateBattleForm
-    success_url = "/"
+    success_url = reverse_lazy("battles:create-battle")
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
         form.instance.save()
-
         pokemon = {}
 
         for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
@@ -25,6 +26,15 @@ class CreateBattleView(generic.CreateView):  # noqa
         BattleTeam.objects.create(
             creator=self.request.user, battle=form.instance, **pokemon
         )  # TODO: revisit this later
+
+        success_message = format_html(
+            f"<div>Your battle against <b>{form.instance.opponent}</b> was created!\n</div>"
+            f"<div>Here's your team: <b>{pokemon.get('pokemon_1').name}</b>, "
+            f"<b>{pokemon.get('pokemon_2').name}</b> and "
+            f"<b>{pokemon.get('pokemon_3').name}</b>.</div>"
+        )
+
+        messages.success(self.request, success_message)
 
         return super().form_valid(form)
 
