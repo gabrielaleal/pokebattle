@@ -2,9 +2,7 @@ from .email import send_battle_result  # noqa
 
 
 def win_attack(pokemon_1, pokemon_2):  # pokemon_1 always attacks and pokemon_2 always defends
-    if pokemon_1.attack > pokemon_2.defense:
-        return True
-    return False
+    return pokemon_1.attack > pokemon_2.defense
 
 
 def highest_hp_pokemon(pokemon_1, pokemon_2):
