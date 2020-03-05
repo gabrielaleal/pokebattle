@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+<div class="home-content">
+    <h1>Hello, player!</h1>
+    <div class="subtitle">
+        <h2>Should we start a battle?</h2>
+    </div>
+    <div class="battle-btn-container">
+        <a href="/battles/create">
+            <div class="battle-btn">Battle!</div>
+        </a>
+    </div>
+</div>
+
+<div id="react-app"></div>
+{% endblock %}
