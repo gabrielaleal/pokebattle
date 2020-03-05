@@ -93,6 +93,8 @@ USE_TZ = True
 
 STATICFILES_DIRS = (base_dir_join("../frontend"),)
 
+EMAIL_ADDRESS = "gabriela@vinta.com.br"
+
 # Webpack
 WEBPACK_LOADER = {
     "DEFAULT": {
