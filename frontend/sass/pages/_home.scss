@@ -1,0 +1,27 @@
+.home-content {
+    width: 100%;
+    padding: 50px 8%;
+
+    .subtitle {
+        margin: 30px 0;
+    }
+
+    .battle-btn-container {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+    }
+
+    .battle-btn {
+        padding: 20px 40px;
+        background-color: $pk-blue;
+        font-size: 26px;
+        text-align: center;
+        border-radius: 15px;
+    }
+}
