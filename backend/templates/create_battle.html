@@ -12,6 +12,12 @@
     {% endfor %}
   {% endif %}
 
+  <div class="messages">
+    {% for message in messages %}
+      {{message}}
+    {% endfor %}
+  </div>
+
   <div class='content'>
     <form method="post">
       {% csrf_token %}
