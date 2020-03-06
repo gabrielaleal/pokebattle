@@ -28,12 +28,19 @@ class CreateBattleView(generic.CreateView):  # noqa
         )  # TODO: revisit this later
 
         success_message = format_html(
-            f"<div>Your battle against <b>{form.instance.opponent}</b> was created!\n</div>"
-            f"<div>Here's your team: <b>{pokemon.get('pokemon_1').name}</b>, "
-            f"<b>{pokemon.get('pokemon_2').name}</b> and "
-            f"<b>{pokemon.get('pokemon_3').name}</b>.</div>"
+            f"<h5>Your battle against <b>{form.instance.opponent}</b> was created!</h5>"
+            f"<div>Here's your team info:</div>"
+            f"<div>Round 1: <b>{pokemon.get('pokemon_1').name}</b> - Attack: \
+                {pokemon.get('pokemon_1').attack} | Defense: {pokemon.get('pokemon_1').defense}\
+                | HP: {pokemon.get('pokemon_1').hp}</div>"
+            f"<div>Round 2: <b>{pokemon.get('pokemon_2').name}</b> - Attack: \
+                {pokemon.get('pokemon_2').attack} | Defense: {pokemon.get('pokemon_2').defense} \
+                | HP: {pokemon.get('pokemon_2').hp}</div>"
+            f"<div>Round 3: <b>{pokemon.get('pokemon_3').name}</b> - Attack: \
+                {pokemon.get('pokemon_3').attack} | Defense: {pokemon.get('pokemon_3').defense} \
+                | HP: {pokemon.get('pokemon_3').hp}</div>"
+            f"<div style='margin-top: 10px;'>Now wait for your opponent to fight back!</div>"
         )
-
         messages.success(self.request, success_message)
 
         return super().form_valid(form)
