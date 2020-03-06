@@ -11,25 +11,24 @@
       <p class="error" style="color: red">{{error}}</p>
     {% endfor %}
   {% endif %}
-
-  <div class="messages">
-    {% for message in messages %}
-      {{message}}
-    {% endfor %}
-  </div>
-
   <div class='content'>
+    {% for message in messages %}
+      <div class="messages">
+        {{message}}
+      </div>
+    {% endfor %}
+  
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
-        <div>
+        <div class="battle-form-field">
           <span>{{ field.label }}: </span>
           {% render_field field %}
           {{ field.errors }}
         </div>
       {% endfor %}
-      <div class='battle-btn'>
-        <button type='submit'>Battle!</button>
+      <div class="btn-container">
+        <button class="pk-btn" type="submit">Submit</button>
       </div>
     </form>
   </div>
