@@ -2,9 +2,44 @@
 {% block html %}
   <p>Hello, players!</p>
 
-  <p>{{battle_creator}} challenged {{battle_oponent}} on a battle and now we have the results!</p>
+  <p><b>{{battle_creator}}</b> challenged <b>{{battle_opponent}}</b> on Battle #{{battle_id}} and now we have the results!</p>
 
-  <p>So... The winner of Battle #{{battle_id}} is...</p>
+  <p>
+    <div>{{battle_creator}}'s team was: <b>{{creator_team.pokemon_1.name}}</b>, <b>{{creator_team.pokemon_2.name}}</b> and <b>{{creator_team.pokemon_3.name}}</b></div>
+    <div>{{battle_opponent}}'s team was: <b>{{opponent_team.pokemon_1.name}}</b>, <b>{{opponent_team.pokemon_2.name}}</b> and <b>{{opponent_team.pokemon_3.name}}</b></div>
+  </p>
+
+  <p>
+    <div>Round 1: <b>{{creator_team.pokemon_1.name}}</b> VS <b>{{opponent_team.pokemon_1.name}}</b></div>
+    <div>
+      {{creator_team.pokemon_1.name}} - Attack: {{creator_team.pokemon_1.attack}} | Defense: {{creator_team.pokemon_1.defense}} | HP: {{creator_team.pokemon_1.hp}}
+    </div>
+    <div>
+      {{opponent_team.pokemon_1.name}} - Attack: {{opponent_team.pokemon_1.attack}} | Defense: {{opponent_team.pokemon_1.defense}} | HP: {{opponent_team.pokemon_1.hp}}
+    </div>
+  </p>
+  
+  <p>
+    <div>Round 2: <b>{{creator_team.pokemon_2.name}}</b> VS <b>{{opponent_team.pokemon_2.name}}</b></div>
+    <div>
+      {{creator_team.pokemon_2.name}} - Attack: {{creator_team.pokemon_2.attack}} | Defense: {{creator_team.pokemon_2.defense}} | HP: {{creator_team.pokemon_2.hp}}
+    </div>
+    <div>
+      {{opponent_team.pokemon_2.name}} - Attack: {{opponent_team.pokemon_2.attack}} | Defense: {{opponent_team.pokemon_2.defense}} | HP: {{opponent_team.pokemon_2.hp}}
+    </div>
+  </p>
+
+  <p>
+    <div>Round 3: <b>{{creator_team.pokemon_3.name}}</b> VS <b>{{opponent_team.pokemon_3.name}}</b></div>
+    <div>
+      {{creator_team.pokemon_3.name}} - Attack: {{creator_team.pokemon_3.attack}} | Defense: {{creator_team.pokemon_3.defense}} | HP: {{creator_team.pokemon_3.hp}}
+    </div>
+    <div>
+      {{opponent_team.pokemon_3.name}} - Attack: {{opponent_team.pokemon_3.attack}} | Defense: {{opponent_team.pokemon_3.defense}} | HP: {{opponent_team.pokemon_3.hp}}
+    </div>
+  </p>
+
+  <p>And the winner is...</p>
 
   <p><b>{{battle_winner}}</b>!!!</p>
 {% endblock %}
