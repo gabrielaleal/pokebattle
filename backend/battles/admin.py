@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .battle import run_battle_and_send_result_email  # noqa
+from battles.utils.battle import run_battle_and_send_result_email  # noqa
+
 from .models import Battle, BattleTeam  # noqa
 
 
