@@ -12,30 +12,30 @@
   <p>
     <div>Round 1: <b>{{creator_team.pokemon_1.name}}</b> VS <b>{{opponent_team.pokemon_1.name}}</b></div>
     <div>
-      {{creator_team.pokemon_1.name}} - Attack: {{creator_team.pokemon_1.attack}} | Defense: {{creator_team.pokemon_1.defense}} | HP: {{creator_team.pokemon_1.hp}}
+      - {{creator_team.pokemon_1.name}} - Attack: {{creator_team.pokemon_1.attack}} | Defense: {{creator_team.pokemon_1.defense}} | HP: {{creator_team.pokemon_1.hp}}
     </div>
     <div>
-      {{opponent_team.pokemon_1.name}} - Attack: {{opponent_team.pokemon_1.attack}} | Defense: {{opponent_team.pokemon_1.defense}} | HP: {{opponent_team.pokemon_1.hp}}
+      - {{opponent_team.pokemon_1.name}} - Attack: {{opponent_team.pokemon_1.attack}} | Defense: {{opponent_team.pokemon_1.defense}} | HP: {{opponent_team.pokemon_1.hp}}
     </div>
   </p>
   
   <p>
     <div>Round 2: <b>{{creator_team.pokemon_2.name}}</b> VS <b>{{opponent_team.pokemon_2.name}}</b></div>
     <div>
-      {{creator_team.pokemon_2.name}} - Attack: {{creator_team.pokemon_2.attack}} | Defense: {{creator_team.pokemon_2.defense}} | HP: {{creator_team.pokemon_2.hp}}
+      - {{creator_team.pokemon_2.name}} - Attack: {{creator_team.pokemon_2.attack}} | Defense: {{creator_team.pokemon_2.defense}} | HP: {{creator_team.pokemon_2.hp}}
     </div>
     <div>
-      {{opponent_team.pokemon_2.name}} - Attack: {{opponent_team.pokemon_2.attack}} | Defense: {{opponent_team.pokemon_2.defense}} | HP: {{opponent_team.pokemon_2.hp}}
+      - {{opponent_team.pokemon_2.name}} - Attack: {{opponent_team.pokemon_2.attack}} | Defense: {{opponent_team.pokemon_2.defense}} | HP: {{opponent_team.pokemon_2.hp}}
     </div>
   </p>
 
   <p>
     <div>Round 3: <b>{{creator_team.pokemon_3.name}}</b> VS <b>{{opponent_team.pokemon_3.name}}</b></div>
     <div>
-      {{creator_team.pokemon_3.name}} - Attack: {{creator_team.pokemon_3.attack}} | Defense: {{creator_team.pokemon_3.defense}} | HP: {{creator_team.pokemon_3.hp}}
+      - {{creator_team.pokemon_3.name}} - Attack: {{creator_team.pokemon_3.attack}} | Defense: {{creator_team.pokemon_3.defense}} | HP: {{creator_team.pokemon_3.hp}}
     </div>
     <div>
-      {{opponent_team.pokemon_3.name}} - Attack: {{opponent_team.pokemon_3.attack}} | Defense: {{opponent_team.pokemon_3.defense}} | HP: {{opponent_team.pokemon_3.hp}}
+      - {{opponent_team.pokemon_3.name}} - Attack: {{opponent_team.pokemon_3.attack}} | Defense: {{opponent_team.pokemon_3.defense}} | HP: {{opponent_team.pokemon_3.hp}}
     </div>
   </p>
 
