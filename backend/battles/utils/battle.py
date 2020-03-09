@@ -24,31 +24,30 @@ def get_round_winner(c_pokemon, o_pokemon):
     return get_pokemon_with_highest_hp(c_pokemon, o_pokemon)
 
 
-def get_battle_winner(battle):
-    creator_team = battle.creator.teams.filter(battle=battle).first()
-    opponent_team = battle.opponent.teams.filter(battle=battle).first()
+def get_player_team(battle, player):
+    team = getattr(battle, player).teams.filter(battle=battle).first()
+    return [team.pokemon_1, team.pokemon_2, team.pokemon_3]
 
-    c_poke_team = [  # creator's team
-        creator_team.pokemon_1,
-        creator_team.pokemon_2,
-        creator_team.pokemon_3,
-    ]
 
-    o_poke_team = [  # opponent's team
-        opponent_team.pokemon_1,
-        opponent_team.pokemon_2,
-        opponent_team.pokemon_3,
-    ]
+def count_wins(creator_team, opponent_team):
+    creator_wins, opponent_wins = 0, 0
 
-    rounds_winners = []
-
-    for (c_pokemon, o_pokemon) in zip(c_poke_team, o_poke_team):
-        if get_round_winner(c_pokemon, o_pokemon) == c_pokemon:
-            rounds_winners.append("creator")
+    for (creator_pokemon, opponent_pokemon) in zip(creator_team, opponent_team):
+        if get_round_winner(creator_pokemon, opponent_pokemon) == creator_pokemon:
+            creator_wins += 1
         else:
-            rounds_winners.append("opponent")
+            opponent_wins += 1
 
-    if rounds_winners.count("creator") > rounds_winners.count("opponent"):
+    return creator_wins, opponent_wins
+
+
+def get_battle_winner(battle):
+    creator_team = get_player_team(battle, "creator")
+    opponent_team = get_player_team(battle, "opponent")
+
+    creator_wins, opponent_wins = count_wins(creator_team, opponent_team)
+
+    if creator_wins > opponent_wins:
         return battle.creator
     return battle.opponent
 
