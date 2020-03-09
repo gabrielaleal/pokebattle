@@ -62,6 +62,17 @@ class OnGoingBattlesListView(generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
 
-    def get_queryset(self):
-        queryset = Battle.objects.filter(status="pending").order_by("timestamp")
-        return queryset
+    def get_context_data(self, **kwargs):  # noqa
+        # TODO: pylint error here
+        context = super().get_context_data(**kwargs)  # noqa
+        context["battles_i_created"] = (
+            Battle.objects.filter(status="pending")
+            .filter(creator=self.request.user)
+            .order_by("timestamp")
+        )
+        context["battles_im_invited"] = (
+            Battle.objects.filter(status="pending")
+            .filter(opponent=self.request.user)
+            .order_by("timestamp")
+        )
+        return context
