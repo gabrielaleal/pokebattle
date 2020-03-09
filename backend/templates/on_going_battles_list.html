@@ -8,8 +8,30 @@
     <h2 class="title">Ongoing Battles</h2>
     <div class="content">
         <div class="battle-list">
+            <h4>Battles waiting for me</h4>
             {% if object_list.all %}
-                {% for battle in object_list %}
+                {% for battle in battles_im_invited %}
+                    <div class="list-item">
+                        <div>
+                            <h5>Battle #{{battle.id}}</h5>
+                            <div>
+                                <span class="list-attribute">{{battle.creator}}</span>  challenged you on {{battle.timestamp|date:"d/m/Y"}} at {{battle.timestamp|time:"H:i"}}. Fight back!
+                            </div>
+                            <div>
+                                <span class="list-attribute">Time</span> {{battle.timestamp}}
+                            </div>
+                        </div>
+                        <!-- <div class="small-btn">Fight back!</div> -->
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>Ops, there's no on-going battles yet!</h4>
+            {% endif %}
+        </div>
+        <div class="battle-list">
+            <h4>Battles waiting my opponent</h4>
+            {% if object_list.all %}
+                {% for battle in battles_i_created %}
                     <div class="list-item">
                         <div>
                             <h5>Battle #{{battle.id}}</h5>
@@ -20,7 +42,7 @@
                                 <span class="list-attribute">Time</span> {{battle.timestamp}}
                             </div>
                         </div>
-                        <div class="small-btn">Fight back!</div>
+                        <!-- <div class="small-btn">Fight back!</div> -->
                     </div>
                 {% endfor %}
             {% else %}
