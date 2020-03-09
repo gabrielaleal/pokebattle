@@ -4,7 +4,7 @@
 {% block title %}PokeBattle - Create Battle{% endblock %}
 
 {% block body %}
-<div class='create-battle'>
+<div class='pk-container create-battle'>
   <h2 class='title'>Create Battle</h2>
   {% if form.errors %}
     {% for error in form.non_field_errors %}
@@ -17,7 +17,7 @@
         {{message}}
       </div>
     {% endfor %}
-  
+
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
