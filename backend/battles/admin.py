@@ -6,7 +6,7 @@ from .models import Battle, BattleTeam  # noqa
 
 
 class BattleAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ("timestamp",)
 
 
 class BattleTeamAdmin(admin.ModelAdmin):
