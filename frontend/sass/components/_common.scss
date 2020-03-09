@@ -68,3 +68,35 @@ footer {
     font-size: 18px;
     margin-top: 10px;
 }
+
+.small-btn {
+    width: 130px;
+    padding: 10px 15px;
+    background-color:$pk-blue;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    align-self: center;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.battle-list {
+    width: 100%;
+    padding: 20px 0;
+
+    div.list-item:last-child {
+        border-bottom: 0!important;
+    }
+
+    .list-item {
+        border-bottom: 1px solid;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+
+        .list-attribute {
+            font-weight: bold;
+        }
+    }
+}
