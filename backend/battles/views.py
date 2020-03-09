@@ -17,6 +17,7 @@ class CreateBattleView(generic.CreateView):  # noqa
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
+        form.instance.status = "pending"
         form.instance.save()
         pokemon = {}
 
@@ -54,4 +55,13 @@ class SettledBattlesListView(generic.ListView):
 
     def get_queryset(self):
         queryset = Battle.objects.filter(status="settled")
+        return queryset
+
+
+class OnGoingBattlesListView(generic.ListView):
+    template_name = "on_going_battles_list.html"
+    model = Battle
+
+    def get_queryset(self):
+        queryset = Battle.objects.filter(status="pending").order_by("timestamp")
         return queryset
