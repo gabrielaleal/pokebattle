@@ -90,8 +90,9 @@ footer {
     }
 
     .list-item {
-        border-bottom: 1px solid;
-        padding: 10px 0;
+        background-color: $pk-light-grey;
+        border-bottom: 1px solid white;
+        padding: 10px 5px;
         display: flex;
         justify-content: space-between;
 
