@@ -11,12 +11,14 @@
             {% if object_list.all %}
                 {% for battle in object_list %}
                     <div class="list-item">
-                        <h5>Battle #{{battle.id}}</h5>
                         <div>
-                            <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
-                        </div>
-                        <div>
-                            <span class="list-attribute">Winner</span> {{battle.winner}}
+                            <h5>Battle #{{battle.id}}</h5>
+                            <div>
+                                <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
+                            </div>
+                            <div>
+                                <span class="list-attribute">Winner</span> {{battle.winner}}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
