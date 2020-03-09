@@ -55,5 +55,6 @@ def get_battle_winner(battle):
 def run_battle_and_send_result_email(battle_team):
     battle = battle_team.battle
     battle.winner = get_battle_winner(battle)
+    battle.status = "settled"
     battle.save()
     send_battle_result(battle)
