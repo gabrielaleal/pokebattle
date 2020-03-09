@@ -46,3 +46,12 @@ class CreateBattleView(generic.CreateView):  # noqa
 
     def get_initial(self):
         return {"creator_id": self.request.user.id}
+
+
+class SettledBattlesListView(generic.ListView):
+    template_name = "settled_battles_list.html"
+    model = Battle
+
+    def get_queryset(self):
+        queryset = Battle.objects.filter(status="settled")
+        return queryset
