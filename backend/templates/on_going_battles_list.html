@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle - On-going Battles{% endblock %}
+
+{% block body %}
+<div class="pk-container on-going-battles">
+    <h2 class="title">Ongoing Battles</h2>
+    <div class="content">
+        <div class="battle-list">
+            {% if object_list.all %}
+                {% for battle in object_list %}
+                    <div class="list-item">
+                        <div>
+                            <h5>Battle #{{battle.id}}</h5>
+                            <div>
+                                <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
+                            </div>
+                            <div>
+                                <span class="list-attribute">Time</span> {{battle.timestamp}}
+                            </div>
+                        </div>
+                        <div class="small-btn">Fight back!</div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>Ops, there's no on-going battles yet!</h4>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
