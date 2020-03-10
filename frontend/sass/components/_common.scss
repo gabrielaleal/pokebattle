@@ -19,6 +19,15 @@ nav {
     }
 }
 
+.pk-logo {
+    background: url("https://fontmeme.com/permalink/200310/18a98e16f984b27c773120554167d987.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 100px;
+    width: 300px;
+}
+
 .pk-container {
     width: 100%;
     height: 100%;
@@ -33,7 +42,14 @@ nav {
 }
 
 .pk-title {
-    font-size: 3em;
+    font-size: 2em;
+    font-family: "PokemonGb";
+}
+
+.pk-subtitle {
+    font-size: 1em;
+    font-family: "PokemonGb";
+    padding: 10px 0;
 }
 
 .block-body {
