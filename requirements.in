@@ -15,3 +15,6 @@ psutil
 ipython
 sentry-sdk
 django-widget-tweaks
+requests
+pip-tools
+django-templated-email
