@@ -34,6 +34,7 @@ pylint:
     - no-self-use
     - no-member
     - too-many-ancestors
+    - import-error
   options:
     max-line-length: 100
 
