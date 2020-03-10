@@ -3,13 +3,13 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from pokemon.helpers import save_pokemon  # noqa
+from pokemon.helpers import save_pokemon
 
-from .forms import CreateBattleForm  # noqa
-from .models import Battle, BattleTeam  # noqa
+from .forms import CreateBattleForm
+from .models import Battle, BattleTeam
 
 
-class CreateBattleView(generic.CreateView):  # noqa
+class CreateBattleView(generic.CreateView):
     model = Battle
     template_name = "create_battle.html"
     form_class = CreateBattleForm
