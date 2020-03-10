@@ -9,15 +9,11 @@
         <a href="{% url 'battles:create-battle' %}">
             <div class="pk-btn">Battle!</div>
         </a>
-    </div>
-    <div class="battle-btn-container">
-        <a href="{% url 'battles:settled-battles-list' %}">
-            <div class="pk-btn">See settled battles</div>
-        </a>
-    </div>
-    <div class="battle-btn-container">
         <a href="{% url 'battles:on-going-battles-list' %}">
             <div class="pk-btn">See on-going battles</div>
+        </a>
+        <a href="{% url 'battles:settled-battles-list' %}">
+            <div class="pk-btn">See settled battles</div>
         </a>
     </div>
 </div>
