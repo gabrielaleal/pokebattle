@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from .views import CreateBattleView, OnGoingBattlesListView, SettledBattlesListView  # noqa
+from .views import CreateBattleView, OnGoingBattlesListView, SettledBattlesListView
 
 
 app_name = "battles"

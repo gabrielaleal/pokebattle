@@ -1,7 +1,7 @@
 from django.db import models
 
-from pokemon.models import Pokemon  # noqa
-from users.models import User  # noqa
+from pokemon.models import Pokemon
+from users.models import User
 
 
 class Battle(models.Model):

@@ -3,10 +3,10 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from pokemon.helpers import save_pokemon  # noqa
+from pokemon.helpers import save_pokemon
 
-from .forms import CreateBattleForm  # noqa
-from .models import Battle, BattleTeam  # noqa
+from .forms import CreateBattleForm
+from .models import Battle, BattleTeam
 
 
 class CreateBattleView(generic.CreateView):
@@ -62,8 +62,8 @@ class OnGoingBattlesListView(generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
 
-    def get_context_data(self, **kwargs):  # noqa
-        context = super().get_context_data(**kwargs)  # noqa
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context["battles_i_created"] = (
             Battle.objects.filter(status="pending")
             .filter(creator=self.request.user)
