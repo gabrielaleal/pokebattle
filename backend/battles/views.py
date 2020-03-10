@@ -3,10 +3,10 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from pokemon.helpers import save_pokemon
+from pokemon.helpers import save_pokemon  # noqa
 
-from .forms import CreateBattleForm
-from .models import Battle, BattleTeam
+from .forms import CreateBattleForm  # noqa
+from .models import Battle, BattleTeam  # noqa
 
 
 class CreateBattleView(generic.CreateView):
@@ -63,7 +63,6 @@ class OnGoingBattlesListView(generic.ListView):
     model = Battle
 
     def get_context_data(self, **kwargs):  # noqa
-        # TODO: pylint error here
         context = super().get_context_data(**kwargs)  # noqa
         context["battles_i_created"] = (
             Battle.objects.filter(status="pending")
