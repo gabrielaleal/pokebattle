@@ -9,7 +9,7 @@
     <div class="content">
         <div class="battle-list">
             <h4>Battles waiting for me</h4>
-            {% if object_list.all %}
+            {% if battles_im_invited.all %}
                 {% for battle in battles_im_invited %}
                     <div class="list-item">
                         <div>
@@ -22,12 +22,12 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h4>Ops, there's no on-going battles yet!</h4>
+                <div>Ops, there's no battles yet!</div>
             {% endif %}
         </div>
         <div class="battle-list">
             <h4>Battles waiting my opponent</h4>
-            {% if object_list.all %}
+            {% if battles_i_created.all %}
                 {% for battle in battles_i_created %}
                     <div class="list-item">
                         <div>
@@ -43,7 +43,7 @@
                     </div>
                 {% endfor %}
             {% else %}
-                <h4>Ops, there's no on-going battles yet!</h4>
+                <div>Ops, there's no battles yet!</div>
             {% endif %}
         </div>
     </div>
