@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
@@ -54,7 +55,9 @@ class SettledBattlesListView(generic.ListView):
     model = Battle
 
     def get_queryset(self):
-        queryset = Battle.objects.filter(status="settled")
+        queryset = Battle.objects.filter(status="settled").filter(
+            Q(creator=self.request.user) | Q(opponent=self.request.user)
+        )
         return queryset
 
 
