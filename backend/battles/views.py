@@ -16,6 +16,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     template_name = "create_battle.html"
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -54,6 +55,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "settled_battles_list.html"
     model = Battle
+    login_url = reverse_lazy("login")
 
     def get_queryset(self):
         queryset = Battle.objects.filter(status="SETTLED").filter(
@@ -65,6 +67,7 @@ class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
 class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
+    login_url = reverse_lazy("login")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
