@@ -11,6 +11,11 @@
       <p class="error" style="color: red">{{error}}</p>
     {% endfor %}
   {% endif %}
+  {% for message in messages %}
+      <div class="messages">
+        {{message}}
+      </div>
+    {% endfor %}
   <div class="content">
     <form method="post">
       {% csrf_token %}
