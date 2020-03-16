@@ -2,8 +2,24 @@
 
 <nav>
     <div class='pk-nav'>
-        <a href="{% url 'home' %}">
-            <div class="pk-logo"></div>
+        <div>
+            <a href="{% url 'home' %}">
+                <div class="pk-logo"></div>
+            </a>
+        </div>
+        {% if not user.is_authenticated %}
+        <div class="btns-container">
+            <a href="{% url 'login' %}">
+                <div class="pk-small-btn">Login</div>
+            </a>
+            <a href="{% url 'signup' %}">
+                <div class="pk-small-btn">SignUp</div>
+            </a>
+        </div>
+        {% else %}
+        <a href="{% url 'logout' %}">
+            <div class="pk-small-btn">Logout</div>
         </a>
+        {% endif %}
     </div>
 </nav>
