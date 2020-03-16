@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle - Create Battle{% endblock %}
+
+{% block body %}
+<div class="pk-container sign-up">
+  <h2 class="pk-title">Login</h2>
+  <div class="content">
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="battle-form-field">
+          <div>{{ field.label }}: </div>
+          {% render_field field %}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+      <div class="btn-container">
+        <button class="pk-btn" type="submit">Login</button>
+      </div>
+  </form>
+  </div>
+</div>
+{% endblock %}
