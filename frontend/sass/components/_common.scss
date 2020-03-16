@@ -20,43 +20,10 @@ nav {
     }
 }
 
-.pk-logo {
-    background: url("../../backend/static/img/pokebattle-logo.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    height: 100px;
-    width: 300px;
-}
-
-.pk-container {
-    width: 100%;
-    height: 100%;
-
-    .content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.pk-title {
-    font-size: 2em;
-    font-family: "PokemonGb";
-}
-
-.pk-subtitle {
-    font-size: 1em;
-    font-family: "PokemonGb";
-    padding: 10px 0;
-}
-
 .block-body {
     padding: 40px 7%;
     display: flex;
-    min-height: calc(100vh - 70px - 128px);
+    // min-height: calc(100vh - 70px - 128px);
 }
 
 footer {
@@ -72,6 +39,68 @@ footer {
     align-items: center;
     justify-content: center;
     height: 100%;
+}
+
+.pk-logo {
+    background: url("../../backend/static/img/pokebattle-logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 100px;
+    width: 300px;
+}
+
+.pk-container {
+    width: 100%;
+
+    .content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+}
+
+.pk-title {
+    font-size: 2em;
+    font-family: "PokemonGb";
+}
+
+.pk-subtitle {
+    font-size: 1em;
+    font-family: "PokemonGb";
+    padding: 10px 0;
+}
+
+
+/* Forms style */
+
+.battle-form-field {
+    padding: 5px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.messages {
+    border-radius: 15px;
+    border: 1px solid;
+    width: fit-content;
+    text-align: center;
+    padding: 10px 34px;
+    margin-bottom: 20px;
+}
+
+/* Buttons style */
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
 }
 
 .pk-btn {
@@ -97,6 +126,8 @@ footer {
     cursor: pointer;
     border-radius: 30px;
 }
+
+/* Lists syle */
 
 .battle-list {
     width: 100%;
