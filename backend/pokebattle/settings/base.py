@@ -2,7 +2,8 @@
 
 import os
 
-from decouple import config  # noqa
+from decouple import config
+from django.urls import reverse_lazy
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -25,6 +26,8 @@ AUTH_USER_MODEL = "users.User"
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend'
 ]
+
+LOGIN_REDIRECT_URL = reverse_lazy("home")
 
 ALLOWED_HOSTS = []
 
