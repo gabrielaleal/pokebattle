@@ -6,12 +6,21 @@ html, body {
 nav {
     color: white;
     background-color: $pk-dark-red;
-    padding: 20px;
-    height: 128px;
+    padding: 15px;
+
+    .pk-nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btns-container {
+        display: flex;
+    }
 
     a {
         text-decoration: none;
         color: white;
+        display: flex;
 
         &:hover {
             text-decoration: none;
@@ -115,9 +124,10 @@ footer {
     margin-top: 10px;
 }
 
-.small-btn {
-    width: 130px;
-    padding: 10px 15px;
+.pk-small-btn {
+    width: 90px;
+    padding: 10px;
+    margin: 5px;
     background-color:$pk-blue;
     color: white;
     text-align: center;
