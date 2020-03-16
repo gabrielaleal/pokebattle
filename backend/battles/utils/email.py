@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from templated_email import send_templated_mail  # noqa
+from templated_email import send_templated_mail
 
 
 def send_battle_result(battle):

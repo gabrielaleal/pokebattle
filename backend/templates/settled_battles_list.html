@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle - Settled Battles{% endblock %}
+
+{% block body %}
+<div class="pk-container settled-battles">
+    <h2 class="pk-title">Settled Battles</h2>
+    <div class="content">
+        <div class="battle-list">
+            {% if object_list.all %}
+                {% for battle in object_list %}
+                    <div class="list-item">
+                        <div>
+                            <h5>Battle #{{battle.id}}</h5>
+                            <div>
+                                <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
+                            </div>
+                            <div>
+                                <span class="list-attribute">Winner</span> {{battle.winner}}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <h4>Ops, there's no settled battles yet!</h4>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

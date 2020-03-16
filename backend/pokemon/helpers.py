@@ -1,6 +1,6 @@
 import requests
 
-from .models import Pokemon  # noqa
+from .models import Pokemon
 
 
 POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"

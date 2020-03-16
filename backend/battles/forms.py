@@ -1,9 +1,9 @@
 from django import forms
 
-from pokemon.helpers import get_pokemon, pokemon_exists, pokemon_sum_valid  # noqa
-from users.models import User  # noqa
+from pokemon.helpers import pokemon_exists, pokemon_sum_valid
+from users.models import User
 
-from .models import Battle  # noqa
+from .models import Battle
 
 
 class CreateBattleForm(forms.ModelForm):
