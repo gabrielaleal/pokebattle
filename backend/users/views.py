@@ -8,17 +8,16 @@ from .forms import SignUpForm
 
 class SignUpView(generic.CreateView):
     form_class = SignUpForm
-    success_url = reverse_lazy("signup")
+    success_url = reverse_lazy("home")
     template_name = "signup.html"
 
     def form_valid(self, form):
-        new_user = form.save()
-        new_user = authenticate(
-            email=form.cleaned_data["email"], password=form.cleaned_data["password1"],
-        )
+        valid = super(SignUpView, self).form_valid(form)
+        email, password = form.cleaned_data.get("email"), form.cleaned_data.get("password1")
+        new_user = authenticate(email=email, password=password)
         if new_user is not None:
             login(self.request, new_user)
             messages.info(self.request, "Thanks for registering. You are now logged in.")
         else:
             messages.info(self.request, "Sorry, did you register correctly?")
-        return super().form_valid(form)
+        return valid
