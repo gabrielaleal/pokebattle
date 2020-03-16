@@ -73,6 +73,25 @@ footer {
     
 }
 
+.pk-comp-title {
+    display: flex;
+    justify-content: space-between;
+    font-family: "PokemonGb";
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .go-home-btn {
+        font-size: 0.8em;
+        background-color: $pk-light-grey;
+        border-radius: 30px;
+        padding: 15px;
+        text-align: center;
+    }
+}
+
 .pk-title {
     font-size: 2em;
     font-family: "PokemonGb";
