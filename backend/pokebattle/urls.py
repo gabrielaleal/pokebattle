@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 import django_js_reverse.views
 
-from users.views import SignUpView
+from users.views import SignUpView, UserLoginView, UserLogoutView
 
 
 urlpatterns = [
@@ -13,4 +13,6 @@ urlpatterns = [
     url(r"^$", TemplateView.as_view(template_name="home.html"), name="home"),
     url(r"^battles/", include("battles.urls"), name="battles"),  # import all urls from battles app
     url(r"^signup/", SignUpView.as_view(), name="signup"),
+    url(r"^login/", UserLoginView.as_view(), name="login"),
+    url(r"^logout/", UserLogoutView.as_view(), name="logout"),
 ]
