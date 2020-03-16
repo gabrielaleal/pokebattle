@@ -8,5 +8,5 @@ app_name = "battles"
 urlpatterns = [
     url(r"^create/$", CreateBattleView.as_view(), name="create-battle"),
     url(r"^settled-battles/$", SettledBattlesListView.as_view(), name="settled-battles-list"),
-    url(r"^on-going-battles/$", OnGoingBattlesListView.as_view(), name="on-going-battles-list"),
+    url(r"^ongoing-battles/$", OnGoingBattlesListView.as_view(), name="ongoing-battles-list"),
 ]

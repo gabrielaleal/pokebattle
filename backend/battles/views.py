@@ -18,7 +18,7 @@ class CreateBattleView(generic.CreateView):
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        form.instance.status = "pending"
+        form.instance.status = "ONGOING"
         form.instance.save()
         pokemon = {}
 
@@ -55,7 +55,7 @@ class SettledBattlesListView(generic.ListView):
     model = Battle
 
     def get_queryset(self):
-        queryset = Battle.objects.filter(status="settled").filter(
+        queryset = Battle.objects.filter(status="SETTLED").filter(
             Q(creator=self.request.user) | Q(opponent=self.request.user)
         )
         return queryset
@@ -68,12 +68,12 @@ class OnGoingBattlesListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["battles_i_created"] = (
-            Battle.objects.filter(status="pending")
+            Battle.objects.filter(status="ONGOING")
             .filter(creator=self.request.user)
             .order_by("timestamp")
         )
         context["battles_im_invited"] = (
-            Battle.objects.filter(status="pending")
+            Battle.objects.filter(status="ONGOING")
             .filter(opponent=self.request.user)
             .order_by("timestamp")
         )
