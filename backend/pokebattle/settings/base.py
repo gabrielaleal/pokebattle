@@ -22,6 +22,10 @@ ADMINS = (("Admin", "gabriela@vinta.com.br"),)
 
 AUTH_USER_MODEL = "users.User"
 
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
+
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
