@@ -1,9 +1,13 @@
-
+html, body {
+    width: 100%;
+    height: 100%;
+}
 
 nav {
     color: white;
     background-color: $pk-dark-red;
     padding: 20px;
+    height: 128px;
 
     a {
         text-decoration: none;
@@ -16,20 +20,49 @@ nav {
     }
 }
 
+.pk-logo {
+    background: url("../../backend/static/img/pokebattle-logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 100px;
+    width: 300px;
+}
+
+.pk-container {
+    width: 100%;
+    height: 100%;
+
+    .content {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
 .pk-title {
-    font-size: 3em;
+    font-size: 2em;
+    font-family: "PokemonGb";
+}
+
+.pk-subtitle {
+    font-size: 1em;
+    font-family: "PokemonGb";
+    padding: 10px 0;
 }
 
 .block-body {
     padding: 40px 7%;
     display: flex;
+    min-height: calc(100vh - 70px - 128px);
 }
 
 footer {
-    position: absolute;
     bottom: 0;
     width: 100%;
-    height: 100px;
+    height: 70px;
     color: white;
     background-color: $pk-dark-red;
 }
@@ -42,11 +75,46 @@ footer {
 }
 
 .pk-btn {
+    width: 300px;
     background-color:$pk-blue;
     border: none;
     border-radius: 25px;
     color: white;
+    text-align: center;
     padding: 12px 50px;
     font-size: 18px;
     margin-top: 10px;
+}
+
+.small-btn {
+    width: 130px;
+    padding: 10px 15px;
+    background-color:$pk-blue;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    align-self: center;
+    cursor: pointer;
+    border-radius: 30px;
+}
+
+.battle-list {
+    width: 100%;
+    padding: 20px 0;
+
+    div.list-item:last-child {
+        border-bottom: 0!important;
+    }
+
+    .list-item {
+        background-color: $pk-light-grey;
+        border-bottom: 1px solid white;
+        padding: 10px 5px;
+        display: flex;
+        justify-content: space-between;
+
+        .list-attribute {
+            font-weight: bold;
+        }
+    }
 }

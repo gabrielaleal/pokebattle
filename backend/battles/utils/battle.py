@@ -1,4 +1,4 @@
-from .email import send_battle_result  # noqa
+from .email import send_battle_result
 
 
 def compare_pokemon_attack_and_defense(pokemon_1, pokemon_2):
@@ -55,5 +55,6 @@ def get_battle_winner(battle):
 def run_battle_and_send_result_email(battle_team):
     battle = battle_team.battle
     battle.winner = get_battle_winner(battle)
+    battle.status = "SETTLED"
     battle.save()
     send_battle_result(battle)
