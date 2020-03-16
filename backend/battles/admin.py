@@ -1,12 +1,12 @@
 from django.contrib import admin
 
-from battles.utils.battle import run_battle_and_send_result_email  # noqa
+from battles.utils.battle import run_battle_and_send_result_email
 
-from .models import Battle, BattleTeam  # noqa
+from .models import Battle, BattleTeam
 
 
 class BattleAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ("timestamp",)
 
 
 class BattleTeamAdmin(admin.ModelAdmin):

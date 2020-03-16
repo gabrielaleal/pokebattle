@@ -3,13 +3,17 @@
 
 {% block body %}
 <div class="home-content">
-    <h1>Hello, player!</h1>
-    <div class="subtitle">
-        <h2>Should we start a battle?</h2>
-    </div>
+    <div class="pk-title">Hello, player!</div>
+    <div class="pk-subtitle">What do you want to do?</div>
     <div class="battle-btn-container">
-        <a href="/battles/create">
+        <a href="{% url 'battles:create-battle' %}">
             <div class="pk-btn">Battle!</div>
+        </a>
+        <a href="{% url 'battles:ongoing-battles-list' %}">
+            <div class="pk-btn">See ongoing battles</div>
+        </a>
+        <a href="{% url 'battles:settled-battles-list' %}">
+            <div class="pk-btn">See settled battles</div>
         </a>
     </div>
 </div>
