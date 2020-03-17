@@ -6,12 +6,21 @@ html, body {
 nav {
     color: white;
     background-color: $pk-dark-red;
-    padding: 20px;
-    height: 128px;
+    padding: 15px;
+
+    .pk-nav {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btns-container {
+        display: flex;
+    }
 
     a {
         text-decoration: none;
         color: white;
+        display: flex;
 
         &:hover {
             text-decoration: none;
@@ -20,43 +29,10 @@ nav {
     }
 }
 
-.pk-logo {
-    background: url("../img/pokebattle-logo.png");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    height: 100px;
-    width: 300px;
-}
-
-.pk-container {
-    width: 100%;
-    height: 100%;
-
-    .content {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-}
-
-.pk-title {
-    font-size: 2em;
-    font-family: "PokemonGb";
-}
-
-.pk-subtitle {
-    font-size: 1em;
-    font-family: "PokemonGb";
-    padding: 10px 0;
-}
-
 .block-body {
     padding: 40px 7%;
     display: flex;
-    min-height: calc(100vh - 70px - 128px);
+    // min-height: calc(100vh - 70px - 128px);
 }
 
 footer {
@@ -74,6 +50,86 @@ footer {
     height: 100%;
 }
 
+.pk-logo {
+    background: url("../img/pokebattle-logo.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    height: 100px;
+    width: 300px;
+}
+
+.pk-container {
+    width: 100%;
+
+    .content {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+}
+
+.pk-comp-title {
+    display: flex;
+    justify-content: space-between;
+    font-family: "PokemonGb";
+
+    a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .go-home-btn {
+        font-size: 0.8em;
+        background-color: $pk-light-grey;
+        border-radius: 30px;
+        padding: 15px;
+        text-align: center;
+    }
+}
+
+.pk-title {
+    font-size: 2em;
+    font-family: "PokemonGb";
+}
+
+.pk-subtitle {
+    font-size: 1em;
+    font-family: "PokemonGb";
+    padding: 10px 0;
+}
+
+/* Forms style */
+
+.battle-form-field {
+    padding: 5px 0;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.messages {
+    border-radius: 15px;
+    border: 1px solid;
+    width: fit-content;
+    text-align: center;
+    padding: 10px 34px;
+    margin-bottom: 20px;
+}
+
+/* Buttons style */
+
+.btn-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px 0;
+}
+
 .pk-btn {
     width: 300px;
     background-color:$pk-blue;
@@ -86,9 +142,10 @@ footer {
     margin-top: 10px;
 }
 
-.small-btn {
-    width: 130px;
-    padding: 10px 15px;
+.pk-small-btn {
+    width: 90px;
+    padding: 10px;
+    margin: 5px;
     background-color:$pk-blue;
     color: white;
     text-align: center;
@@ -97,6 +154,15 @@ footer {
     cursor: pointer;
     border-radius: 30px;
 }
+
+/* Forms errors */
+.error {
+    color: $pk-light-red;
+    text-align: center;
+    margin: 0!important;
+}
+
+/* Lists syle */
 
 .battle-list {
     width: 100%;

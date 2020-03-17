@@ -3,6 +3,7 @@
 import os
 
 from decouple import config
+from django.urls import reverse_lazy
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -21,6 +22,12 @@ DEBUG = True
 ADMINS = (("Admin", "gabriela@vinta.com.br"),)
 
 AUTH_USER_MODEL = "users.User"
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+LOGIN_REDIRECT_URL = reverse_lazy("home")
 
 ALLOWED_HOSTS = []
 
@@ -94,6 +101,8 @@ USE_TZ = True
 STATICFILES_DIRS = (
     base_dir_join("../frontend"),
 )
+
+STATIC_URL = '/static/'
 
 EMAIL_ADDRESS = "gabriela@vinta.com.br"
 

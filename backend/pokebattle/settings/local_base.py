@@ -1,5 +1,6 @@
 from .base import *
 
+
 DEBUG = True
 
 HOST = "http://localhost:8000"
