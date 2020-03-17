@@ -5,7 +5,7 @@
 
 {% block body %}
 <div class="pk-container settled-battles">
-    <h2 class="pk-title">Settled Battles</h2>
+    {% include "includes/title.html" with title="Settled Battles" %}
     <div class="content">
         <div class="battle-list">
             {% if object_list.all %}

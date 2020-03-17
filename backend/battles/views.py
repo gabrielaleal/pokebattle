@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils.html import format_html
@@ -10,11 +11,12 @@ from .forms import CreateBattleForm
 from .models import Battle, BattleTeam
 
 
-class CreateBattleView(generic.CreateView):
+class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
     template_name = "create_battle.html"
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
+    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -50,9 +52,10 @@ class CreateBattleView(generic.CreateView):
         return {"creator_id": self.request.user.id}
 
 
-class SettledBattlesListView(generic.ListView):
+class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "settled_battles_list.html"
     model = Battle
+    login_url = reverse_lazy("login")
 
     def get_queryset(self):
         queryset = Battle.objects.filter(status="SETTLED").filter(
@@ -61,9 +64,10 @@ class SettledBattlesListView(generic.ListView):
         return queryset
 
 
-class OnGoingBattlesListView(generic.ListView):
+class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
+    login_url = reverse_lazy("login")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
