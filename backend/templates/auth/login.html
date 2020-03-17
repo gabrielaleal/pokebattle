@@ -6,6 +6,11 @@
 {% block body %}
 <div class="pk-container sign-up">
   <h2 class="pk-title">Login</h2>
+  {% if form.errors %}
+    {% for error in form.non_field_errors %}
+      <p class="error">{{error}}</p>
+    {% endfor %}
+  {% endif %}
   <div class="content">
     <form method="post">
       {% csrf_token %}
