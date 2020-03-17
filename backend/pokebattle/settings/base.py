@@ -2,7 +2,7 @@
 
 import os
 
-from decouple import config  # noqa
+from decouple import config
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -91,7 +91,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATICFILES_DIRS = (base_dir_join("../frontend"),)
+STATICFILES_DIRS = (
+    base_dir_join("../frontend"),
+)
 
 EMAIL_ADDRESS = "gabriela@vinta.com.br"
 
