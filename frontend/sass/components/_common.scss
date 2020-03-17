@@ -103,7 +103,6 @@ footer {
     padding: 10px 0;
 }
 
-
 /* Forms style */
 
 .battle-form-field {
@@ -154,6 +153,13 @@ footer {
     align-self: center;
     cursor: pointer;
     border-radius: 30px;
+}
+
+/* Forms errors */
+.error {
+    color: $pk-light-red;
+    text-align: center;
+    margin: 0!important;
 }
 
 /* Lists syle */
