@@ -98,7 +98,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-STATICFILES_DIRS = (base_dir_join("../frontend"),)
+STATICFILES_DIRS = (
+    base_dir_join("../frontend"),
+)
 
 STATIC_URL = '/static/'
 

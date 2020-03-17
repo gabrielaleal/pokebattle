@@ -3,7 +3,7 @@ from decouple import Csv, config
 from dj_database_url import parse as db_url
 from sentry_sdk.integrations.django import DjangoIntegration
 
-from .base import *  # noqa
+from .base import *
 
 
 DEBUG = False
