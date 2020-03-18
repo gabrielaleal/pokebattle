@@ -1,15 +1,48 @@
 from django import forms
 
+from dal import autocomplete
+
 from pokemon.helpers import pokemon_exists, pokemon_sum_valid
+from pokemon.models import Pokemon
 from users.models import User
 
 from .models import Battle
 
 
 class CreateBattleForm(forms.ModelForm):
-    pokemon_1 = forms.IntegerField(required=True)
-    pokemon_2 = forms.IntegerField(required=True)
-    pokemon_3 = forms.IntegerField(required=True)
+    pokemon_1 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon-autocomplete",
+            attrs={  # noqa
+                "data-placeholder": "Autocomplete pokemon",
+                "data-minimum-input-length": 3,
+            },
+        ),
+        required=True,
+    )
+    pokemon_2 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon-autocomplete",
+            attrs={  # noqa
+                "data-placeholder": "Autocomplete pokemon",
+                "data-minimum-input-length": 3,
+            },
+        ),
+        required=True,
+    )
+    pokemon_3 = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url="pokemon-autocomplete",
+            attrs={  # noqa
+                "data-placeholder": "Autocomplete pokemon",
+                "data-minimum-input-length": 3,
+            },
+        ),
+        required=True,
+    )
 
     class Meta:
         model = Battle
