@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 
 {% block title %}PokeBattle - Create Battle{% endblock %}
@@ -33,4 +34,10 @@
     </form>
   </div>
 </div>
+{% endblock %}
+
+{% block scripts %}
+<!-- JQuery -->
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{ form.media }}
 {% endblock %}
