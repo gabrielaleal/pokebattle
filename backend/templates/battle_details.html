@@ -4,10 +4,28 @@
 {% block title %}PokeBattle{% endblock %}
 
 {% block body %}
-<div class="pk-container create-battle">
-  {% include "includes/title.html" with title="Detalhes da batalha" %}
-  <div class='content'>
-    <h1>Oi {{ battle.creator }}</h1>
+<div class="pk-container battle-detail">
+  {% include "includes/title.html" with title="Battle Details" %}
+  <div class="content">
+    <h3>Battle #{{battle.id}}</h3>
+    <div class="player-info-container">
+      <h4>Creator</h4>
+      <div>
+        <b>{{battle.creator.email}}</b> started this battle
+      </div>
+      <div>
+        The creator team is: {{creator_team.pokemon_1.name}}, {{creator_team.pokemon_2.name}}, {{creator_team.pokemon_3.name}}
+      </div>
+    </div>
+    <div class="player-info-container">
+      <h4>User challenged</h4>
+      <div>
+        <b>{{battle.opponent.email}}</b> was challenged for this battle
+      </div>
+      <div>
+        The opponent team is: {{opponent_team.pokemon_1.name}}, {{opponent_team.pokemon_2.name}}, {{opponent_team.pokemon_3.name}}
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}
