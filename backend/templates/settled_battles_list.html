@@ -11,7 +11,7 @@
             {% if object_list.all %}
                 {% for battle in object_list %}
                 <a href="{% url 'battles:settled-battle-detail' battle.pk %}">
-                    <div class="list-item">
+                    <div class="list-item settled-battle-item">
                         <div>
                             <h5>Battle #{{battle.id}}</h5>
                             <div>
