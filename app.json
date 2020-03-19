@@ -4,7 +4,7 @@
   "env": {
     "ALLOWED_HOSTS": {
       "description": "Django ALLOWED_HOSTS setting, e.g.: .appname.herokuapp.com",
-      "value": "https://poke-poke-ba-feature-ty-cobh1y.herokuapp.com/"
+      "value": ".herokuapp.com"
     },
     "DISABLE_COLLECTSTATIC": {
       "description": "Disables Heroku collectstatic",
