@@ -18,7 +18,6 @@ class SignUpView(generic.CreateView):
         new_user = authenticate(email=email, password=password)
         if new_user is not None:
             login(self.request, new_user)
-            messages.info(self.request, "Thanks for registering. You are now logged in.")
         else:
             messages.info(self.request, "Sorry, did you register correctly?")
         return valid
