@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}PokeBattle{% endblock %}
+
+{% block body %}
+<div class="pk-container create-battle">
+  {% include "includes/title.html" with title="Detalhes da batalha" %}
+  <div class='content'>
+    <h1>Oi {{ battle.creator }}</h1>
+  </div>
+</div>
+{% endblock %}
