@@ -32,7 +32,6 @@ nav {
 .block-body {
     padding: 40px 7%;
     display: flex;
-    // min-height: calc(100vh - 70px - 128px);
 }
 
 footer {
@@ -183,9 +182,5 @@ footer {
         .list-attribute {
             font-weight: bold;
         }
-
-    }
-    .list-item:hover {
-        background-color: $pk-dark-grey;
     }
 }
