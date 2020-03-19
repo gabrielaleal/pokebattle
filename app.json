@@ -3,7 +3,7 @@
   "description": "Pokebattle Heroku app.",
   "env": {
     "ALLOWED_HOSTS": {
-      "description": "Django ALLOWED_HOSTS setting, e.g.: .appname.herokuapp.com"
+      "description": "Django ALLOWED_HOSTS setting, e.g.: .poke-poke-ba-feature-ty-b5ydbc.herokuapp.com"
     },
     "DISABLE_COLLECTSTATIC": {
       "description": "Disables Heroku collectstatic",
