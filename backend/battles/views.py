@@ -82,3 +82,8 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
             .order_by("timestamp")
         )
         return context
+
+
+class SettledBattleDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name = "battle_details.html"
+    model = Battle
