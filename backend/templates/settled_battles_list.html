@@ -10,6 +10,7 @@
         <div class="battle-list">
             {% if object_list.all %}
                 {% for battle in object_list %}
+                <a href="{% url 'battles:settled-battle-detail' battle.pk %}">
                     <div class="list-item">
                         <div>
                             <h5>Battle #{{battle.id}}</h5>
@@ -21,6 +22,7 @@
                             </div>
                         </div>
                     </div>
+                </a>
                 {% endfor %}
             {% else %}
                 <h4>Ops, there's no settled battles yet!</h4>
