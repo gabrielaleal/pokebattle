@@ -168,8 +168,9 @@ footer {
     width: 100%;
     padding: 20px 0;
 
-    div.list-item:last-child {
-        border-bottom: 0!important;
+    a {
+        color: #000;
+        text-decoration: none;
     }
 
     .list-item {
@@ -182,5 +183,9 @@ footer {
         .list-attribute {
             font-weight: bold;
         }
+
+    }
+    .list-item:hover {
+        background-color: $pk-dark-grey;
     }
 }
