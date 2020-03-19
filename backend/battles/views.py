@@ -87,3 +87,17 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
 class SettledBattleDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "battle_details.html"
     model = Battle
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["creator_team"] = (
+            BattleTeam.objects.filter(battle=self.object.id)
+            .filter(creator=self.object.creator)
+            .first()
+        )
+        context["opponent_team"] = (
+            BattleTeam.objects.filter(battle=self.object.id)
+            .filter(creator=self.object.opponent)
+            .first()
+        )
+        return context
