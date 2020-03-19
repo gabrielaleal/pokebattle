@@ -29,7 +29,7 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 INSTALLED_APPS = [
     "dal",
