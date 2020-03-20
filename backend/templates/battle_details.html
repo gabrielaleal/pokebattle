@@ -5,26 +5,54 @@
 
 {% block body %}
 <div class="pk-container battle-detail">
-  {% include "includes/title.html" with title="Battle Details" %}
+  {% include "includes/title.html" with title="Battle #22" %}
   <div class="content">
-    <h3>Battle #{{battle.id}}</h3>
-    <div class="player-info-container">
-      <h4>Creator</h4>
-      <div>
-        <b>{{battle.creator.email}}</b> started this battle
-      </div>
-      <div>
-        The creator team is: {{creator_team.pokemon_1.name}}, {{creator_team.pokemon_2.name}}, {{creator_team.pokemon_3.name}}
+    <h4>Battle Information</h4>
+    <div class="battle-info-container">
+      <h5 class="styled-title">Players</h5>
+      <div class="subtitle">
+        <span>{{battle.creator.email}}</span> challenged <span>{{battle.opponent.email}}</span> on this battle!
       </div>
     </div>
-    <div class="player-info-container">
-      <h4>User challenged</h4>
-      <div>
-        <b>{{battle.opponent.email}}</b> was challenged for this battle
+    <div class="battle-info-container">
+      <h5 class="styled-title">Winner</h5>
+      <div class="subtitle">
+        This battle's winner is <b>{{battle.winner}}</b>.
       </div>
-      <div>
-        The opponent team is: {{opponent_team.pokemon_1.name}}, {{opponent_team.pokemon_2.name}}, {{opponent_team.pokemon_3.name}}
+    </div>
+  </div>
+  <div class="content">
+    <h4>Battle Details</h4>
+    <div class="battle-info-container">
+      <h7 class="styled-title">{{battle.creator.email}}'s team</h7>
+      <div class="battle-team-container">
+        {% for pokemon in creator_team %}
+        <div class="pokemon-info-container">
+          <div class="pokemon-icon"></div>
+          <div class="pokemon-name">{{pokemon.name}}</div>
+        </div>
+        {% endfor %}
       </div>
+    </div>
+    <div class="battle-info-container">
+      <h7 class="styled-title">{{battle.opponent.email}}'s team</h7>
+      <div class="battle-team-container">
+        {% for pokemon in opponent_team %}
+        <div class="pokemon-info-container">
+          <div class="pokemon-icon"></div>
+          <div class="pokemon-name">{{pokemon.name}}</div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="battle-info-container">
+      <h5 class="styled-title">Matches</h5>
+      {% for i, c_pokemon, o_pokemon in matches %}
+      <div>
+        <h6 class="styled-title">Round #{{i}}</h6>
+        <div class="round-info">{{c_pokemon}} X {{o_pokemon}}</div>
+      </div>
+      {% endfor %}
     </div>
   </div>
 </div>
