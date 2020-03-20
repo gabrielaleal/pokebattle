@@ -90,14 +90,28 @@ class SettledBattleDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["creator_team"] = (
+        creator_team = (
             BattleTeam.objects.filter(battle=self.object.id)
             .filter(creator=self.object.creator)
             .first()
         )
-        context["opponent_team"] = (
+        opponent_team = (
             BattleTeam.objects.filter(battle=self.object.id)
             .filter(creator=self.object.opponent)
             .first()
         )
+        context["creator_team"] = [
+            creator_team.pokemon_1,
+            creator_team.pokemon_2,
+            creator_team.pokemon_3,
+        ]
+
+        context["opponent_team"] = [
+            opponent_team.pokemon_1,
+            opponent_team.pokemon_2,
+            opponent_team.pokemon_3,
+        ]
+
+        context["matches"] = zip([1, 2, 3], context["creator_team"], context["opponent_team"])
+
         return context
