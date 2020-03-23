@@ -5,30 +5,39 @@
 
 {% block body %}
 <div class="pk-container battle-detail">
-  {% include "includes/title.html" with title="Battle #22" %}
+  {% include "includes/title.html" with title="Battle Details" %}
   <div class="content">
-    <h4>Battle Information</h4>
+    <h4>Battle #{{battle.id}} Information</h4>
+    <div class="battle-info-container">
+      <h5 class="styled-title">Status</h5>
+      <div class="subtitle styled-title">{{battle.status}}!</div>
+    </div>
     <div class="battle-info-container">
       <h5 class="styled-title">Players</h5>
       <div class="subtitle">
         <span>{{battle.creator.email}}</span> challenged <span>{{battle.opponent.email}}</span> on this battle!
       </div>
     </div>
+    {% if battle.winner is not None %}
     <div class="battle-info-container">
       <h5 class="styled-title">Winner</h5>
       <div class="subtitle">
-        This battle's winner is <b>{{battle.winner}}</b>.
+        This battle's winner is <span>{{battle.winner}}</span>.
       </div>
     </div>
+    {% endif %}
   </div>
+  {% if battle.winner is not None %}
   <div class="content">
-    <h4>Battle Details</h4>
+    <h4>Battle #{{battle.id}} Details</h4>
     <div class="battle-info-container">
       <h7 class="styled-title">{{battle.creator.email}}'s team</h7>
       <div class="battle-team-container">
         {% for pokemon in creator_team %}
         <div class="pokemon-info-container">
-          <div class="pokemon-icon"></div>
+          <div class="pokemon-icon">
+            <img src="{{pokemon.img_url}}" height="90px"></img>
+          </div>
           <div class="pokemon-name">{{pokemon.name}}</div>
         </div>
         {% endfor %}
@@ -39,7 +48,9 @@
       <div class="battle-team-container">
         {% for pokemon in opponent_team %}
         <div class="pokemon-info-container">
-          <div class="pokemon-icon"></div>
+          <div class="pokemon-icon">
+            <img src="{{pokemon.img_url}}" height="80px"></img>
+          </div>
           <div class="pokemon-name">{{pokemon.name}}</div>
         </div>
         {% endfor %}
@@ -55,5 +66,6 @@
       {% endfor %}
     </div>
   </div>
+  {% endif %}
 </div>
 {% endblock %}
