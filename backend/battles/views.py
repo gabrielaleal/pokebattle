@@ -5,8 +5,6 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from pokemon.helpers import save_pokemon
-
 from .forms import CreateBattleForm
 from .models import Battle, BattleTeam
 
@@ -25,7 +23,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         pokemon = {}
 
         for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
-            pokemon[field] = save_pokemon(form.cleaned_data[field])
+            pokemon[field] = form.cleaned_data[field]
 
         BattleTeam.objects.create(
             creator=self.request.user, battle=form.instance, **pokemon
