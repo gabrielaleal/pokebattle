@@ -45,6 +45,7 @@ pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pipenv==2018.11.26        # via dparse
 pre-commit==2.2.0         # via -r dev-requirements.in
+progress==1.5             # via -r dev-requirements.in
 prompt-toolkit==3.0.4     # via ipython
 prospector[with-vulture]==1.2.0  # via -r dev-requirements.in
 ptyprocess==0.6.0         # via pexpect

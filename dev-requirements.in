@@ -10,3 +10,4 @@ prospector[with-vulture]
 safety
 ipdb
 ipython
+progress

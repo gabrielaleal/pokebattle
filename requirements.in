@@ -19,4 +19,3 @@ requests
 pip-tools
 django-templated-email
 django-autocomplete-light
-progress
