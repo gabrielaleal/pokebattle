@@ -187,4 +187,8 @@ footer {
             font-weight: bold;
         }
     }
+
+    .list-item:hover {
+        background-color: $pk-dark-grey;
+    }
 }
