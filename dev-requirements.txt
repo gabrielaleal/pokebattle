@@ -25,7 +25,7 @@ dparse==0.5.0             # via safety
 filelock==3.0.12          # via virtualenv
 gitdb==4.0.2              # via gitpython
 gitpython==3.1.0          # via bandit
-identify==1.4.11          # via pre-commit
+identify==1.4.12          # via pre-commit
 idna==2.9                 # via requests
 ipdb==0.13.2              # via -r dev-requirements.in
 ipython-genutils==0.2.0   # via traitlets
@@ -59,7 +59,7 @@ pylint-plugin-utils==0.6  # via prospector, pylint-celery, pylint-django, pylint
 pylint==2.4.4             # via prospector, pylint-celery, pylint-django, pylint-flask, pylint-plugin-utils
 pyparsing==2.4.6          # via packaging
 pytz==2019.3              # via django
-pyyaml==5.3               # via bandit, dparse, pre-commit, prospector
+pyyaml==5.3.1             # via bandit, dparse, pre-commit, prospector
 regex==2020.2.20          # via black
 requests==2.23.0          # via safety
 requirements-detector==0.6  # via prospector
@@ -75,8 +75,8 @@ traitlets==4.3.3          # via ipython
 typed-ast==1.4.1          # via black
 urllib3==1.25.8           # via requests
 virtualenv-clone==0.5.3   # via pipenv
-virtualenv==20.0.10       # via pipenv, pre-commit
-wcwidth==0.1.8            # via prompt-toolkit
+virtualenv==20.0.13       # via pipenv, pre-commit
+wcwidth==0.1.9            # via prompt-toolkit
 wrapt==1.11.2             # via astroid
 
 # The following packages are considered to be unsafe in a requirements file:
