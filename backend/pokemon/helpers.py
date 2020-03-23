@@ -1,5 +1,5 @@
 import requests
-from progress.bar import Bar
+from progress.bar import ChargingBar
 
 from .models import Pokemon
 
@@ -11,8 +11,7 @@ def get_all_pokemon_from_api():
     response = requests.get(f"{POKE_API_URL}/?limit=802")
     data = response.json()
 
-    progress_bar = Bar("Processing", max=802)
-
+    progress_bar = ChargingBar("Processing", max=802)
     for pokemon in data["results"]:
         save_pokemon(pokemon["name"])
         progress_bar.next()
