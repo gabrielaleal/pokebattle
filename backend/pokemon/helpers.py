@@ -31,9 +31,9 @@ def get_pokemon_from_api(poke_name):
     }
 
 
-def pokemon_exists(poke_name):
+def pokemon_exists_in_api(poke_name):
     response = requests.head(f"{POKE_API_URL}{poke_name}")
-    return response
+    return bool(response)
 
 
 def save_pokemon(poke_name):
