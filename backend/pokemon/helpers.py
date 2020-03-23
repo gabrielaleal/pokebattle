@@ -1,4 +1,5 @@
 import requests
+from progress.bar import Bar
 
 from .models import Pokemon
 
@@ -10,12 +11,15 @@ def get_all_pokemon_from_api():
     response = requests.get(f"{POKE_API_URL}/?limit=802")
     data = response.json()
 
+    progress_bar = Bar("Processing", max=802)
+
     for pokemon in data["results"]:
-        print(pokemon["name"])
         save_pokemon(pokemon["name"])
+        progress_bar.next()
+    progress_bar.finish()
 
 
-def get_pokemon(poke_name):
+def get_pokemon_from_api(poke_name):
     response = requests.get(f"{POKE_API_URL}{poke_name}")
     data = response.json()
     return {
@@ -38,7 +42,7 @@ def save_pokemon(poke_name):
     if pokemon:  # if it does, return it
         return pokemon
 
-    data = get_pokemon(poke_name)  # otherwise, request this new pokemon
+    data = get_pokemon_from_api(poke_name)  # otherwise, request this new pokemon
 
     # save and return new pokemon:
     return Pokemon.objects.create(
@@ -59,7 +63,7 @@ def pokemon_sum_valid(pokemon_names):
             poke_sum += pokemon.attack + pokemon.defense + pokemon.hp
             continue
 
-        pokemon = get_pokemon(poke_name)
+        pokemon = get_pokemon_from_api(poke_name)
         poke_sum += pokemon["attack"] + pokemon["defense"] + pokemon["hp"]
 
     return poke_sum <= 600
