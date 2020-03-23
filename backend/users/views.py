@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import LoginView, LogoutView
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -11,6 +12,11 @@ class SignUpView(generic.CreateView):
     form_class = SignUpForm
     success_url = reverse_lazy("home")
     template_name = "auth/signup.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         valid = super(SignUpView, self).form_valid(form)
