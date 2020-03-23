@@ -55,22 +55,15 @@ class CreateBattleForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        if (
-            self.cleaned_data.get("pokemon_1")
-            and self.cleaned_data.get("pokemon_2")
-            and self.cleaned_data.get("pokemon_3")
-        ):
-            is_pokemon_sum_valid = pokemon_sum_valid(
-                [
-                    self.cleaned_data["pokemon_1"],
-                    self.cleaned_data["pokemon_2"],
-                    self.cleaned_data["pokemon_3"],
-                ]
-            )
+        is_pokemon_sum_valid = pokemon_sum_valid(
+            [
+                self.cleaned_data["pokemon_1"],
+                self.cleaned_data["pokemon_2"],
+                self.cleaned_data["pokemon_3"],
+            ]
+        )
 
-            if not is_pokemon_sum_valid:
-                raise forms.ValidationError(
-                    "The sum of the Pokemon points can't be greater than 600."
-                )
+        if not is_pokemon_sum_valid:
+            raise forms.ValidationError("The sum of the Pokemon points can't be greater than 600.")
 
         return cleaned_data
