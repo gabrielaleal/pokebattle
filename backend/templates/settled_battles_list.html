@@ -10,7 +10,7 @@
         <div class="battle-list">
             {% if object_list.all %}
                 {% for battle in object_list %}
-                <a href="{% url 'battles:settled-battle-detail' battle.pk %}">
+                <a href="{% url 'battles:battle-detail' battle.pk %}">
                     <div class="list-item settled-battle-item">
                         <div>
                             <h6 class="styled-title">Battle #{{battle.id}}</h6>
