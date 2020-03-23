@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 import django_js_reverse.views
 
-from battles.views import PokemonAutocompleteView
+from pokemon.views import PokemonAutocompleteView
 from users.views import SignUpView, UserLoginView, UserLogoutView
 
 
