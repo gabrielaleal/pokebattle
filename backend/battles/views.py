@@ -82,7 +82,7 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
         return context
 
 
-class SettledBattleDetailView(LoginRequiredMixin, generic.DetailView):
+class BattleDetailView(LoginRequiredMixin, generic.DetailView):
     template_name = "battle_details.html"
     model = Battle
 
@@ -93,23 +93,26 @@ class SettledBattleDetailView(LoginRequiredMixin, generic.DetailView):
             .filter(creator=self.object.creator)
             .first()
         )
+
         opponent_team = (
             BattleTeam.objects.filter(battle=self.object.id)
             .filter(creator=self.object.opponent)
             .first()
         )
+
         context["creator_team"] = [
             creator_team.pokemon_1,
             creator_team.pokemon_2,
             creator_team.pokemon_3,
         ]
 
-        context["opponent_team"] = [
-            opponent_team.pokemon_1,
-            opponent_team.pokemon_2,
-            opponent_team.pokemon_3,
-        ]
+        if opponent_team:
+            context["opponent_team"] = [
+                opponent_team.pokemon_1,
+                opponent_team.pokemon_2,
+                opponent_team.pokemon_3,
+            ]
 
-        context["matches"] = zip([1, 2, 3], context["creator_team"], context["opponent_team"])
+            context["matches"] = zip([1, 2, 3], context["creator_team"], context["opponent_team"])
 
         return context
