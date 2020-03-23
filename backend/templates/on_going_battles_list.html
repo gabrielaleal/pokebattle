@@ -11,15 +11,17 @@
             <h4>Battles waiting for me</h4>
             {% if battles_im_invited.all %}
                 {% for battle in battles_im_invited %}
-                    <div class="list-item">
-                        <div>
-                            <h6 class="styled-title">Battle #{{battle.id}}</h6>
+                    <a href="{% url 'battles:battle-detail' battle.pk %}">
+                        <div class="list-item">
                             <div>
-                                <span class="list-attribute">{{battle.creator}}</span>  challenged you on {{battle.timestamp|date:"d/m/Y"}} at {{battle.timestamp|time:"H:i"}}. Fight back!
+                                <h6 class="styled-title">Battle #{{battle.id}}</h6>
+                                <div>
+                                    <span class="list-attribute">{{battle.creator}}</span>  challenged you on {{battle.timestamp|date:"d/m/Y"}} at {{battle.timestamp|time:"H:i"}}. Fight back!
+                                </div>
                             </div>
+                            <!-- <div class="pk-small-btn">Fight back!</div> -->
                         </div>
-                        <!-- <div class="pk-small-btn">Fight back!</div> -->
-                    </div>
+                    </a>
                 {% endfor %}
             {% else %}
                 <div>Ops, there's no battles yet!</div>
@@ -29,18 +31,20 @@
             <h4>Battles waiting for my opponent</h4>
             {% if battles_i_created.all %}
                 {% for battle in battles_i_created %}
-                    <div class="list-item">
-                        <div>
-                            <h6 class="styled-title">Battle #{{battle.id}}</h6>
+                    <a href="{% url 'battles:battle-detail' battle.pk %}">
+                        <div class="list-item">
                             <div>
-                                <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
+                                <h6 class="styled-title">Battle #{{battle.id}}</h6>
+                                <div>
+                                    <span class="list-attribute">Players</span> {{battle.creator}} X {{battle.opponent}}
+                                </div>
+                                <div>
+                                    <span class="list-attribute">Time</span> {{battle.timestamp}}
+                                </div>
                             </div>
-                            <div>
-                                <span class="list-attribute">Time</span> {{battle.timestamp}}
-                            </div>
+                            <!-- <div class="pk-small-btn">Fight back!</div> -->
                         </div>
-                        <!-- <div class="pk-small-btn">Fight back!</div> -->
-                    </div>
+                    </a>
                 {% endfor %}
             {% else %}
                 <div>Ops, there's no battles yet!</div>
