@@ -22,8 +22,9 @@ def get_pokemon_from_api(poke_name):
     response = requests.get(f"{POKE_API_URL}{poke_name}")
     data = response.json()
     return {
-        "name": data["name"],
         "poke_id": data["id"],
+        "name": data["name"],
+        "img_url": data["sprites"]["front_default"],
         "defense": data["stats"][3]["base_stat"],
         "attack": data["stats"][4]["base_stat"],
         "hp": data["stats"][5]["base_stat"],
@@ -47,6 +48,7 @@ def save_pokemon(poke_name):
     return Pokemon.objects.create(
         poke_id=data["poke_id"],
         name=data["name"],
+        img_url=data["img_url"],
         defense=data["defense"],
         attack=data["attack"],
         hp=data["hp"],
