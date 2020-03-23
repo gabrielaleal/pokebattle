@@ -2,7 +2,7 @@ from django import forms
 
 from dal import autocomplete
 
-from pokemon.helpers import pokemon_exists_in_api, pokemon_sum_valid
+from pokemon.helpers import pokemon_sum_valid
 from pokemon.models import Pokemon
 from users.models import User
 
@@ -54,12 +54,6 @@ class CreateBattleForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super().clean()
-
-        for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
-            response = pokemon_exists_in_api(self.cleaned_data[field])
-
-            if not response:  # in case the pokemon does not exist on the API
-                self.add_error(field, "Sorry, we couldn't find this Pokemon.")
 
         if (
             self.cleaned_data.get("pokemon_1")

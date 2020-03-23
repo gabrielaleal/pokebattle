@@ -58,11 +58,6 @@ def pokemon_sum_valid(pokemon_names):
     for poke_name in pokemon_names:
         pokemon = Pokemon.objects.filter(name=poke_name).first()
 
-        if pokemon:
-            poke_sum += pokemon.attack + pokemon.defense + pokemon.hp
-            continue
-
-        pokemon = get_pokemon_from_api(poke_name)
-        poke_sum += pokemon["attack"] + pokemon["defense"] + pokemon["hp"]
+        poke_sum += pokemon.attack + pokemon.defense + pokemon.hp
 
     return poke_sum <= 600
