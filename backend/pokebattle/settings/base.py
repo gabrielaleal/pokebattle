@@ -32,6 +32,8 @@ LOGIN_REDIRECT_URL = reverse_lazy("home")
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    "dal",
+    "dal_select2",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -45,7 +47,7 @@ INSTALLED_APPS = [
     "users",
     "battles",
     "pokemon",
-    "widget_tweaks"
+    "widget_tweaks",
 ]
 
 MIDDLEWARE = [

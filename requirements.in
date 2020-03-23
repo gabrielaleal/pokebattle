@@ -18,3 +18,4 @@ django-widget-tweaks
 requests
 pip-tools
 django-templated-email
+django-autocomplete-light
