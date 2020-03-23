@@ -5,10 +5,7 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from dal import autocomplete
-
 from pokemon.helpers import save_pokemon
-from pokemon.models import Pokemon
 
 from .forms import CreateBattleForm
 from .models import Battle, BattleTeam
@@ -85,13 +82,3 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
             .order_by("timestamp")
         )
         return context
-
-
-class PokemonAutocompleteView(LoginRequiredMixin, autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = Pokemon.objects.all()
-
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-
-        return qs
