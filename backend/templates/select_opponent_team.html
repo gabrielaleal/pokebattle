@@ -19,6 +19,12 @@
       </div>
     {% endfor %}
 
+    <!-- {% if battle.status == "SETTLED" %}
+      <a href="{% url 'battles:battle-detail' battle.pk }">
+        <div class="btns-container">Check results!</div>
+      </a>
+    {% endif %} -->
+
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
