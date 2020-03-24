@@ -9,7 +9,7 @@ from users.models import User
 from .models import Battle, BattleTeam
 
 
-class CreateBattleForm(forms.ModelForm):
+class AutocompletePokemonForm(forms.ModelForm):
     pokemon_1 = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
@@ -44,9 +44,11 @@ class CreateBattleForm(forms.ModelForm):
         required=True,
     )
 
+
+class CreateBattleForm(AutocompletePokemonForm):
     class Meta:
         model = Battle
-        fields = ["opponent"]
+        fields = ["opponent", "pokemon_1", "pokemon_2", "pokemon_3"]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -69,44 +71,10 @@ class CreateBattleForm(forms.ModelForm):
         return cleaned_data
 
 
-class SelectOpponentTeamForm(forms.ModelForm):
-    pokemon_1 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon-autocomplete",
-            attrs={  # noqa
-                "data-placeholder": "Autocomplete pokemon",
-                "data-minimum-input-length": 3,
-            },
-        ),
-        required=True,
-    )
-    pokemon_2 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon-autocomplete",
-            attrs={  # noqa
-                "data-placeholder": "Autocomplete pokemon",
-                "data-minimum-input-length": 3,
-            },
-        ),
-        required=True,
-    )
-    pokemon_3 = forms.ModelChoiceField(
-        queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(
-            url="pokemon-autocomplete",
-            attrs={  # noqa
-                "data-placeholder": "Autocomplete pokemon",
-                "data-minimum-input-length": 3,
-            },
-        ),
-        required=True,
-    )
-
+class SelectOpponentTeamForm(AutocompletePokemonForm):
     class Meta:
         model = BattleTeam
-        exclude = ["battle", "creator"]  # noqa
+        fields = ["pokemon_1", "pokemon_2", "pokemon_3"]
 
     def clean(self):
         cleaned_data = super().clean()
