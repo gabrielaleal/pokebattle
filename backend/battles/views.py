@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
@@ -52,10 +53,20 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 
 
 class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
-    # make sure only the opponent can access this page
     template_name = "select_opponent_team.html"
     model = BattleTeam
     form_class = SelectOpponentTeamForm
+
+    def dispatch(self, request, *args, **kwargs):
+        battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
+        if request.user != battle.opponent or battle.status == "SETTLED":
+            return HttpResponseRedirect(reverse_lazy("home"))
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["battle"] = Battle.objects.filter(pk=self.kwargs["pk"])
+        return context
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -73,8 +84,7 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
             f"<div>Round 3: <b>{form.instance.pokemon_3.name}</b> - Attack: \
             {form.instance.pokemon_3.attack} | Defense: {form.instance.pokemon_3.defense} \
             | HP: {form.instance.pokemon_3.hp}</div>"
-            f"<div style='margin-top: 10px;'>This battle is SETTLED! \
-                Go to the battle page to see the result!</div>"
+            f"<div style='margin-top: 10px;'>Now this battle is SETTLED!</div>"
         )
         messages.success(self.request, success_message)
 
@@ -82,7 +92,7 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
 
     def get_success_url(self):
         run_battle_and_send_result_email(self.object)
-        return reverse_lazy("battles:battle-detail", args=(self.kwargs["pk"],))
+        return reverse_lazy("battles:select-team", args=(self.kwargs["pk"],))
 
 
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
