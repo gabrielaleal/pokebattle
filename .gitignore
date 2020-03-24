@@ -7,6 +7,7 @@ local.py
 /mediafiles/*
 __pycache__/
 /.vscode/
+celerybeat-schedule.db
 
 # coverage result
 .coverage
