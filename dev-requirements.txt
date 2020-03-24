@@ -25,7 +25,7 @@ dparse==0.5.0             # via safety
 filelock==3.0.12          # via virtualenv
 gitdb==4.0.2              # via gitpython
 gitpython==3.1.0          # via bandit
-identify==1.4.12          # via pre-commit
+identify==1.4.13          # via pre-commit
 idna==2.9                 # via requests
 ipdb==0.13.2              # via -r dev-requirements.in
 ipython-genutils==0.2.0   # via traitlets
