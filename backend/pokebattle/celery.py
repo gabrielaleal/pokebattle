@@ -1,5 +1,4 @@
 # coding: utf-8
-
 from __future__ import absolute_import
 
 import os
@@ -8,7 +7,7 @@ from django.apps import apps
 
 from celery import Celery  # noqa
 
-from .celerybeat_schedule import CELERYBEAT_SCHEDULE  # noqa
+from .celerybeat_schedule import CELERYBEAT_SCHEDULE
 
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "pokebattle.settings.local")

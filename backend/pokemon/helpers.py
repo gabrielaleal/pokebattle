@@ -1,21 +1,18 @@
 import requests
-from progress.bar import ChargingBar
 
+from .constants import POKE_API_URL
 from .models import Pokemon
 
 
-POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
+# def get_all_pokemon_from_api():
+#     response = requests.get(f"{POKE_API_URL}/?limit=802")
+#     data = response.json()
 
-
-def get_all_pokemon_from_api():
-    response = requests.get(f"{POKE_API_URL}/?limit=802")
-    data = response.json()
-
-    progress_bar = ChargingBar("Processing", max=802)
-    for pokemon in data["results"]:
-        save_pokemon(pokemon["name"])
-        progress_bar.next()
-    progress_bar.finish()
+#     progress_bar = ChargingBar("Processing", max=802)
+#     for pokemon in data["results"]:
+#         save_pokemon(pokemon["name"])
+#         progress_bar.next()
+#     progress_bar.finish()
 
 
 def get_pokemon_from_api(poke_name):
