@@ -18,6 +18,13 @@
         <span>{{battle.creator.email}}</span> challenged <span>{{battle.opponent.email}}</span> on this battle!
       </div>
     </div>
+    {% if user == battle.opponent and battle.winner is None %}
+    <div class="battle-team-container">
+      <a href="{% url 'battles:select-team' battle.pk %}">
+        <div class="pk-btn">Fight back!</div>
+      </a>
+    </div>
+    {% endif %}
     {% if battle.winner is not None %}
     <div class="battle-info-container">
       <h5 class="styled-title">Winner</h5>
