@@ -8,7 +8,6 @@ local.py
 __pycache__/
 /.vscode/
 celerybeat-schedule.db
-
 # coverage result
 .coverage
 /coverage/
