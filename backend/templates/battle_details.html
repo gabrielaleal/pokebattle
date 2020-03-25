@@ -65,10 +65,34 @@
     </div>
     <div class="battle-info-container">
       <h5 class="styled-title">Matches</h5>
-      {% for i, c_pokemon, o_pokemon in matches %}
-      <div>
-        <h6 class="styled-title">Round #{{i}}</h6>
-        <div class="round-info">{{c_pokemon}} X {{o_pokemon}}</div>
+      {% for i, c_pokemon, o_pokemon, winner in matches %}
+      <div class="match">
+        <h6 class="styled-title">Round #{{i}}: {{c_pokemon.name}} VS {{o_pokemon.name}}</h6>
+        <div class="round-info-table">
+          <div class="column">
+            <div>Pokemon</div>
+            <div>{{c_pokemon.name}}</div>
+            <div>{{o_pokemon.name}}</div>
+          </div>
+          <div class="column">
+            <div>Attack Points</div>
+            <div>{{c_pokemon.attack}}</div>
+            <div>{{o_pokemon.attack}}</div>
+          </div>
+          <div class="column">
+            <div>Defense Points</div>
+            <div>{{c_pokemon.defense}}</div>
+            <div>{{o_pokemon.defense}}</div>
+          </div>
+          <div class="column">
+            <div>Hit Points</div>
+            <div>{{c_pokemon.hp}}</div>
+            <div>{{o_pokemon.hp}}</div>
+          </div>
+        </div>
+        <div class="round-info">
+          Round winner: <span>{{winner}}</span>!
+        </div>
       </div>
       {% endfor %}
     </div>
