@@ -63,6 +63,12 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
             return HttpResponseRedirect(reverse_lazy("home"))
         return super().dispatch(request, *args, **kwargs)
 
+    def get_initial(self):
+        super(SelectOpponentTeamView, self).get_initial()
+        battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
+        self.initial = {"battle": battle}
+        return self.initial
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["battle"] = Battle.objects.filter(pk=self.kwargs["pk"]).first()
