@@ -6,6 +6,8 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
+from pokemon.helpers import sort_pokemon_in_correct_position
+
 from .forms import CreateBattleForm, SelectOpponentTeamForm
 from .models import Battle, BattleTeam
 from .utils.battle import get_round_winner, run_battle_and_send_result_email
@@ -22,14 +24,10 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         form.instance.creator = self.request.user
         form.instance.status = "ONGOING"
         form.instance.save()
-        pokemon = {}
 
-        for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
-            pokemon[field] = form.cleaned_data[field]
+        pokemon = sort_pokemon_in_correct_position(form.cleaned_data)
 
-        BattleTeam.objects.create(
-            creator=self.request.user, battle=form.instance, **pokemon
-        )  # TODO: revisit this later
+        BattleTeam.objects.create(creator=self.request.user, battle=form.instance, **pokemon)
 
         success_message = format_html(
             f"<h5>Your battle against <b>{form.instance.opponent}</b> was created!</h5>"
@@ -78,6 +76,13 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.creator = self.request.user
         form.instance.battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
+
+        pokemon = sort_pokemon_in_correct_position(form.cleaned_data)
+
+        form.instance.pokemon_1 = pokemon["pokemon_1"]
+        form.instance.pokemon_2 = pokemon["pokemon_2"]
+        form.instance.pokemon_3 = pokemon["pokemon_3"]
+
         form.instance.save()
 
         return super().form_valid(form)
