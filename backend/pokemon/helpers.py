@@ -80,3 +80,9 @@ def sort_pokemon_in_correct_position(data):
         key = "pokemon_" + str(data[field + "_position"])
         pokemon[key] = data[field]
     return pokemon
+
+
+def repeated_pokemons_positions(pos_a, pos_b, pos_c):
+    if pos_a == pos_b or pos_b == pos_c or pos_a == pos_c:
+        return True
+    return False
