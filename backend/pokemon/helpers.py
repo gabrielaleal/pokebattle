@@ -63,3 +63,11 @@ def pokemon_sum_valid(pokemon_names):
         poke_sum += pokemon.attack + pokemon.defense + pokemon.hp
 
     return poke_sum <= 600
+
+
+def repeated_pokemon_in_teams(opponent_pokemon, battle):
+    creator_team = battle.creator.teams.filter(battle=battle.id).first()
+    creator_pokemon = [creator_team.pokemon_1, creator_team.pokemon_2, creator_team.pokemon_3]
+    if set(creator_pokemon) & set(opponent_pokemon):
+        return True
+    return False
