@@ -8,7 +8,7 @@ from django.views import generic
 
 from .forms import CreateBattleForm, SelectOpponentTeamForm
 from .models import Battle, BattleTeam
-from .utils.battle import run_battle_and_send_result_email
+from .utils.battle import get_round_winner, run_battle_and_send_result_email
 
 
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
@@ -134,13 +134,13 @@ class BattleDetailView(LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         creator_team = (
-            BattleTeam.objects.filter(battle=self.object.id)
+            BattleTeam.objects.filter(battle=self.object)
             .filter(creator=self.object.creator)
             .first()
         )
 
         opponent_team = (
-            BattleTeam.objects.filter(battle=self.object.id)
+            BattleTeam.objects.filter(battle=self.object)
             .filter(creator=self.object.opponent)
             .first()
         )
@@ -158,6 +158,14 @@ class BattleDetailView(LoginRequiredMixin, generic.DetailView):
                 opponent_team.pokemon_3,
             ]
 
-            context["matches"] = zip([1, 2, 3], context["creator_team"], context["opponent_team"])
+            winners = []
 
+            for creator_pokemon, opponent_pokemon in zip(
+                context["creator_team"], context["opponent_team"]
+            ):
+                winners.append(get_round_winner(creator_pokemon, opponent_pokemon))
+
+            context["matches"] = zip(
+                [1, 2, 3], context["creator_team"], context["opponent_team"], winners
+            )
         return context
