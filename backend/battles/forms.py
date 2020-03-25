@@ -2,15 +2,26 @@ from django import forms
 
 from dal import autocomplete
 
-from pokemon.helpers import pokemon_sum_valid, repeated_pokemon_in_teams
+from pokemon.helpers import (
+    pokemon_sum_valid,
+    repeated_pokemon_in_teams,
+    repeated_pokemons_positions,
+)
 from pokemon.models import Pokemon
 from users.models import User
 
 from .models import Battle, BattleTeam
 
 
+POSITION_CHOICES = [(1, 1), (2, 2), (3, 3)]
+
+
 class AutocompletePokemonForm(forms.ModelForm):
+    pokemon_1_position = forms.ChoiceField(choices=POSITION_CHOICES, label="Pokemon position")
+    pokemon_2_position = forms.ChoiceField(choices=POSITION_CHOICES, label="Pokemon position")
+    pokemon_3_position = forms.ChoiceField(choices=POSITION_CHOICES, label="Pokemon position")
     pokemon_1 = forms.ModelChoiceField(
+        label="Pokemon",
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
             url="pokemon-autocomplete",
@@ -22,6 +33,7 @@ class AutocompletePokemonForm(forms.ModelForm):
         required=True,
     )
     pokemon_2 = forms.ModelChoiceField(
+        label="Pokemon",
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
             url="pokemon-autocomplete",
@@ -33,6 +45,7 @@ class AutocompletePokemonForm(forms.ModelForm):
         required=True,
     )
     pokemon_3 = forms.ModelChoiceField(
+        label="Pokemon",
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
             url="pokemon-autocomplete",
@@ -44,18 +57,15 @@ class AutocompletePokemonForm(forms.ModelForm):
         required=True,
     )
 
-
-class CreateBattleForm(AutocompletePokemonForm):
-    class Meta:
-        model = Battle
-        fields = ["opponent", "pokemon_1", "pokemon_2", "pokemon_3"]
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields["opponent"].queryset = User.objects.exclude(id=self.initial["creator_id"])
-
     def clean(self):
         cleaned_data = super().clean()
+
+        if repeated_pokemons_positions(
+            self.cleaned_data["pokemon_1_position"],
+            self.cleaned_data["pokemon_2_position"],
+            self.cleaned_data["pokemon_3_position"],
+        ):
+            raise forms.ValidationError("Each Pokemon must have a unique position.")
 
         is_pokemon_sum_valid = pokemon_sum_valid(
             [
@@ -71,10 +81,35 @@ class CreateBattleForm(AutocompletePokemonForm):
         return cleaned_data
 
 
+class CreateBattleForm(AutocompletePokemonForm):
+    class Meta:
+        model = Battle
+        fields = [
+            "opponent",
+            "pokemon_1",
+            "pokemon_1_position",
+            "pokemon_2",
+            "pokemon_2_position",
+            "pokemon_3",
+            "pokemon_3_position",
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["opponent"].queryset = User.objects.exclude(id=self.initial["creator_id"])
+
+
 class SelectOpponentTeamForm(AutocompletePokemonForm):
     class Meta:
         model = BattleTeam
-        fields = ["pokemon_1", "pokemon_2", "pokemon_3"]
+        fields = [
+            "pokemon_1",
+            "pokemon_1_position",
+            "pokemon_2",
+            "pokemon_2_position",
+            "pokemon_3",
+            "pokemon_3_position",
+        ]
 
     def clean(self):
         cleaned_data = super().clean()
@@ -86,8 +121,5 @@ class SelectOpponentTeamForm(AutocompletePokemonForm):
 
         if repeated_pokemon_in_teams(pokemon, self.initial["battle"]):
             raise forms.ValidationError("You chose a Pokemon from your opponent's team. Try again.")
-
-        if not pokemon_sum_valid(pokemon):
-            raise forms.ValidationError("The sum of the Pokemon points can't be greater than 600.")
 
         return cleaned_data
