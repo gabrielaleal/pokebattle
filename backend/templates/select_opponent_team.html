@@ -6,7 +6,7 @@
 
 {% block body %}
 <div class='pk-container create-battle'>
-  {% include "includes/title.html" with title="Select Battle Team" %}
+  {% include "includes/title.html" with title=page_title %}
   {% if form.errors %}
     {% for error in form.non_field_errors %}
       <p class="error">{{error}}</p>
@@ -18,13 +18,6 @@
         {{message}}
       </div>
     {% endfor %}
-
-    <!-- {% if battle.status == "SETTLED" %}
-      <a href="{% url 'battles:battle-detail' battle.pk }">
-        <div class="btns-container">Check results!</div>
-      </a>
-    {% endif %} -->
-
     <form method="post">
       {% csrf_token %}
       {% for field in form %}
