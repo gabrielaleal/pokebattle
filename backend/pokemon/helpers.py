@@ -71,3 +71,12 @@ def repeated_pokemon_in_teams(opponent_pokemon, battle):
     if set(creator_pokemon) & set(opponent_pokemon):
         return True
     return False
+
+
+def sort_pokemon_in_correct_position(data):
+    pokemon = dict()
+
+    for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
+        key = "pokemon_" + str(data[field + "_position"])
+        pokemon[key] = data[field]
+    return pokemon
