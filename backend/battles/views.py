@@ -120,9 +120,7 @@ class BattleDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        creator_team = get_object_or_404(
-            BattleTeam, creator=self.object.creator, battle=self.object
-        )
+        creator_team = BattleTeam.objects.get(creator=self.object.creator, battle=self.object)
 
         opponent_team = BattleTeam.objects.filter(
             battle=self.object, creator=self.object.opponent
