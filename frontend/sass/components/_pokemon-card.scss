@@ -1,0 +1,49 @@
+.card {
+    position: relative;
+    text-align: center;
+    border: 1px solid $pk-dark-grey;
+    width: 350px;
+    display: flex;
+    align-content: center;
+    box-shadow: 10px 7px 5px -6px rgba(204,204,204,1);
+
+    .title {
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        background-color: $pk-dark-red;
+        color: #fff;
+
+        div:nth-child(2) {
+            span {
+                font-size: 10px;
+            }
+        }
+    }
+
+    .pokemon-icon {
+        border-bottom: 1px solid #000;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pokemon-info {
+        display: block;
+        padding: 15px 0;
+        font-size: 14px;
+
+        div > span {
+            font-weight: bold;
+        }
+    }
+}
+
+.winner {
+    position: absolute;
+    z-index: 1;
+    transform: rotate(20deg);
+    right: -30px;
+    top: -45px;
+}
