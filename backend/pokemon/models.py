@@ -11,6 +11,7 @@ class Pokemon(models.Model):
 
     class Meta:
         verbose_name_plural = "Pokemon"
+        ordering = ("poke_id",)
 
     def __str__(self):
         return self.name

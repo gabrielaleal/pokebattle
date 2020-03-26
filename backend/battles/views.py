@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
-from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
@@ -18,7 +18,6 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     template_name = "create_battle.html"
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
-    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -55,27 +54,25 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
     model = BattleTeam
     form_class = SelectOpponentTeamForm
 
-    def dispatch(self, request, *args, **kwargs):
-        battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
-        if request.user != battle.opponent or battle.status == "SETTLED":
-            return HttpResponseRedirect(reverse_lazy("home"))
-        return super().dispatch(request, *args, **kwargs)
+    def get_battle(self):
+        return get_object_or_404(
+            Battle, opponent=self.request.user, status="ONGOING", pk=self.kwargs["pk"]
+        )
 
     def get_initial(self):
         super(SelectOpponentTeamView, self).get_initial()
-        battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
-        self.initial = {"battle": battle}
+        self.initial = {"battle": self.get_battle()}
         return self.initial
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["battle"] = Battle.objects.filter(pk=self.kwargs["pk"]).first()
+        context["battle"] = self.get_battle()
         context["page_title"] = f"Select Battle #{context['battle'].id} Team"
         return context
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
-        form.instance.battle = Battle.objects.filter(pk=self.kwargs["pk"]).first()
+        form.instance.battle = self.get_battle()
 
         pokemon = sort_pokemon_in_correct_position(form.cleaned_data)
 
@@ -85,17 +82,17 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
 
         form.instance.save()
 
+        run_battle_and_send_result_email(form.instance)
+
         return super().form_valid(form)
 
     def get_success_url(self):
-        run_battle_and_send_result_email(self.object)
         return reverse_lazy("battles:battle-detail", args=(self.kwargs["pk"],))
 
 
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "settled_battles_list.html"
     model = Battle
-    login_url = reverse_lazy("login")
 
     def get_queryset(self):
         queryset = Battle.objects.filter(status="SETTLED").filter(
@@ -107,7 +104,6 @@ class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
 class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
-    login_url = reverse_lazy("login")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -130,17 +126,11 @@ class BattleDetailView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        creator_team = (
-            BattleTeam.objects.filter(battle=self.object)
-            .filter(creator=self.object.creator)
-            .first()
-        )
+        creator_team = BattleTeam.objects.get(creator=self.object.creator, battle=self.object)
 
-        opponent_team = (
-            BattleTeam.objects.filter(battle=self.object)
-            .filter(creator=self.object.opponent)
-            .first()
-        )
+        opponent_team = BattleTeam.objects.filter(
+            battle=self.object, creator=self.object.opponent
+        ).first()
 
         context["creator_team"] = [
             creator_team.pokemon_1,
