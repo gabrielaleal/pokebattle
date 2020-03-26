@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from .forms import CreateBattleForm
+from .forms import CreateBattleForm, SelectOpponentTeamForm
 from .models import Battle, BattleTeam
+from .utils.battle import get_round_winner, run_battle_and_send_result_email
 
 
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
@@ -14,7 +16,6 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     template_name = "create_battle.html"
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
-    login_url = reverse_lazy("login")
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
@@ -50,10 +51,43 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         return {"creator_id": self.request.user.id}
 
 
+class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
+    template_name = "select_opponent_team.html"
+    model = BattleTeam
+    form_class = SelectOpponentTeamForm
+
+    def get_battle(self):
+        return get_object_or_404(
+            Battle, opponent=self.request.user, status="ONGOING", pk=self.kwargs["pk"]
+        )
+
+    def get_initial(self):
+        super(SelectOpponentTeamView, self).get_initial()
+        self.initial = {"battle": self.get_battle()}
+        return self.initial
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["battle"] = self.get_battle()
+        context["page_title"] = f"Select Battle #{context['battle'].id} Team"
+        return context
+
+    def form_valid(self, form):
+        form.instance.creator = self.request.user
+        form.instance.battle = self.get_battle()
+        form.instance.save()
+
+        run_battle_and_send_result_email(form.instance)
+
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("battles:battle-detail", args=(self.kwargs["pk"],))
+
+
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "settled_battles_list.html"
     model = Battle
-    login_url = reverse_lazy("login")
 
     def get_queryset(self):
         queryset = Battle.objects.filter(status="SETTLED").filter(
@@ -65,7 +99,6 @@ class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
 class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = "on_going_battles_list.html"
     model = Battle
-    login_url = reverse_lazy("login")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -79,4 +112,42 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
             .filter(opponent=self.request.user)
             .order_by("timestamp")
         )
+        return context
+
+
+class BattleDetailView(LoginRequiredMixin, generic.DetailView):
+    template_name = "battle_details.html"
+    model = Battle
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        creator_team = BattleTeam.objects.get(creator=self.object.creator, battle=self.object)
+
+        opponent_team = BattleTeam.objects.filter(
+            battle=self.object, creator=self.object.opponent
+        ).first()
+
+        context["creator_team"] = [
+            creator_team.pokemon_1,
+            creator_team.pokemon_2,
+            creator_team.pokemon_3,
+        ]
+
+        if opponent_team:
+            context["opponent_team"] = [
+                opponent_team.pokemon_1,
+                opponent_team.pokemon_2,
+                opponent_team.pokemon_3,
+            ]
+
+            winners = []
+
+            for creator_pokemon, opponent_pokemon in zip(
+                context["creator_team"], context["opponent_team"]
+            ):
+                winners.append(get_round_winner(creator_pokemon, opponent_pokemon))
+
+            context["matches"] = zip(
+                [1, 2, 3], context["creator_team"], context["opponent_team"], winners
+            )
         return context
