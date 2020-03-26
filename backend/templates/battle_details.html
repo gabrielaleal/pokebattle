@@ -9,11 +9,11 @@
   <div class="content">
     <h4>Battle #{{battle.id}} Information</h4>
     <div class="battle-info-container">
-      <h5 class="styled-title">Status</h5>
-      <div class="subtitle styled-title">{{battle.status}}!</div>
+      <h5 class="pokemon-font">Status</h5>
+      <div class="subtitle pokemon-font">{{battle.status}}!</div>
     </div>
     <div class="battle-info-container">
-      <h5 class="styled-title">Players</h5>
+      <h5 class="pokemon-font">Players</h5>
       <div class="subtitle">
         <span>{{battle.creator.email}}</span> challenged <span>{{battle.opponent.email}}</span> on this battle!
       </div>
@@ -27,7 +27,7 @@
     {% endif %}
     {% if battle.winner is not None %}
     <div class="battle-info-container">
-      <h5 class="styled-title">Winner</h5>
+      <h5 class="pokemon-font">Winner</h5>
       <div class="subtitle">
         This battle's winner is <span>{{battle.winner}}</span>.
       </div>
@@ -38,7 +38,7 @@
   <div class="content">
     <h4>Battle #{{battle.id}} Details</h4>
     <div class="battle-info-container">
-      <h7 class="styled-title">{{battle.creator.email}}'s team</h7>
+      <h7 class="pokemon-font">{{battle.creator.email}}'s team</h7>
       <div class="battle-team-container">
         {% for pokemon in creator_team %}
         <div class="pokemon-info-container">
@@ -51,7 +51,7 @@
       </div>
     </div>
     <div class="battle-info-container">
-      <h7 class="styled-title">{{battle.opponent.email}}'s team</h7>
+      <h7 class="pokemon-font">{{battle.opponent.email}}'s team</h7>
       <div class="battle-team-container">
         {% for pokemon in opponent_team %}
         <div class="pokemon-info-container">
@@ -64,34 +64,14 @@
       </div>
     </div>
     <div class="battle-info-container">
-      <h5 class="styled-title">Matches</h5>
+      <h5 class="pokemon-font">Matches</h5>
       {% for i, c_pokemon, o_pokemon, winner in matches %}
       <div class="match">
-        <h6 class="styled-title">Round #{{i}}: {{c_pokemon.name}} VS {{o_pokemon.name}}</h6>
-        <div class="round-info-table">
-          <div class="column">
-            <div>Pokemon</div>
-            <div>{{c_pokemon.name}}</div>
-            <div>{{o_pokemon.name}}</div>
-          </div>
-          <div class="column">
-            <div>Attack Points</div>
-            <div>{{c_pokemon.attack}}</div>
-            <div>{{o_pokemon.attack}}</div>
-          </div>
-          <div class="column">
-            <div>Defense Points</div>
-            <div>{{c_pokemon.defense}}</div>
-            <div>{{o_pokemon.defense}}</div>
-          </div>
-          <div class="column">
-            <div>Hit Points</div>
-            <div>{{c_pokemon.hp}}</div>
-            <div>{{o_pokemon.hp}}</div>
-          </div>
-        </div>
-        <div class="round-info">
-          Round winner: <span>{{winner}}</span>!
+        <h6 class="pokemon-font">Round #{{i}}</h6>
+        <div class="round-info-container">
+          {% include 'includes/pokemon_card.html' with pokemon=c_pokemon winner=winner %}
+          <div class="vs pokemon-font">VS</div>
+          {% include "includes/pokemon_card.html" with pokemon=o_pokemon winner=winner %}
         </div>
       </div>
       {% endfor %}
