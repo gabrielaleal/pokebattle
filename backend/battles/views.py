@@ -77,10 +77,11 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
         form.instance.battle = self.get_battle()
         form.instance.save()
 
+        run_battle_and_send_result_email(form.instance)
+
         return super().form_valid(form)
 
     def get_success_url(self):
-        run_battle_and_send_result_email(self.object)
         return reverse_lazy("battles:battle-detail", args=(self.kwargs["pk"],))
 
 
