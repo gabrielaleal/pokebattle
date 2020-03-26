@@ -1,0 +1,74 @@
+.battle-detail {
+    .content {
+        display: flex;
+        align-items: flex-start!important;
+        height: fit-content!important;
+        margin: 20px 0;
+    }
+
+    .pokemon-font {
+        margin: 10px 0;
+    }
+
+    .subtitle {
+        font-size: 21px;
+        
+        span {
+            font-weight: bold;
+            color: $pk-blue;
+        }
+    }
+
+    .pokemon-name {
+        font-family: "PokemonGb";
+    }
+
+    .battle-info-container {
+        width: 100%;
+        margin: 20px 0;
+        background-color: $pk-light-grey;
+        padding: 15px;
+
+        div.match:last-child {
+            border-bottom: 0!important;
+        }
+
+    }
+
+    .match {
+        margin: 25px 0;
+        border-bottom: 1px solid #fff;
+    }
+    
+    .round-info-container {
+        display: flex;
+        justify-content: space-evenly;
+        align-content: center;
+        padding: 10px 0 15px 0;
+
+        .vs {
+            text-align: center;
+            font-weight: bold;
+            font-size: 22px;
+            display: flex;
+            align-items: center;
+        }
+    }
+
+    .battle-team-container {
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        align-content: center;
+    }
+
+    .pokemon-info-container {
+        display: block;
+        margin: 0 15px;
+
+        .pokemon-icon {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
