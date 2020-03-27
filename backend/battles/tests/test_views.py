@@ -78,3 +78,77 @@ class CreateBattleViewTest(TestCaseUtils):
         self.assertEqual(
             form.errors["__all__"], ["The sum of the Pokemon points can't be greater than 600."]
         )
+
+
+class SelectOpponentTeamViewTest(TestCaseUtils):
+    def setUp(self):
+        super().setUp()
+        self.creator = mommy.make("users.User")
+        self.opponent = mommy.make("users.User")
+
+    def test_if_not_matching_battle_pk_fails(self):
+        response = self.auth_client.post(self.reverse("battles:select-team", pk=1))
+        self.assertResponse404(response)
+
+    def test_if_not_matching_status_fails(self):
+        not_matching_battle = mommy.make(  # noqa
+            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="SETTLED"
+        )
+        self.auth_client.force_login(self.opponent)
+
+        response = self.auth_client.post(self.reverse("battles:select-team", pk=1))
+        self.assertResponse404(response)
+
+    def test_if_not_matching_opponent_fails(self):
+        not_matching_battle = mommy.make(  # noqa
+            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="ONGOING"
+        )
+
+        self.auth_client.force_login(self.creator)
+        response = self.auth_client.post(self.reverse("battles:select-team", pk=1))
+        self.assertResponse404(response)
+
+    def test_if_not_matching_opponent_and_status_fails(self):
+        not_matching_battle = mommy.make(  # noqa
+            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="SETTLED"
+        )
+
+        self.auth_client.force_login(self.creator)
+
+        response = self.auth_client.post(self.reverse("battles:select-team", pk=1))
+        self.assertResponse404(response)
+
+    def test_if_matching_opponent_and_status_success(self):
+        not_matching_battle = mommy.make(  # noqa
+            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="ONGOING"
+        )
+
+        opponent_pokemon_team = {}
+
+        for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
+            opponent_pokemon_team[field] = mommy.make(
+                "pokemon.Pokemon", attack=50, defense=50, hp=50
+            )
+
+        self.auth_client.force_login(self.opponent)
+        response = self.auth_client.post(
+            self.reverse("battles:select-team", pk=1),
+            opponent_pokemon_team,  # this is not being passed to the form and it's very weird
+        )
+        self.assertResponse200(response)
+
+    # def test_if_matching_battle_id_success(self):
+    #     # test for a battle that exists and matches que queryset (200)
+
+    # test if context["page_title"] returns what I expect it to
+
+    # test if the battle values change (its status and winner)
+    # after running run_battle_and_send_result_email
+
+    # test if client is redirected to the correct page
+
+    # check if opponent didn't choose a pokemon from the creator team
+
+    # check pokemon sum
+
+    # check if select team is being created successfully (is it needed?)
