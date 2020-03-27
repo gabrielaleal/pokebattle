@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="card pokemon-font">
+    {% if winner == pokemon %}
+    <div class="winner">
+        <img src="{% static 'img/icons/pixel-crown.png' %}" height="56px"></img>
+    </div>
+    {% endif %}
+    <div class="title">
+        <div>{{pokemon.name}}</div>
+        <div>
+            <span>HP</span>
+            {{pokemon.hp}}
+        </div>
+    </div>
+    <div class="pokemon-icon">
+      <img src="{{pokemon.img_url}}" height="96px"></img>
+    </div>
+    <div class="pokemon-info">
+      <div>
+        <span>ATTACK</span> {{pokemon.attack}}
+      </div>
+      <div>
+      <span>DEFENSE</span> {{pokemon.defense}}
+      </div>
+    </div>
+</div>
