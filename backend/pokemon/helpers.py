@@ -82,7 +82,10 @@ def sort_pokemon_in_correct_position(data):
     return pokemon
 
 
-def repeated_pokemons_positions(pos_a, pos_b, pos_c):
-    if pos_a == pos_b or pos_b == pos_c or pos_a == pos_c:
-        return True
-    return False
+def are_pokemon_positions_repeated(fields):
+    # filters only by positions
+    positions = [value for field, value in fields.items() if field.endswith("_position")]
+
+    # returns new set with duplicates removed
+    positions_set = set(positions)
+    return len(positions_set) != len(positions)
