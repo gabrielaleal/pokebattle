@@ -29,6 +29,7 @@ pyflakes:
 
 pylint:
   disable:
+    - too-many-instance-attributes
     - too-few-public-methods
     - invalid-name
     - no-self-use

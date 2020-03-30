@@ -82,9 +82,6 @@ class CreateBattleViewTest(TestCaseUtils):
 
 
 class SelectOpponentTeamViewTest(TestCaseUtils):
-    # pylint: disable=too-many-instance-attributes
-    # 7/8 is reasonable in this case.
-
     def setUp(self):
         super().setUp()
         self.view = SelectOpponentTeamView()
