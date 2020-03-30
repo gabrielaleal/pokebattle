@@ -3,9 +3,9 @@ from django import forms
 from dal import autocomplete
 
 from pokemon.helpers import (
+    are_pokemon_positions_repeated,
     pokemon_sum_valid,
     repeated_pokemon_in_teams,
-    repeated_pokemons_positions,
 )
 from pokemon.models import Pokemon
 from users.models import User
@@ -60,11 +60,7 @@ class AutocompletePokemonForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        if repeated_pokemons_positions(
-            self.cleaned_data["pokemon_1_position"],
-            self.cleaned_data["pokemon_2_position"],
-            self.cleaned_data["pokemon_3_position"],
-        ):
+        if are_pokemon_positions_repeated(self.cleaned_data):
             raise forms.ValidationError("Each Pokemon must have a unique position.")
 
         is_pokemon_sum_valid = pokemon_sum_valid(
