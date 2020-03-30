@@ -210,3 +210,42 @@ class SelectOpponentTeamViewTest(TestCaseUtils):
         battle = response.context_data["battle"]
         self.assertEqual(battle.status, "SETTLED")
         self.assertIsNotNone(battle.winner)
+
+
+class SettledBattlesListViewTest(TestCaseUtils):
+    def setUp(self):
+        super().setUp()
+        self.creator = mommy.make("users.User")
+        self.opponent = mommy.make("users.User")
+        self.random_user = mommy.make("users.User")
+        self.battle_1 = mommy.make(
+            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=1
+        )
+        self.battle_2 = mommy.make(
+            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=2
+        )
+        self.battle_3 = mommy.make(
+            "battles.Battle", creator=self.creator, opponent=self.opponent, status="ON_GOING", pk=3
+        )
+        self.battle_4 = mommy.make(
+            "battles.Battle",
+            creator=self.creator,
+            opponent=self.random_user,
+            status="SETTLED",
+            pk=4,
+        )
+
+    def test_matching_queryset_success(self):
+        # queryset = Battle.objects.filter(status="SETTLED").filter(
+        #     Q(creator=self.request.user) | Q(opponent=self.request.user)
+        # )
+        self.auth_client.force_login(self.creator)
+
+        response = self.auth_client.get(self.reverse("battles:settled-battles-list"))
+        self.assertResponse200(response)
+        self.assertEqual(
+            set([self.battle_1, self.battle_2, self.battle_4]),
+            set(response.context_data["battle_list"]),
+        )
+
+    # def test_if_not_matching_queryset_fails(self):
