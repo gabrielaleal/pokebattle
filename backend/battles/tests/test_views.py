@@ -3,7 +3,6 @@ from django.contrib.messages import get_messages
 from model_mommy import mommy
 
 from battles.models import Battle, BattleTeam
-from battles.views import SelectOpponentTeamView
 from common.utils.tests import TestCaseUtils
 
 
@@ -84,22 +83,29 @@ class CreateBattleViewTest(TestCaseUtils):
 class SelectOpponentTeamViewTest(TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.view = SelectOpponentTeamView()
         self.creator = mommy.make("users.User")
         self.opponent = mommy.make("users.User")
+
         self.matching_battle = mommy.make(  # noqa
             "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="ONGOING"
         )
-        self.o_pokemon_1, self.o_pokemon_2, self.o_pokemon_3 = (
+
+        self.opponent_pokemon_1, self.opponent_pokemon_2, self.opponent_pokemon_3 = (
             mommy.make("pokemon.Pokemon", name="pikachu", attack=60, defense=45, hp=50),
             mommy.make("pokemon.Pokemon", name="bulbasaur", attack=60, defense=45, hp=50),
             mommy.make("pokemon.Pokemon", name="charizard", attack=60, defense=45, hp=50),
         )
         self.opponent_pokemon_team = {
-            "pokemon_1": self.o_pokemon_1.id,
-            "pokemon_2": self.o_pokemon_2.id,
-            "pokemon_3": self.o_pokemon_3.id,
+            "pokemon_1": self.opponent_pokemon_1.id,
+            "pokemon_2": self.opponent_pokemon_2.id,
+            "pokemon_3": self.opponent_pokemon_3.id,
         }
+
+        self.creator_pokemon_1, self.creator_pokemon_2, self.creator_pokemon_3 = (
+            mommy.make("pokemon.Pokemon", name="ivysaur", attack=60, defense=45, hp=50),
+            mommy.make("pokemon.Pokemon", name="pikipek", attack=60, defense=45, hp=50),
+            mommy.make("pokemon.Pokemon", name="roselia", attack=60, defense=45, hp=50),
+        )
 
     def test_if_not_matching_battle_pk_fails(self):
         response = self.auth_client.post(self.reverse("battles:select-team", pk=1))
@@ -142,19 +148,13 @@ class SelectOpponentTeamViewTest(TestCaseUtils):
         self.assertResponse404(response)
 
     def test_if_matching_opponent_and_status_success(self):
-        pokemon_1, pokemon_2, pokemon_3 = (
-            mommy.make("pokemon.Pokemon", name="ivysaur", attack=60, defense=45, hp=50),
-            mommy.make("pokemon.Pokemon", name="pikipek", attack=60, defense=45, hp=50),
-            mommy.make("pokemon.Pokemon", name="roselia", attack=60, defense=45, hp=50),
-        )
-
         creator_pokemon_team = mommy.make(  # noqa
             "battles.BattleTeam",
             creator=self.creator,
             battle=self.matching_battle,
-            pokemon_1=pokemon_1,
-            pokemon_2=pokemon_2,
-            pokemon_3=pokemon_3,
+            pokemon_1=self.creator_pokemon_1,
+            pokemon_2=self.creator_pokemon_2,
+            pokemon_3=self.creator_pokemon_3,
         )
 
         self.auth_client.force_login(self.opponent)
@@ -168,19 +168,13 @@ class SelectOpponentTeamViewTest(TestCaseUtils):
 
     def test_if_opponent_team_has_pokemon_from_creator_team(self):
         # check if opponent didn't choose a pokemon from the creator team
-        pokemon_1, pokemon_2, pokemon_3 = (
-            self.o_pokemon_1,
-            mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=50),
-            mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=51),
-        )
-
         creator_pokemon_team = mommy.make(  # noqa
             "battles.BattleTeam",
             creator=self.creator,
             battle=self.matching_battle,
-            pokemon_1=pokemon_1,
-            pokemon_2=pokemon_2,
-            pokemon_3=pokemon_3,
+            pokemon_1=self.opponent_pokemon_1,
+            pokemon_2=self.creator_pokemon_2,
+            pokemon_3=self.creator_pokemon_3,
         )
 
         self.auth_client.force_login(self.opponent)
@@ -196,7 +190,23 @@ class SelectOpponentTeamViewTest(TestCaseUtils):
             form.errors["__all__"], ["You chose a Pokemon from your opponent's team. Try again."]
         )
 
-    # test if the battle values change (its status and winner)
-    # after running run_battle_and_send_result_email
+    def test_if_battle_values_change(self):
+        # test if the battle values change (its status and winner)
+        # after running run_battle_and_send_result_email
+        self.creator_pokemon_team = mommy.make(  # noqa
+            "battles.BattleTeam",
+            creator=self.creator,
+            battle=self.matching_battle,
+            pokemon_1=self.creator_pokemon_1,
+            pokemon_2=self.creator_pokemon_2,
+            pokemon_3=self.creator_pokemon_3,
+        )
 
-    # check pokemon sum
+        self.auth_client.force_login(self.opponent)
+        response = self.auth_client.post(
+            self.reverse("battles:select-team", pk=1), self.opponent_pokemon_team, follow=True
+        )
+
+        battle = response.context_data["battle"]
+        self.assertEqual(battle.status, "SETTLED")
+        self.assertIsNotNone(battle.winner)
