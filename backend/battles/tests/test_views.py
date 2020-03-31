@@ -8,10 +8,10 @@ from common.utils.tests import TestCaseUtils
 from .mixins import CreatorAndOpponentMixin, MakePokemonMixin
 
 
-class CreateBattleViewTest(MakePokemonMixin, TestCaseUtils):
+class CreateBattleViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.opponent = mommy.make("users.User", email="opponent@email.com")
+        self.creator, self.opponent = self._make_creator_and_opponent()
 
     def test_create_battle_successfully(self):
         pokemon_1, pokemon_2, pokemon_3 = self._make_pokemon()
@@ -20,6 +20,9 @@ class CreateBattleViewTest(MakePokemonMixin, TestCaseUtils):
             "pokemon_1": pokemon_1.id,
             "pokemon_2": pokemon_2.id,
             "pokemon_3": pokemon_3.id,
+            "pokemon_1_position": 1,
+            "pokemon_2_position": 2,
+            "pokemon_3_position": 3,
         }
 
         response = self.auth_client.post(self.reverse("battles:create-battle"), battle_data)
@@ -65,6 +68,9 @@ class CreateBattleViewTest(MakePokemonMixin, TestCaseUtils):
             "pokemon_1": pokemon_1.id,
             "pokemon_2": pokemon_2.id,
             "pokemon_3": pokemon_3.id,
+            "pokemon_1_position": 1,
+            "pokemon_2_position": 2,
+            "pokemon_3_position": 3,
         }
 
         response = self.auth_client.post(self.reverse("battles:create-battle"), battle_data)
@@ -76,6 +82,26 @@ class CreateBattleViewTest(MakePokemonMixin, TestCaseUtils):
         self.assertEqual(
             form.errors["__all__"], ["The sum of the Pokemon points can't be greater than 600."]
         )
+
+    def test_if_pokemon_position_is_correct(self):
+        pokemon_1, pokemon_2, pokemon_3 = self._make_pokemon()
+        battle_data = {
+            "opponent": self.opponent.id,
+            "pokemon_1": pokemon_1.id,
+            "pokemon_2": pokemon_2.id,
+            "pokemon_3": pokemon_3.id,
+            "pokemon_1_position": 3,
+            "pokemon_2_position": 1,
+            "pokemon_3_position": 2,
+        }
+
+        self.auth_client.force_login(self.creator)
+        self.auth_client.post(self.reverse("battles:create-battle"), battle_data, follow=True)
+
+        battle_team = BattleTeam.objects.filter(creator=self.creator).first()
+        self.assertEqual(battle_team.pokemon_1, pokemon_2)
+        self.assertEqual(battle_team.pokemon_2, pokemon_3)
+        self.assertEqual(battle_team.pokemon_3, pokemon_1)
 
 
 class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
@@ -96,6 +122,9 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
             "pokemon_1": self.opponent_pokemon_1.id,
             "pokemon_2": self.opponent_pokemon_2.id,
             "pokemon_3": self.opponent_pokemon_3.id,
+            "pokemon_1_position": 1,
+            "pokemon_2_position": 2,
+            "pokemon_3_position": 3,
         }
 
         (
@@ -203,7 +232,6 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
         response = self.auth_client.post(
             self.reverse("battles:select-team", pk=1), self.opponent_pokemon_team, follow=True
         )
-
         battle = response.context_data["battle"]
         self.assertEqual(battle.status, "SETTLED")
         self.assertIsNotNone(battle.winner)
