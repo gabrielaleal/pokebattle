@@ -71,3 +71,21 @@ def repeated_pokemon_in_teams(opponent_pokemon, battle):
     if set(creator_pokemon) & set(opponent_pokemon):
         return True
     return False
+
+
+def sort_pokemon_in_correct_position(data):
+    pokemon = dict()
+
+    for field in ["pokemon_1", "pokemon_2", "pokemon_3"]:
+        key = "pokemon_" + str(data[field + "_position"])
+        pokemon[key] = data[field]
+    return pokemon
+
+
+def are_pokemon_positions_repeated(fields):
+    # filters only by positions
+    positions = [value for field, value in fields.items() if field.endswith("_position")]
+
+    # returns new set with duplicates removed
+    positions_set = set(positions)
+    return len(positions_set) != len(positions)
