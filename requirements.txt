@@ -44,7 +44,7 @@ pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pip-tools==4.5.1          # via -r requirements.in
 progress==1.5             # via -r requirements.in
-prompt-toolkit==3.0.4     # via ipython
+prompt-toolkit==3.0.5     # via ipython
 psutil==5.7.0             # via -r requirements.in
 psycopg2==2.8.4           # via -r requirements.in
 ptyprocess==0.6.0         # via pexpect
