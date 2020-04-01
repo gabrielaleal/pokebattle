@@ -23,6 +23,9 @@
       {% endfor %}
       <div class="btn-container">
         <button class="pk-btn" type="submit">Login</button>
+        <a href="{% url 'social:begin' 'google-oauth2' %}">
+          <div class="pk-btn">Login with Google</div>
+        </a>
       </div>
   </form>
   </div>
