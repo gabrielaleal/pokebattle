@@ -12,3 +12,4 @@ ipdb
 ipython
 progress
 mock
+requests-mock
