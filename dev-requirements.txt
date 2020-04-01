@@ -19,7 +19,7 @@ coverage==5.0.4           # via -r dev-requirements.in
 decorator==4.4.2          # via ipython, traitlets
 distlib==0.3.0            # via virtualenv
 django-naomi==0.8         # via -r dev-requirements.in
-django==2.2.11            # via -r dev-requirements.in, django-naomi, model-mommy
+django==2.2.12            # via -r dev-requirements.in, django-naomi, model-mommy
 dodgy==0.2.1              # via prospector
 dparse==0.5.0             # via safety
 filelock==3.0.12          # via virtualenv
@@ -46,7 +46,7 @@ pickleshare==0.7.5        # via ipython
 pipenv==2018.11.26        # via dparse
 pre-commit==2.2.0         # via -r dev-requirements.in
 progress==1.5             # via -r dev-requirements.in
-prompt-toolkit==3.0.4     # via ipython
+prompt-toolkit==3.0.5     # via ipython
 prospector[with-vulture]==1.2.0  # via -r dev-requirements.in
 ptyprocess==0.6.0         # via pexpect
 pycodestyle==2.4.0        # via prospector
@@ -75,8 +75,8 @@ toml==0.10.0              # via black, dparse, pre-commit
 traitlets==4.3.3          # via ipython
 typed-ast==1.4.1          # via black
 urllib3==1.25.8           # via requests
-virtualenv-clone==0.5.3   # via pipenv
-virtualenv==20.0.13       # via pipenv, pre-commit
+virtualenv-clone==0.5.4   # via pipenv
+virtualenv==20.0.15       # via pipenv, pre-commit
 wcwidth==0.1.9            # via prompt-toolkit
 wrapt==1.11.2             # via astroid
 
