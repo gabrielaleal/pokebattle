@@ -18,6 +18,7 @@ urlpatterns = [
     url(r"^signup/$", SignUpView.as_view(), name="signup"),
     url(r"^login/$", UserLoginView.as_view(), name="login"),
     url(r"^logout/$", UserLogoutView.as_view(), name="logout"),
+    url(r"^oauth/", include("social_django.urls"), name="social"),
     # autocomplete urls
     url(r"^pokemon-autocomplete/$", PokemonAutocompleteView.as_view(), name="pokemon-autocomplete"),
 ]
