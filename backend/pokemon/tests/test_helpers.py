@@ -20,8 +20,8 @@ class PokemonHelpersTest(TestCaseUtils):
             "id": 1,
             "name": "bulbasaur",
             "sprites": {
-                "front_default": "https://raw.githubusercontent.com/\
-                    PokeAPI/sprites/master/sprites/pokemon/1.png"
+                "front_default": f"https://raw.githubusercontent.com/"
+                f"PokeAPI/sprites/master/sprites/pokemon/1.png"
             },
             "stats": [
                 {"base_stat": 49},
@@ -36,8 +36,8 @@ class PokemonHelpersTest(TestCaseUtils):
             "id": 2,
             "name": "ivysaur",
             "sprites": {
-                "front_default": "https://raw.githubusercontent.com/\
-                    PokeAPI/sprites/master/sprites/pokemon/2.png"
+                "front_default": f"https://raw.githubusercontent.com/"
+                f"PokeAPI/sprites/master/sprites/pokemon/2.png"
             },
             "stats": [
                 {"base_stat": 49},
@@ -54,10 +54,10 @@ class PokemonHelpersTest(TestCaseUtils):
         get_all_pokemon_from_api()
 
         queryset = Pokemon.objects.filter(
+            poke_id=1,
             name="bulbasaur",
-            poke_id="1",
-            img_url="https://raw.githubusercontent.com/\
-                PokeAPI/sprites/master/sprites/pokemon/1.png",
+            img_url=f"https://raw.githubusercontent.com/"
+            f"PokeAPI/sprites/master/sprites/pokemon/1.png",
             attack=49,
             defense=49,
             hp=45,
@@ -65,10 +65,10 @@ class PokemonHelpersTest(TestCaseUtils):
         self.assertTrue(queryset.exists())
 
         queryset = Pokemon.objects.filter(
+            poke_id=2,
             name="ivysaur",
-            poke_id="2",
-            img_url="https://raw.githubusercontent.com/\
-                PokeAPI/sprites/master/sprites/pokemon/2.png",
+            img_url=f"https://raw.githubusercontent.com/"
+            f"PokeAPI/sprites/master/sprites/pokemon/2.png",
             attack=62,
             defense=63,
             hp=60,
