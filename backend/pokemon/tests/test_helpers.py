@@ -19,10 +19,7 @@ class PokemonHelpersTest(TestCaseUtils):
         pokemon_1 = {
             "id": 1,
             "name": "bulbasaur",
-            "sprites": {
-                "front_default": f"https://raw.githubusercontent.com/"
-                f"PokeAPI/sprites/master/sprites/pokemon/1.png"
-            },
+            "sprites": {"front_default": "testimageurl.com/1"},
             "stats": [
                 {"base_stat": 49},
                 {"base_stat": 49},
@@ -35,10 +32,7 @@ class PokemonHelpersTest(TestCaseUtils):
         pokemon_2 = {
             "id": 2,
             "name": "ivysaur",
-            "sprites": {
-                "front_default": f"https://raw.githubusercontent.com/"
-                f"PokeAPI/sprites/master/sprites/pokemon/2.png"
-            },
+            "sprites": {"front_default": "testimageurl.com/2"},
             "stats": [
                 {"base_stat": 49},
                 {"base_stat": 49},
@@ -54,23 +48,11 @@ class PokemonHelpersTest(TestCaseUtils):
         get_all_pokemon_from_api()
 
         queryset = Pokemon.objects.filter(
-            poke_id=1,
-            name="bulbasaur",
-            img_url=f"https://raw.githubusercontent.com/"
-            f"PokeAPI/sprites/master/sprites/pokemon/1.png",
-            attack=49,
-            defense=49,
-            hp=45,
+            poke_id=1, name="bulbasaur", img_url="testimageurl.com/1", attack=49, defense=49, hp=45,
         )
         self.assertTrue(queryset.exists())
 
         queryset = Pokemon.objects.filter(
-            poke_id=2,
-            name="ivysaur",
-            img_url=f"https://raw.githubusercontent.com/"
-            f"PokeAPI/sprites/master/sprites/pokemon/2.png",
-            attack=62,
-            defense=63,
-            hp=60,
+            poke_id=2, name="ivysaur", img_url="testimageurl.com/2", attack=62, defense=63, hp=60,
         )
         self.assertTrue(queryset.exists())
