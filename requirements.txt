@@ -27,7 +27,7 @@ django-render-block==0.6  # via django-templated-email
 django-templated-email==2.3.0  # via -r requirements.in
 django-webpack-loader==0.7.0  # via -r requirements.in
 django-widget-tweaks==1.4.8  # via -r requirements.in
-django==2.2.11            # via -r requirements.in, django-import-export, django-js-reverse, django-log-request-id, django-model-utils, django-render-block
+django==2.2.12            # via -r requirements.in, django-import-export, django-js-reverse, django-log-request-id, django-model-utils, django-render-block
 et-xmlfile==1.0.1         # via openpyxl
 gunicorn==20.0.4          # via -r requirements.in
 idna==2.9                 # via requests
@@ -44,7 +44,7 @@ pexpect==4.8.0            # via ipython
 pickleshare==0.7.5        # via ipython
 pip-tools==4.5.1          # via -r requirements.in
 progress==1.5             # via -r requirements.in
-prompt-toolkit==3.0.4     # via ipython
+prompt-toolkit==3.0.5     # via ipython
 psutil==5.7.0             # via -r requirements.in
 psycopg2==2.8.4           # via -r requirements.in
 ptyprocess==0.6.0         # via pexpect
