@@ -1,3 +1,6 @@
+from unittest.mock import patch
+
+from django.conf import settings
 from django.contrib.messages import get_messages
 
 from model_mommy import mommy
@@ -102,6 +105,41 @@ class CreateBattleViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
         self.assertEqual(battle_team.pokemon_1, pokemon_2)
         self.assertEqual(battle_team.pokemon_2, pokemon_3)
         self.assertEqual(battle_team.pokemon_3, pokemon_1)
+
+    @patch("battles.utils.email.send_templated_mail")
+    def test_if_battle_invitation_email_is_sent(self, mock_templated_mail):
+        pokemon_1, pokemon_2, pokemon_3 = self._make_pokemon()
+        battle_data = {
+            "opponent": self.opponent.id,
+            "pokemon_1": pokemon_1.id,
+            "pokemon_2": pokemon_2.id,
+            "pokemon_3": pokemon_3.id,
+            "pokemon_1_position": 1,
+            "pokemon_2_position": 2,
+            "pokemon_3_position": 3,
+        }
+
+        self.auth_client.force_login(self.creator)
+
+        self.auth_client.post(self.reverse("battles:create-battle"), battle_data)
+
+        battle = Battle.objects.filter(
+            creator=self.creator, opponent=self.opponent, status="ONGOING"
+        ).first()
+
+        battle_path = self.reverse("battles:select-team", pk=battle.pk)
+
+        mock_templated_mail.assert_called_with(
+            template_name="battle_invite",
+            from_email=settings.EMAIL_ADDRESS,
+            recipient_list=[self.opponent.email],
+            context={
+                "battle_id": battle.id,
+                "battle_creator": self.creator.email.split("@")[0],
+                "battle_opponent": self.opponent.email.split("@")[0],
+                "select_battle_team_url": f"{settings.HOST}{battle_path}",
+            },
+        )
 
 
 class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
@@ -235,6 +273,40 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
         battle = response.context_data["battle"]
         self.assertEqual(battle.status, "SETTLED")
         self.assertIsNotNone(battle.winner)
+
+    @patch("battles.utils.email.send_templated_mail")
+    def test_if_battle_result_email_is_being_sent(self, mock_templated_mail):
+        creator_pokemon_team = mommy.make(  # noqa
+            "battles.BattleTeam",
+            creator=self.creator,
+            battle=self.matching_battle,
+            pokemon_1=self.creator_pokemon_1,
+            pokemon_2=self.creator_pokemon_2,
+            pokemon_3=self.creator_pokemon_3,
+        )
+        self.auth_client.force_login(self.opponent)
+        response = self.auth_client.post(
+            self.reverse("battles:select-team", pk=1), self.opponent_pokemon_team, follow=True
+        )
+
+        battle = response.context_data["battle"]
+
+        battle_path = self.reverse("battles:battle-detail", pk=battle.pk)
+
+        mock_templated_mail.assert_called_with(
+            template_name="battle_result",
+            from_email=settings.EMAIL_ADDRESS,
+            recipient_list=[self.creator.email, self.opponent.email],
+            context={
+                "battle_creator": self.creator.email.split("@")[0],
+                "battle_opponent": self.opponent.email.split("@")[0],
+                "battle_winner": battle.winner.email.split("@")[0],
+                "battle_id": battle.id,
+                "creator_team": battle.creator.teams.filter(battle=battle.id).first(),
+                "opponent_team": battle.opponent.teams.filter(battle=battle.id).first(),
+                "battle_details_url": f"{settings.HOST}{battle_path}",
+            },
+        )
 
 
 class SettledBattlesListViewTest(CreatorAndOpponentMixin, TestCaseUtils):
