@@ -7,19 +7,20 @@
                 <div class="pk-logo"></div>
             </a>
         </div>
-        {% if not user.is_authenticated %}
         <div class="btns-container">
+            {% if not user.is_authenticated %}
             <a href="{% url 'login' %}">
                 <div class="pk-small-btn">Login</div>
             </a>
             <a href="{% url 'signup' %}">
                 <div class="pk-small-btn">SignUp</div>
             </a>
+            {% else %}
+            <span>Welcome, {{user.get_short_name}}</span>
+            <a href="{% url 'logout' %}">
+                <div class="pk-small-btn">Logout</div>
+            </a>
+            {% endif %}
         </div>
-        {% else %}
-        <a href="{% url 'logout' %}">
-            <div class="pk-small-btn">Logout</div>
-        </a>
-        {% endif %}
     </div>
 </nav>

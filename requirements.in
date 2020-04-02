@@ -20,3 +20,4 @@ pip-tools
 django-templated-email
 django-autocomplete-light
 progress
+social-auth-app-django

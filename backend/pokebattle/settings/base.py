@@ -24,11 +24,13 @@ ADMINS = (("Admin", "gabriela@vinta.com.br"),)
 AUTH_USER_MODEL = "users.User"
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend'
+    "django.contrib.auth.backends.ModelBackend",
+    "social_core.backends.google.GoogleOAuth2",
 ]
 
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 LOGIN_URL = reverse_lazy("login")
+# LOGOUT_URL = reverse_lazy("logout")
 
 ALLOWED_HOSTS = []
 
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     "battles",
     "pokemon",
     "widget_tweaks",
+    "social_django",
 ]
 
 MIDDLEWARE = [
@@ -60,6 +63,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "social_django.middleware.SocialAuthExceptionMiddleware",
 ]
 
 ROOT_URLCONF = "pokebattle.urls"
@@ -77,6 +81,8 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "common.context_processors.sentry_dsn",
                 "common.context_processors.commit_sha",
+                "social_django.context_processors.backends",
+                "social_django.context_processors.login_redirect",
             ],
         },
     },
@@ -131,3 +137,7 @@ COMMIT_SHA = config("HEROKU_SLUG_COMMIT", default="")
 
 # Django Templated E-mail
 TEMPLATED_EMAIL_BACKEND = 'templated_email.backends.vanilla_django.TemplateBackend'
+
+# Google Social Login
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config("SOCIAL_AUTH_GOOGLE_OAUTH2_KEY", default="")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config("SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET", default="")

@@ -34,8 +34,9 @@
     </div>
     {% endif %}
   </div>
-  {% if battle.winner is not None %}
+  
   <div class="content">
+    {% if battle.winner is not None or user == battle.creator %}
     <h4>Battle #{{battle.id}} Details</h4>
     <div class="battle-info-container">
       <h7 class="pokemon-font">{{battle.creator.email}}'s team</h7>
@@ -50,6 +51,8 @@
         {% endfor %}
       </div>
     </div>
+    {% endif %}
+    {% if battle.winner is not None %}
     <div class="battle-info-container">
       <h7 class="pokemon-font">{{battle.opponent.email}}'s team</h7>
       <div class="battle-team-container">
@@ -76,7 +79,7 @@
       </div>
       {% endfor %}
     </div>
+    {% endif %}
   </div>
-  {% endif %}
 </div>
 {% endblock %}
