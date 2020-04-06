@@ -17,3 +17,6 @@ class PokemonAutocompleteView(LoginRequiredMixin, autocomplete.Select2QuerySetVi
 
     def get_result_label(self, result):
         return format_html('<img src="{}" height="60px"> {}', result.img_url, result.name)
+
+    def get_selected_result_label(self, result):
+        return result.name
