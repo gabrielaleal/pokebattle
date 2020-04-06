@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle - Invite User{% endblock %}
+
+{% block body %}
+<div class='pk-container create-battle'>
+  {% include "includes/title.html" with title="Invite User" %}
+  {% if form.errors %}
+    {% for error in form.non_field_errors %}
+      <p class="error">{{error}}</p>
+    {% endfor %}
+  {% endif %}
+  <div class='content'>
+    {% for message in messages %}
+      <div class="messages">
+        {{message}}
+      </div>
+    {% endfor %}
+
+    <form method="post">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="battle-form-field">
+          <span>{{ field.label }}: </span>
+          {% render_field field %}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+      <div class="btn-container">
+        <button class="pk-btn" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
