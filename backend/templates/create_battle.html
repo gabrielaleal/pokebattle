@@ -9,7 +9,7 @@
   {% include "includes/title.html" with title="Create Battle" %}
   {% if form.errors %}
     {% for error in form.non_field_errors %}
-      <p class="error">{{error}}</p>
+      <div class="error">{{error}}</div>
     {% endfor %}
   {% endif %}
   <div class='content'>
