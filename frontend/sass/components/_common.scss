@@ -179,6 +179,21 @@ footer {
     font-weight: 600;
 }
 
+.field-error {
+    padding: 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+    }
+}
+
 /* Lists syle */
 
 .battle-list {
