@@ -167,9 +167,15 @@ footer {
 
 /* Forms errors */
 .error {
-    color: $pk-light-red;
+    background-color: $pk-light-yellow;
+    color: #fff;
+    width: fit-content;
+    margin: auto;
+    padding: 25px;
+    box-shadow: 3px 3px 5px 0px #cccccc;
+    border-radius: 5px;
     text-align: center;
-    margin: 0!important;
+    font-weight: 600;
 }
 
 /* Lists syle */
