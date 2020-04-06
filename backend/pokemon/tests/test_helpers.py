@@ -1,7 +1,8 @@
 import requests_mock
 
 from common.utils.tests import TestCaseUtils
-from pokemon.helpers import POKE_API_URL, get_all_pokemon_from_api
+from pokemon.constants import POKE_API_URL
+from pokemon.helpers import get_all_pokemon_from_api
 from pokemon.models import Pokemon
 
 
