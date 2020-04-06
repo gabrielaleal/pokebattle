@@ -1,10 +1,8 @@
 import requests
 from progress.bar import ChargingBar
 
+from .constants import POKE_API_URL
 from .models import Pokemon
-
-
-POKE_API_URL = "https://pokeapi.co/api/v2/pokemon/"
 
 
 def get_all_pokemon_from_api():
