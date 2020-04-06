@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import SignUpForm
+from .forms import InviteUserForm, SignUpForm
 
 
 class SignUpView(generic.CreateView):
@@ -36,3 +36,11 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy("login")
+
+
+class InviteUserView(generic.FormView):
+    template_name = "invite_user.html"
+    form_class = InviteUserForm
+
+    # def form_valid(self, form):
+    # TODO: send email inviting user
