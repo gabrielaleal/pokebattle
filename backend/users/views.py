@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from .forms import SignUpForm
+from .forms import LoginForm, SignUpForm
 
 
 class SignUpView(generic.CreateView):
@@ -31,6 +31,7 @@ class SignUpView(generic.CreateView):
 
 class UserLoginView(LoginView):
     redirect_authenticated_user = True
+    authentication_form = LoginForm
     template_name = "auth/login.html"
 
 
