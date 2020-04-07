@@ -34,6 +34,8 @@ LOGIN_URL = reverse_lazy("login")
 
 ALLOWED_HOSTS = []
 
+HOST = config('HOST', default='http://localhost:8000')
+
 INSTALLED_APPS = [
     "dal",
     "dal_select2",
