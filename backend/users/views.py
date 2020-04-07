@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
@@ -41,7 +42,7 @@ class UserLogoutView(LogoutView):
     next_page = reverse_lazy("login")
 
 
-class InviteUserView(generic.FormView):
+class InviteUserView(LoginRequiredMixin, generic.FormView):
     template_name = "invite_user.html"
     form_class = InviteUserForm
     success_url = reverse_lazy("invite-user")
