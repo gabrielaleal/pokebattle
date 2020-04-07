@@ -312,33 +312,24 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
 class SettledBattlesListViewTest(CreatorAndOpponentMixin, TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.creator, self.opponent = self._make_creator_and_opponent()
+        self.opponent = mommy.make("users.User")
         self.random_user = mommy.make("users.User")
 
         # created battles that will match or not according to the test case
         self.battle_1 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=1
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="SETTLED", pk=1
         )
         self.battle_2 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=2
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="SETTLED", pk=2
         )
         self.battle_3 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="ON_GOING", pk=3
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="ON_GOING", pk=3
         )
         self.battle_4 = mommy.make(
-            "battles.Battle",
-            creator=self.creator,
-            opponent=self.random_user,
-            status="SETTLED",
-            pk=4,
+            "battles.Battle", creator=self.user, opponent=self.random_user, status="SETTLED", pk=4,
         )
 
     def test_matching_queryset_success(self):
-        # queryset = Battle.objects.filter(status="SETTLED").filter(
-        #     Q(creator=self.request.user) | Q(opponent=self.request.user)
-        # )
-        self.auth_client.force_login(self.creator)
-
         response = self.auth_client.get(self.reverse("battles:settled-battles-list"))
         self.assertResponse200(response)
 
@@ -358,27 +349,25 @@ class SettledBattlesListViewTest(CreatorAndOpponentMixin, TestCaseUtils):
 class OnGoingBattlesListViewTest(TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.user_1 = mommy.make("users.User")
         self.user_2 = mommy.make("users.User")
         self.battle_1 = mommy.make(
-            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING"
+            "battles.Battle", creator=self.user, opponent=self.user_2, status="ONGOING"
         )
         self.battle_2 = mommy.make(
-            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING"
+            "battles.Battle", creator=self.user, opponent=self.user_2, status="ONGOING"
         )
         self.battle_3 = mommy.make(
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="ONGOING"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="ONGOING"
         )
         self.battle_4 = mommy.make(
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="ONGOING"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="ONGOING"
         )
         self.battle_5 = mommy.make(  # not matching battle
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="SETTLED"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="SETTLED"
         )
 
     def test_battles_i_created_queryset_at_context_data(self):
         # battles i created
-        self.auth_client.force_login(self.user_1)
         response = self.auth_client.get(self.reverse("battles:ongoing-battles-list"))
         self.assertResponse200(response)
         self.assertEqual(
@@ -389,7 +378,7 @@ class OnGoingBattlesListViewTest(TestCaseUtils):
         self.assertNotIn(set([self.battle_4]), set(response.context_data["battles_i_created"]))
 
     def test_battles_im_invited_queryset_at_context_data(self):
-        self.auth_client.force_login(self.user_1)
+        # battles im invited
         response = self.auth_client.get(self.reverse("battles:ongoing-battles-list"))
         self.assertResponse200(response)
         self.assertEqual(
@@ -403,7 +392,7 @@ class OnGoingBattlesListViewTest(TestCaseUtils):
 class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.creator, self.opponent = self._make_creator_and_opponent()
+        self.opponent = mommy.make("users.User")
 
         (
             self.creator_pokemon_1,
@@ -417,24 +406,24 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
         ) = self._make_pokemon()
 
         self.ongoing_battle = mommy.make(
-            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="ONGOING"
+            "battles.Battle", pk=1, creator=self.user, opponent=self.opponent, status="ONGOING"
         )
         self.ongoing_battle_creator_team = mommy.make(
             "battles.BattleTeam",
             battle=self.ongoing_battle,
-            creator=self.creator,
+            creator=self.user,
             pokemon_1=self.creator_pokemon_1,
             pokemon_2=self.creator_pokemon_2,
             pokemon_3=self.creator_pokemon_3,
         )
 
         self.settled_battle = mommy.make(
-            "battles.Battle", pk=2, creator=self.creator, opponent=self.opponent, status="SETTLED"
+            "battles.Battle", pk=2, creator=self.user, opponent=self.opponent, status="SETTLED"
         )
         self.settled_battle_creator_team = mommy.make(
             "battles.BattleTeam",
             battle=self.settled_battle,
-            creator=self.creator,
+            creator=self.user,
             pokemon_1=self.creator_pokemon_1,
             pokemon_2=self.creator_pokemon_2,
             pokemon_3=self.creator_pokemon_3,
@@ -451,7 +440,6 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
     def test_if_opponent_team_is_empty_if_battle_is_ongoing(self):
         # if the battle is ongoing, the view mustn't have the opponent
         # team nor the matches info in the context
-        self.auth_client.force_login(self.creator)
         response = self.auth_client.get(self.reverse("battles:battle-detail", pk=1))
         self.assertResponse200(response)
         self.assertNotIn("opponent_team", response.context_data)
@@ -468,7 +456,6 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
     def test_if_opponent_team_is_not_empty_if_battle_is_settled(self):
         # if the battle is settled, the view must have the opponent
         # team and the matches info in the context
-        self.auth_client.force_login(self.creator)
         response = self.auth_client.get(self.reverse("battles:battle-detail", pk=2))
         self.assertResponse200(response)
         self.assertEqual(
