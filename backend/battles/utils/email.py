@@ -25,7 +25,9 @@ def send_battle_result(battle):
     )
 
 
-def send_opponent_battle_invitation_email(url, battle):
+def send_opponent_battle_invitation_email(battle):
+    select_battle_team_path = reverse("battles:select-team", args=(battle.pk,))
+    select_battle_team_url = urljoin(settings.HOST, select_battle_team_path)
     send_templated_mail(
         template_name="battle_invite",
         from_email=settings.EMAIL_ADDRESS,
@@ -34,12 +36,14 @@ def send_opponent_battle_invitation_email(url, battle):
             "battle_id": battle.id,
             "battle_creator": battle.creator.email.split("@")[0],
             "battle_opponent": battle.opponent.email.split("@")[0],
-            "select_battle_team_url": url,
+            "select_battle_team_url": select_battle_team_url,
         },
     )
 
 
-def send_user_invite_to_pokebattle(url, user_invited_email, user_invitee_email):
+def send_user_invite_to_pokebattle(user_invited_email, user_invitee_email):
+    signup_path = reverse("signup")
+    signup_url = urljoin(settings.HOST, signup_path)
     send_templated_mail(
         template_name="new_user_invite",
         from_email=settings.EMAIL_ADDRESS,
@@ -47,6 +51,6 @@ def send_user_invite_to_pokebattle(url, user_invited_email, user_invitee_email):
         context={
             "user_who_invited": user_invitee_email.split("@")[0],
             "user_invited": user_invited_email.split("@")[0],
-            "signup_url": url,
+            "signup_url": signup_url,
         },
     )

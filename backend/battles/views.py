@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
@@ -29,9 +29,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 
         BattleTeam.objects.create(creator=self.request.user, battle=form.instance, **pokemon)
 
-        location = reverse("battles:select-team", args=(form.instance.pk,))
-        opponent_battle_url = self.request.build_absolute_uri(location)
-        send_opponent_battle_invitation_email(opponent_battle_url, form.instance)
+        send_opponent_battle_invitation_email(form.instance)
 
         success_message = format_html(
             f"<h5>Your battle against <b>{form.instance.opponent}</b> was created!</h5>"
