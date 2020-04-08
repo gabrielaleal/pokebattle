@@ -1,45 +1,59 @@
 {% block subject %}PokeBattle: Battle result!{% endblock %}
 {% block html %}
-  <p>Hello, players!</p>
+  <h3>Hello, players!</h3>
 
-  <p><b>{{battle_creator}}</b> challenged <b>{{battle_opponent}}</b> on Battle #{{battle_id}} and now we have the results!</p>
-
-  <p>
-    <div>{{battle_creator}}'s team was: <b>{{creator_team.pokemon_1.name}}</b>, <b>{{creator_team.pokemon_2.name}}</b> and <b>{{creator_team.pokemon_3.name}}</b></div>
-    <div>{{battle_opponent}}'s team was: <b>{{opponent_team.pokemon_1.name}}</b>, <b>{{opponent_team.pokemon_2.name}}</b> and <b>{{opponent_team.pokemon_3.name}}</b></div>
-  </p>
+  <p><b>{{battle_creator}}</b> challenged <b>{{battle_opponent}}</b> on <b>Battle #{{battle_id}}</b> and now we have the results!</p>
 
   <p>
-    <div>Round 1: <b>{{creator_team.pokemon_1.name}}</b> VS <b>{{opponent_team.pokemon_1.name}}</b></div>
-    <div>
-      - {{creator_team.pokemon_1.name}} - Attack: {{creator_team.pokemon_1.attack}} | Defense: {{creator_team.pokemon_1.defense}} | HP: {{creator_team.pokemon_1.hp}}
+    <div style="border: 1px solid #000; padding: 10px;">
+      <div>{{battle_creator}}'s team was:</div>
+      <div style="display: flex; justify-content: space-evenly;"> 
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{creator_team.pokemon_1.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{creator_team.pokemon_1.name}}</div>
+        </div>
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{creator_team.pokemon_2.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{creator_team.pokemon_2.name}}</div>
+        </div>
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{creator_team.pokemon_3.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{creator_team.pokemon_3.name}}</div>
+        </div>
+      </div>
     </div>
-    <div>
-      - {{opponent_team.pokemon_1.name}} - Attack: {{opponent_team.pokemon_1.attack}} | Defense: {{opponent_team.pokemon_1.defense}} | HP: {{opponent_team.pokemon_1.hp}}
-    </div>
-  </p>
-  
-  <p>
-    <div>Round 2: <b>{{creator_team.pokemon_2.name}}</b> VS <b>{{opponent_team.pokemon_2.name}}</b></div>
-    <div>
-      - {{creator_team.pokemon_2.name}} - Attack: {{creator_team.pokemon_2.attack}} | Defense: {{creator_team.pokemon_2.defense}} | HP: {{creator_team.pokemon_2.hp}}
-    </div>
-    <div>
-      - {{opponent_team.pokemon_2.name}} - Attack: {{opponent_team.pokemon_2.attack}} | Defense: {{opponent_team.pokemon_2.defense}} | HP: {{opponent_team.pokemon_2.hp}}
+    <div style="border: 1px solid #000; padding: 10px; margin-top: 7px;">
+      <div>{{battle_opponent}}'s team was:</div>
+      <div style="display: flex; justify-content: space-evenly;">
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{opponent_team.pokemon_1.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{opponent_team.pokemon_1.name}}</div>
+        </div>
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{opponent_team.pokemon_2.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{opponent_team.pokemon_2.name}}</div>
+        </div>
+        <div style="display: block;">
+          <div style="display: flex; justify-content: center;">
+            <img src="{{opponent_team.pokemon_3.img_url}}" height="90px"></img>
+          </div>
+          <div style="text-align: center;">{{opponent_team.pokemon_3.name}}</div>
+        </div>
+      </div>
     </div>
   </p>
 
-  <p>
-    <div>Round 3: <b>{{creator_team.pokemon_3.name}}</b> VS <b>{{opponent_team.pokemon_3.name}}</b></div>
-    <div>
-      - {{creator_team.pokemon_3.name}} - Attack: {{creator_team.pokemon_3.attack}} | Defense: {{creator_team.pokemon_3.defense}} | HP: {{creator_team.pokemon_3.hp}}
-    </div>
-    <div>
-      - {{opponent_team.pokemon_3.name}} - Attack: {{opponent_team.pokemon_3.attack}} | Defense: {{opponent_team.pokemon_3.defense}} | HP: {{opponent_team.pokemon_3.hp}}
-    </div>
-  </p>
+  <p style="font-size: 18px;">And the winner is... <b>{{battle_winner}}</b>!!!</p>
 
-  <p>And the winner is...</p>
-
-  <p><b>{{battle_winner}}</b>!!!</p>
+  <p>You can see more details about this battle <a href="{{battle_details_url}}">here.</a></p>
 {% endblock %}

@@ -1,3 +1,6 @@
+from unittest.mock import patch
+
+from django.conf import settings
 from django.contrib.messages import get_messages
 
 from model_mommy import mommy
@@ -102,6 +105,41 @@ class CreateBattleViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
         self.assertEqual(battle_team.pokemon_1, pokemon_2)
         self.assertEqual(battle_team.pokemon_2, pokemon_3)
         self.assertEqual(battle_team.pokemon_3, pokemon_1)
+
+    @patch("battles.utils.email.send_templated_mail")
+    def test_if_battle_invitation_email_is_sent(self, mock_templated_mail):
+        pokemon_1, pokemon_2, pokemon_3 = self._make_pokemon()
+        battle_data = {
+            "opponent": self.opponent.id,
+            "pokemon_1": pokemon_1.id,
+            "pokemon_2": pokemon_2.id,
+            "pokemon_3": pokemon_3.id,
+            "pokemon_1_position": 1,
+            "pokemon_2_position": 2,
+            "pokemon_3_position": 3,
+        }
+
+        self.auth_client.force_login(self.creator)
+
+        self.auth_client.post(self.reverse("battles:create-battle"), battle_data)
+
+        battle = Battle.objects.filter(
+            creator=self.creator, opponent=self.opponent, status="ONGOING"
+        ).first()
+
+        battle_path = self.reverse("battles:select-team", pk=battle.pk)
+
+        mock_templated_mail.assert_called_with(
+            template_name="battle_invite",
+            from_email=settings.EMAIL_ADDRESS,
+            recipient_list=[self.opponent.email],
+            context={
+                "battle_id": battle.id,
+                "battle_creator": self.creator.email.split("@")[0],
+                "battle_opponent": self.opponent.email.split("@")[0],
+                "select_battle_team_url": f"{settings.HOST}{battle_path}",
+            },
+        )
 
 
 class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
@@ -236,37 +274,62 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
         self.assertEqual(battle.status, "SETTLED")
         self.assertIsNotNone(battle.winner)
 
+    @patch("battles.utils.email.send_templated_mail")
+    def test_if_battle_result_email_is_being_sent(self, mock_templated_mail):
+        creator_pokemon_team = mommy.make(  # noqa
+            "battles.BattleTeam",
+            creator=self.creator,
+            battle=self.matching_battle,
+            pokemon_1=self.creator_pokemon_1,
+            pokemon_2=self.creator_pokemon_2,
+            pokemon_3=self.creator_pokemon_3,
+        )
+        self.auth_client.force_login(self.opponent)
+        response = self.auth_client.post(
+            self.reverse("battles:select-team", pk=1), self.opponent_pokemon_team, follow=True
+        )
+
+        battle = response.context_data["battle"]
+
+        battle_path = self.reverse("battles:battle-detail", pk=battle.pk)
+
+        mock_templated_mail.assert_called_with(
+            template_name="battle_result",
+            from_email=settings.EMAIL_ADDRESS,
+            recipient_list=[self.creator.email, self.opponent.email],
+            context={
+                "battle_creator": self.creator.email.split("@")[0],
+                "battle_opponent": self.opponent.email.split("@")[0],
+                "battle_winner": battle.winner.email.split("@")[0],
+                "battle_id": battle.id,
+                "creator_team": battle.creator.teams.filter(battle=battle.id).first(),
+                "opponent_team": battle.opponent.teams.filter(battle=battle.id).first(),
+                "battle_details_url": f"{settings.HOST}{battle_path}",
+            },
+        )
+
 
 class SettledBattlesListViewTest(CreatorAndOpponentMixin, TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.creator, self.opponent = self._make_creator_and_opponent()
+        self.opponent = mommy.make("users.User")
         self.random_user = mommy.make("users.User")
 
         # created battles that will match or not according to the test case
         self.battle_1 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=1
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="SETTLED", pk=1
         )
         self.battle_2 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="SETTLED", pk=2
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="SETTLED", pk=2
         )
         self.battle_3 = mommy.make(
-            "battles.Battle", creator=self.creator, opponent=self.opponent, status="ON_GOING", pk=3
+            "battles.Battle", creator=self.user, opponent=self.opponent, status="ON_GOING", pk=3
         )
         self.battle_4 = mommy.make(
-            "battles.Battle",
-            creator=self.creator,
-            opponent=self.random_user,
-            status="SETTLED",
-            pk=4,
+            "battles.Battle", creator=self.user, opponent=self.random_user, status="SETTLED", pk=4,
         )
 
     def test_matching_queryset_success(self):
-        # queryset = Battle.objects.filter(status="SETTLED").filter(
-        #     Q(creator=self.request.user) | Q(opponent=self.request.user)
-        # )
-        self.auth_client.force_login(self.creator)
-
         response = self.auth_client.get(self.reverse("battles:settled-battles-list"))
         self.assertResponse200(response)
 
@@ -286,27 +349,25 @@ class SettledBattlesListViewTest(CreatorAndOpponentMixin, TestCaseUtils):
 class OnGoingBattlesListViewTest(TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.user_1 = mommy.make("users.User")
         self.user_2 = mommy.make("users.User")
         self.battle_1 = mommy.make(
-            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING"
+            "battles.Battle", creator=self.user, opponent=self.user_2, status="ONGOING"
         )
         self.battle_2 = mommy.make(
-            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING"
+            "battles.Battle", creator=self.user, opponent=self.user_2, status="ONGOING"
         )
         self.battle_3 = mommy.make(
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="ONGOING"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="ONGOING"
         )
         self.battle_4 = mommy.make(
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="ONGOING"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="ONGOING"
         )
         self.battle_5 = mommy.make(  # not matching battle
-            "battles.Battle", creator=self.user_2, opponent=self.user_1, status="SETTLED"
+            "battles.Battle", creator=self.user_2, opponent=self.user, status="SETTLED"
         )
 
     def test_battles_i_created_queryset_at_context_data(self):
         # battles i created
-        self.auth_client.force_login(self.user_1)
         response = self.auth_client.get(self.reverse("battles:ongoing-battles-list"))
         self.assertResponse200(response)
         self.assertEqual(
@@ -317,7 +378,7 @@ class OnGoingBattlesListViewTest(TestCaseUtils):
         self.assertNotIn(set([self.battle_4]), set(response.context_data["battles_i_created"]))
 
     def test_battles_im_invited_queryset_at_context_data(self):
-        self.auth_client.force_login(self.user_1)
+        # battles im invited
         response = self.auth_client.get(self.reverse("battles:ongoing-battles-list"))
         self.assertResponse200(response)
         self.assertEqual(
@@ -331,7 +392,7 @@ class OnGoingBattlesListViewTest(TestCaseUtils):
 class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.creator, self.opponent = self._make_creator_and_opponent()
+        self.opponent = mommy.make("users.User")
 
         (
             self.creator_pokemon_1,
@@ -345,24 +406,24 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
         ) = self._make_pokemon()
 
         self.ongoing_battle = mommy.make(
-            "battles.Battle", pk=1, creator=self.creator, opponent=self.opponent, status="ONGOING"
+            "battles.Battle", pk=1, creator=self.user, opponent=self.opponent, status="ONGOING"
         )
         self.ongoing_battle_creator_team = mommy.make(
             "battles.BattleTeam",
             battle=self.ongoing_battle,
-            creator=self.creator,
+            creator=self.user,
             pokemon_1=self.creator_pokemon_1,
             pokemon_2=self.creator_pokemon_2,
             pokemon_3=self.creator_pokemon_3,
         )
 
         self.settled_battle = mommy.make(
-            "battles.Battle", pk=2, creator=self.creator, opponent=self.opponent, status="SETTLED"
+            "battles.Battle", pk=2, creator=self.user, opponent=self.opponent, status="SETTLED"
         )
         self.settled_battle_creator_team = mommy.make(
             "battles.BattleTeam",
             battle=self.settled_battle,
-            creator=self.creator,
+            creator=self.user,
             pokemon_1=self.creator_pokemon_1,
             pokemon_2=self.creator_pokemon_2,
             pokemon_3=self.creator_pokemon_3,
@@ -379,7 +440,6 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
     def test_if_opponent_team_is_empty_if_battle_is_ongoing(self):
         # if the battle is ongoing, the view mustn't have the opponent
         # team nor the matches info in the context
-        self.auth_client.force_login(self.creator)
         response = self.auth_client.get(self.reverse("battles:battle-detail", pk=1))
         self.assertResponse200(response)
         self.assertNotIn("opponent_team", response.context_data)
@@ -396,7 +456,6 @@ class BattleDetailViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
     def test_if_opponent_team_is_not_empty_if_battle_is_settled(self):
         # if the battle is settled, the view must have the opponent
         # team and the matches info in the context
-        self.auth_client.force_login(self.creator)
         response = self.auth_client.get(self.reverse("battles:battle-detail", pk=2))
         self.assertResponse200(response)
         self.assertEqual(
