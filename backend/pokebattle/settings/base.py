@@ -33,7 +33,6 @@ LOGIN_URL = reverse_lazy("login")
 
 ALLOWED_HOSTS = []
 
-HOST = config('HOST', default='127.0.0.1:8000')
 SERVER_NAME = config('SERVER_NAME', default='127.0.0.1')
 SERVER_PORT = config('SERVER_PORT', default='8000')
 
