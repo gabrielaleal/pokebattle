@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
@@ -49,7 +49,9 @@ class InviteUserView(LoginRequiredMixin, generic.FormView):
 
     def form_valid(self, form):
         user_invited_email = form.cleaned_data["email"]
-        send_user_invite_to_pokebattle(user_invited_email, self.request.user.email)
+        user_invitee_email = self.request.user.email
+        signup_url = self.request.build_absolute_uri(reverse("signup"))
+        send_user_invite_to_pokebattle(signup_url, user_invited_email, user_invitee_email)
 
         success_message = format_html(
             f"Thank you! We've sent an email inviting <b>{user_invited_email}</b> to join us."
