@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.messages import get_messages
@@ -69,6 +70,6 @@ class InviteUserViewTest(TestCaseUtils):
             context={
                 "user_who_invited": self.user.email.split("@")[0],
                 "user_invited": form_data["email"].split("@")[0],
-                "signup_url": f"{settings.HOST}{signup_path}",
+                "signup_url": urljoin(settings.HOST, signup_path),
             },
         )
