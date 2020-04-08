@@ -12,7 +12,7 @@ class BattleAdmin(admin.ModelAdmin):
 class BattleTeamAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
-        run_battle_and_send_result_email.delay(obj.battle.id)
+        run_battle_and_send_result_email.delay(obj.battle_id)
 
 
 admin.site.register(Battle, BattleAdmin)
