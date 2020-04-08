@@ -30,7 +30,6 @@ AUTHENTICATION_BACKENDS = [
 
 LOGIN_REDIRECT_URL = reverse_lazy("home")
 LOGIN_URL = reverse_lazy("login")
-# LOGOUT_URL = reverse_lazy("logout")
 
 ALLOWED_HOSTS = []
 
