@@ -1,4 +1,5 @@
 from unittest.mock import patch
+from urllib.parse import urljoin
 
 from django.conf import settings
 from django.contrib.messages import get_messages
@@ -137,7 +138,7 @@ class CreateBattleViewTest(MakePokemonMixin, CreatorAndOpponentMixin, TestCaseUt
                 "battle_id": battle.id,
                 "battle_creator": self.creator.email.split("@")[0],
                 "battle_opponent": self.opponent.email.split("@")[0],
-                "select_battle_team_url": f"{settings.HOST}{battle_path}",
+                "select_battle_team_url": urljoin(settings.HOST, battle_path),
             },
         )
 
@@ -304,7 +305,7 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
                 "battle_id": battle.id,
                 "creator_team": battle.creator.teams.filter(battle=battle.id).first(),
                 "opponent_team": battle.opponent.teams.filter(battle=battle.id).first(),
-                "battle_details_url": f"{settings.HOST}{battle_path}",
+                "battle_details_url": urljoin(settings.HOST, battle_path),
             },
         )
 

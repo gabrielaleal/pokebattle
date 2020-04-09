@@ -1,11 +1,15 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.utils.html import format_html
 from django.views import generic
 
-from .forms import SignUpForm
+from battles.utils.email import send_user_invite_to_pokebattle
+
+from .forms import InviteUserForm, SignUpForm
 
 
 class SignUpView(generic.CreateView):
@@ -36,3 +40,21 @@ class UserLoginView(LoginView):
 
 class UserLogoutView(LogoutView):
     next_page = reverse_lazy("login")
+
+
+class InviteUserView(LoginRequiredMixin, generic.FormView):
+    template_name = "invite_user.html"
+    form_class = InviteUserForm
+    success_url = reverse_lazy("invite-user")
+
+    def form_valid(self, form):
+        user_invited_email = form.cleaned_data["email"]
+        user_invitee_email = self.request.user.email
+        send_user_invite_to_pokebattle(user_invited_email, user_invitee_email)
+
+        success_message = format_html(
+            f"Thank you! We've sent an email inviting <b>{user_invited_email}</b> to join us."
+        )
+        messages.success(self.request, success_message)
+
+        return super().form_valid(form)
