@@ -7,9 +7,9 @@ from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.views import generic
 
-from .forms import InviteUserForm, SignUpForm, LoginForm
-
 from battles.utils.email import send_user_invite_to_pokebattle
+
+from .forms import InviteUserForm, LoginForm, SignUpForm
 
 
 class SignUpView(generic.CreateView):
