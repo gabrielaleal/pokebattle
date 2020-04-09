@@ -5,13 +5,14 @@ from django.views.generic import TemplateView
 import django_js_reverse.views
 
 from pokemon.views import PokemonAutocompleteView
-from users.views import SignUpView, UserLoginView, UserLogoutView
+from users.views import InviteUserView, SignUpView, UserLoginView, UserLogoutView
 
 
 urlpatterns = [
     url(r"^admin/", admin.site.urls),
     url(r"^jsreverse/$", django_js_reverse.views.urls_js, name="js_reverse"),
     url(r"^$", TemplateView.as_view(template_name="home.html"), name="home"),
+    url(r"^invite-user/$", InviteUserView.as_view(), name="invite-user"),
     # apps' urls
     url(r"^battles/", include("battles.urls"), name="battles"),
     # authentication urls

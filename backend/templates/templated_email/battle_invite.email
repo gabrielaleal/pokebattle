@@ -1,0 +1,8 @@
+{% block subject %}PokeBattle: You have been invited to battle!{% endblock %}
+{% block html %}
+  <h3>Hello, {{battle_opponent}}!</h3>
+
+  <p><b>{{battle_creator}}</b> invited you on PokeBattle's match <b>#{{battle_id}}</b>!</p>
+
+  <p>It's your turn to select your team and fight back! Click <a href="{{select_battle_team_url}}">here</a></p>
+{% endblock %}

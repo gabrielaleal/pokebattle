@@ -167,9 +167,31 @@ footer {
 
 /* Forms errors */
 .error {
-    color: $pk-light-red;
+    background-color: $pk-light-yellow;
+    color: #fff;
+    width: fit-content;
+    margin: auto;
+    margin-top: 20px;
+    padding: 25px;
+    box-shadow: 3px 3px 5px 0px #cccccc;
+    border-radius: 5px;
     text-align: center;
-    margin: 0!important;
+    font-weight: 600;
+}
+
+.field-error {
+    padding: 5px 0;
+    font-size: 14px;
+    font-weight: 600;
+
+    ul {
+        margin: 0;
+        padding: 0;
+    }
+
+    li {
+        list-style: none;
+    }
 }
 
 /* Lists syle */

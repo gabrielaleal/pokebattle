@@ -38,6 +38,7 @@ pylint:
     - import-error
     - relative-beyond-top-level
     - arguments-differ
+    - invalid-name
   options:
     max-line-length: 100
 

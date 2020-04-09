@@ -23,7 +23,7 @@
         <div class="battle-form-field">
           <div>{{ field.label }}: </div>
           {% render_field field %}
-          {{ field.errors }}
+          <span class="field-error">{{ field.errors }}</span>
         </div>
       {% endfor %}
       <div class="btn-container">

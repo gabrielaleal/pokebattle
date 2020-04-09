@@ -1,6 +1,3 @@
-from .email import send_battle_result
-
-
 def compare_pokemon_attack_and_defense(pokemon_1, pokemon_2):
     # pokemon_1 always attacks and pokemon_2 always defends
     if pokemon_1.attack > pokemon_2.defense:
@@ -50,11 +47,3 @@ def get_battle_winner(battle):
     if creator_wins > opponent_wins:
         return battle.creator
     return battle.opponent
-
-
-def run_battle_and_send_result_email(battle_team):
-    battle = battle_team.battle
-    battle.winner = get_battle_winner(battle)
-    battle.status = "SETTLED"
-    battle.save()
-    send_battle_result(battle)

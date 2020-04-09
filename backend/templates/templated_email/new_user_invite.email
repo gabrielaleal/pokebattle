@@ -1,0 +1,10 @@
+{% block subject %}PokeBattle: Come play with us!{% endblock %}
+{% block html %}
+<h3>Hello, {{user_invited}}!</h3>
+
+<p><b>{{user_who_invited}}</b> invited you to join us on <b>PokeBattle</b>!</p>
+
+<p>Click <a href="{{signup_url}}">here</a> to signup!</p>
+<br>
+<p>Best regards, PokeBattle Team</p>
+{% endblock %}
