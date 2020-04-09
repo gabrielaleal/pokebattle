@@ -9,7 +9,7 @@ from django.views import generic
 
 from battles.utils.email import send_user_invite_to_pokebattle
 
-from .forms import InviteUserForm, SignUpForm
+from .forms import InviteUserForm, LoginForm, SignUpForm
 
 
 class SignUpView(generic.CreateView):
@@ -35,6 +35,7 @@ class SignUpView(generic.CreateView):
 
 class UserLoginView(LoginView):
     redirect_authenticated_user = True
+    authentication_form = LoginForm
     template_name = "auth/login.html"
 
 

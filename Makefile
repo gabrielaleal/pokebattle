@@ -39,3 +39,6 @@ compile_install_requirements:
 	pip-compile dev-requirements.in > dev-requirements.txt
 	@echo 'Installing requirements...'
 	pip install -r requirements.txt && pip install -r dev-requirements.txt
+
+celery_run:
+	celery worker --workdir backend --app=pokebattle --loglevel=info

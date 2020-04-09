@@ -10,7 +10,8 @@ from pokemon.helpers import sort_pokemon_in_correct_position
 
 from .forms import CreateBattleForm, SelectOpponentTeamForm
 from .models import Battle, BattleTeam
-from .utils.battle import get_round_winner, run_battle_and_send_result_email
+from .tasks import run_battle_and_send_result_email
+from .utils.battle import get_round_winner
 from .utils.email import send_opponent_battle_invitation_email
 
 
@@ -84,8 +85,7 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
         form.instance.pokemon_3 = pokemon["pokemon_3"]
 
         form.instance.save()
-
-        run_battle_and_send_result_email(form.instance)
+        run_battle_and_send_result_email.delay(form.instance.battle.id)
 
         return super().form_valid(form)
 

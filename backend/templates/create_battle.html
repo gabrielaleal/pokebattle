@@ -9,7 +9,7 @@
   {% include "includes/title.html" with title="Create Battle" %}
   {% if form.errors %}
     {% for error in form.non_field_errors %}
-      <p class="error">{{error}}</p>
+      <div class="error">{{error}}</div>
     {% endfor %}
   {% endif %}
   <div class='content'>
@@ -25,7 +25,7 @@
         <div class="battle-form-field">
           <span>{{ field.label }}: </span>
           {% render_field field %}
-          {{ field.errors }}
+          <span class="field-error">{{ field.errors }}</span>
         </div>
       {% endfor %}
       <div class="btn-container">

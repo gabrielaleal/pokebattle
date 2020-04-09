@@ -1,6 +1,6 @@
 from django.core import management
 
-from backend.pokebattle import celery_app
+from pokebattle import celery_app
 
 
 @celery_app.task

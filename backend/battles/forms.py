@@ -28,6 +28,7 @@ class AutocompletePokemonForm(forms.ModelForm):
             attrs={  # noqa
                 "data-placeholder": "Autocomplete pokemon",
                 "data-minimum-input-length": 3,
+                "data-html": True,
             },
         ),
         required=True,
@@ -40,6 +41,7 @@ class AutocompletePokemonForm(forms.ModelForm):
             attrs={  # noqa
                 "data-placeholder": "Autocomplete pokemon",
                 "data-minimum-input-length": 3,
+                "data-html": True,
             },
         ),
         required=True,
@@ -52,6 +54,7 @@ class AutocompletePokemonForm(forms.ModelForm):
             attrs={  # noqa
                 "data-placeholder": "Autocomplete pokemon",
                 "data-minimum-input-length": 3,
+                "data-html": True,
             },
         ),
         required=True,

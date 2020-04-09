@@ -258,7 +258,7 @@ class SelectOpponentTeamViewTest(MakePokemonMixin, CreatorAndOpponentMixin, Test
     def test_if_battle_values_change(self):
         # test if the battle values change (its status and winner)
         # after running run_battle_and_send_result_email
-        self.creator_pokemon_team = mommy.make(  # noqa
+        creator_pokemon_team = mommy.make(  # noqa
             "battles.BattleTeam",
             creator=self.creator,
             battle=self.matching_battle,
