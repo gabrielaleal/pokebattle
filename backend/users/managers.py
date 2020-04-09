@@ -15,3 +15,6 @@ class UserManager(BaseUserManager):
         user.is_staff = True
         user.save(using=self._db)
         return user
+
+    def check_if_email_already_exists(self, email):
+        return super().get_queryset().filter(email=email).exists()
