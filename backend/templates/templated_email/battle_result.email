@@ -11,7 +11,7 @@
         <tr>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{creator_team.pokemon_1.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{creator_team.pokemon_1.name}}</div>
@@ -19,7 +19,7 @@
           </td>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{creator_team.pokemon_2.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{creator_team.pokemon_2.name}}</div>
@@ -27,7 +27,7 @@
           </td>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{creator_team.pokemon_3.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{creator_team.pokemon_3.name}}</div>
@@ -42,7 +42,7 @@
         <tr>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{opponent_team.pokemon_1.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{opponent_team.pokemon_1.name}}</div>
@@ -50,7 +50,7 @@
           </td>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{opponent_team.pokemon_2.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{opponent_team.pokemon_2.name}}</div>
@@ -58,7 +58,7 @@
           </td>
           <td style="padding: 0 8%;">
             <div style="display: block;">
-              <div style="display: flex;">
+              <div style="display: flex; justify-content: center;">
                 <img src="{{opponent_team.pokemon_3.img_url}}" height="90px"></img>
               </div>
               <div style="text-align: center;">{{opponent_team.pokemon_3.name}}</div>
