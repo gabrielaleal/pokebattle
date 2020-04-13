@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "users",
     "battles",
     "pokemon",
+    "api",
     "widget_tweaks",
     "social_django",
     "rest_framework",
