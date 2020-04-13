@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     "pokemon",
     "widget_tweaks",
     "social_django",
+    "rest_framework",
 ]
 
 MIDDLEWARE = [
