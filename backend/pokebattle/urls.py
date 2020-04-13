@@ -15,6 +15,7 @@ urlpatterns = [
     url(r"^invite-user/$", InviteUserView.as_view(), name="invite-user"),
     # apps' urls
     url(r"^battles/", include("battles.urls"), name="battles"),
+    url(r"^api/", include("api.battles.urls"), name="api"),
     # authentication urls
     url(r"^signup/$", SignUpView.as_view(), name="signup"),
     url(r"^login/$", UserLoginView.as_view(), name="login"),
