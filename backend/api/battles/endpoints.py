@@ -5,13 +5,18 @@ from rest_framework.permissions import IsAuthenticated
 
 from battles.models import Battle
 
-from .permissions import IsInBattle
-from .serializers import BattleSerializer, CreateBattleSerializer
+from .permissions import IsBattleOpponent, IsInBattle
+from .serializers import BattleSerializer, CreateBattleSerializer, SelectOpponentTeamSerializer
 
 
 class CreateBattleEndpoint(CreateAPIView):
     serializer_class = CreateBattleSerializer
     permission_classes = (IsAuthenticated,)
+
+
+class SelectOpponentTeamEndpoint(CreateAPIView):
+    serializer_class = SelectOpponentTeamSerializer
+    permission_classes = (IsBattleOpponent,)
 
 
 class BattleDetailEndpoint(RetrieveAPIView):
