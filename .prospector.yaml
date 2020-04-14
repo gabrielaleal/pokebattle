@@ -39,6 +39,7 @@ pylint:
     - relative-beyond-top-level
     - arguments-differ
     - invalid-name
+    - attribute-defined-outside-init
   options:
     max-line-length: 100
 
