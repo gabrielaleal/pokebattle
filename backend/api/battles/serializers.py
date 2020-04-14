@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api.users.serializers import UserSerializer  # noqa
+from api.users.serializers import UserSerializer
 from battles.models import Battle, BattleTeam
 from battles.tasks import run_battle_and_send_result_email
 from battles.utils.email import send_opponent_battle_invitation_email
