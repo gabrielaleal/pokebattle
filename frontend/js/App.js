@@ -1,13 +1,18 @@
 import React from 'react';
 import { hot } from 'react-hot-loader/root';
+import { BrowserRouter, Switch } from 'react-router-dom';
 
-import Home from './pages/Home';
-import SentryBoundary from './utils/SentryBoundary';
+import BattleDetails from './pages/battle-details';
 
 const App = () => (
-  <SentryBoundary>
-    <Home />
-  </SentryBoundary>
+  <BrowserRouter>
+    <div>
+      {/* <Navbar /> */}
+      <Switch>
+        <BattleDetails path="/battles/:pk/" />
+      </Switch>
+    </div>
+  </BrowserRouter>
 );
 
 export default hot(App);
