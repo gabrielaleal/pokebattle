@@ -38,7 +38,7 @@ function BattleWinner({ winner }) {
     <div className="battle-info-container">
       <h5 className="pokemon-font">Winner</h5>
       <div className="subtitle">
-        This battle&aposs winner is <span>{winner}</span>.
+        This battle winner is <span>{winner}</span>.
       </div>
     </div>
   );
@@ -46,20 +46,15 @@ function BattleWinner({ winner }) {
 
 function BattleInformation({ battle }) {
   // main component
+  // const { creator, opponent } = battle;
   return (
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
-      {console.log(battle)}
-      {console.log(battle.creator.email)}
-      {/* <BattlePlayers creator={battle.creator.email} opponent={battle.opponent.email} /> */}
+      {/* <BattlePlayers creator={creator.email} opponent={opponent.email} /> */}
     </div>
   );
 }
-
-BattleInformation.propTypes = {
-  battle: PropTypes.object,
-};
 
 BattleWinner.propTypes = {
   winner: PropTypes.string,
@@ -70,12 +65,16 @@ BattleStatus.propTypes = {
 };
 
 BattlePlayers.propTypes = {
-  creator: PropTypes.string,
-  opponent: PropTypes.string,
+  creator: PropTypes.string.isRequired,
+  opponent: PropTypes.string.isRequired,
 };
 
 FightBackButton.propTypes = {
   battlePk: PropTypes.number,
+};
+
+BattleInformation.propTypes = {
+  battle: PropTypes.object.isRequired,
 };
 
 export default BattleInformation;

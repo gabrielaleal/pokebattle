@@ -92,6 +92,7 @@ class BattleDetailsSerializer(serializers.ModelSerializer):
             "opponent_team",
             "opponent",
             "winner",
+            "id",
         )
 
 

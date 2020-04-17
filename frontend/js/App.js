@@ -9,9 +9,11 @@ const App = () => (
   <BrowserRouter>
     <div>
       <Navbar />
-      <Switch>
-        <BattleDetails path="/battles/:pk/" />
-      </Switch>
+      <div className="block-body">
+        <Switch>
+          <BattleDetails path="/battles/:pk/" />
+        </Switch>
+      </div>
     </div>
   </BrowserRouter>
 );
