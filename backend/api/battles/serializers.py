@@ -10,6 +10,7 @@ from pokemon.helpers import (
     repeated_pokemon_in_teams,
     sort_pokemon_in_correct_position,
 )
+from pokemon.models import Pokemon
 from users.models import User
 
 from .fields import BattleUrlDefault
@@ -40,6 +41,58 @@ class BattleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Battle
         fields = "__all__"
+
+
+class PokemonSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pokemon
+        fields = "__all__"
+
+
+class BattleTeamSerializer(serializers.ModelSerializer):
+    pokemon_1 = PokemonSerializer()
+    pokemon_2 = PokemonSerializer()
+    pokemon_3 = PokemonSerializer()
+
+    class Meta:
+        model = BattleTeam
+        fields = ("pokemon_1", "pokemon_2", "pokemon_3")
+
+
+class BattleDetailsSerializer(serializers.ModelSerializer):
+    creator_team = serializers.SerializerMethodField()
+    opponent_team = serializers.SerializerMethodField()
+    creator = UserSerializer()
+    opponent = UserSerializer()
+    winner = UserSerializer()
+
+    def get_creator_team(self, obj):
+        team = BattleTeam.objects.filter(battle=obj, creator=obj.creator).first()
+        # if the creator team doesn't exist yet, just return user data
+        if not team:
+            return {}
+        # if it exists, return the battle team data (which also has the creator information)
+        serializer = BattleTeamSerializer(instance=team)
+        return serializer.data
+
+    def get_opponent_team(self, obj):
+        opponent = BattleTeam.objects.filter(battle=obj, creator=obj.opponent).first()
+        if not opponent:
+            return {}
+        serializer = BattleTeamSerializer(instance=opponent)
+        return serializer.data
+
+    class Meta:
+        model = Battle
+        fields = (
+            "timestamp",
+            "status",
+            "creator",
+            "creator_team",
+            "opponent_team",
+            "opponent",
+            "winner",
+        )
 
 
 class CreateBattleSerializer(SelectTeamSerializerMixin):

@@ -24,12 +24,13 @@ class BattleDetails extends React.Component {
   }
 
   render() {
+    // eslint-disable-next-line no-unused-vars
     const { isLoading, battle } = this.state;
 
     return (
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
-        {isLoading ? <div>Loading...</div> : <pre>{JSON.stringify(battle, null, 2)}</pre>}
+        {isLoading ? <div>Loading...</div> : false}
       </div>
     );
   }
