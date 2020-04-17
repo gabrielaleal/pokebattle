@@ -4,7 +4,8 @@ module.exports = {
   root: true,
   extends: ['vinta/recommended'],
   rules: {
-    'no-console': "off"
+    'no-console': 'off',
+    'dot-notation': 'warn'
   },
   env: {
     es6: true,
