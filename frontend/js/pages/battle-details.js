@@ -2,6 +2,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import BattleInformation from '../components/battle-details/battle-information';
 import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
@@ -31,6 +32,7 @@ class BattleDetails extends React.Component {
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
         {isLoading ? <div>Loading...</div> : false}
+        <BattleInformation battle={battle} />
       </div>
     );
   }
