@@ -1,4 +1,4 @@
-from django.conf.urls import include, url  # noqa
+from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic import TemplateView
 
@@ -13,6 +13,8 @@ urlpatterns = [
     url(r"^jsreverse/$", django_js_reverse.views.urls_js, name="js_reverse"),
     url(r"^$", TemplateView.as_view(template_name="home.html"), name="home"),
     url(r"^invite-user/$", InviteUserView.as_view(), name="invite-user"),
+    # api urls
+    url(r"^api/", include(("api.urls", "api"), namespace="api")),
     # apps' urls
     url(r"^battles/", include("battles.urls"), name="battles"),
     # authentication urls
