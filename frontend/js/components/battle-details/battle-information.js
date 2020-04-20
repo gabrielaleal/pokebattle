@@ -22,9 +22,8 @@ function BattlePlayers({ creatorEmail, opponentEmail }) {
   );
 }
 
-// user == battle.opponent and battle.winner is None
 function FightBackButton({ battle, userEmail }) {
-  if (userEmail !== battle.opponent.email) {
+  if (userEmail !== battle.opponent.email || battle.winner) {
     return <div />;
   }
   return (
