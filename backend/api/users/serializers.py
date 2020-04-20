@@ -8,4 +8,4 @@ class UserSerializer(serializers.ModelSerializer):
     # an id whenever it's used as a form field
     class Meta:
         model = User
-        fields = ("email",)
+        fields = ("email", "id")

@@ -11,37 +11,40 @@ function BattleStatus({ status }) {
   );
 }
 
-function BattlePlayers({ creator, opponent }) {
+function BattlePlayers({ creatorEmail, opponentEmail }) {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Players</h5>
       <div className="subtitle">
-        <span>{creator}</span> challenged <span>{opponent}</span> on this battle!
+        <span>{creatorEmail}</span> challenged <span>{opponentEmail}</span> on this battle!
       </div>
     </div>
   );
 }
 
 // user == battle.opponent and battle.winner is None
-function FightBackButton({ battlePk }) {
+function FightBackButton({ battle, userEmail }) {
+  if (userEmail !== battle.opponent.email) {
+    return <div />;
+  }
   return (
     <div className="battle-team-container">
-      <a href={window.Urls['battles:SelectTeam'](battlePk)}>
+      <a href={window.Urls['battles:selectTeam'](battle.id)}>
         <div className="pk-btn">Fight back!</div>
       </a>
     </div>
   );
 }
 
-function BattleWinner({ winner }) {
-  if (!winner) {
+function BattleWinner({ winnerEmail }) {
+  if (!winnerEmail) {
     return <div />;
   }
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Winner</h5>
       <div className="subtitle">
-        This battle winner is <span>{winner}</span>.
+        This battle winner is <span>{winnerEmail}</span>.
       </div>
     </div>
   );
@@ -50,19 +53,19 @@ function BattleWinner({ winner }) {
 function BattleInformation({ battle, user }) {
   // main component
   const { creator, opponent, winner } = battle;
-  console.log(user);
   return (
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
-      <BattlePlayers creator={creator.email} opponent={opponent.email} />
-      <BattleWinner winner={get(winner, 'email')} />
+      <BattlePlayers creatorEmail={creator.email} opponentEmail={opponent.email} />
+      <BattleWinner winnerEmail={get(winner, 'email')} />
+      <FightBackButton battle={battle} userEmail={user.email} />
     </div>
   );
 }
 
 BattleWinner.propTypes = {
-  winner: PropTypes.string,
+  winnerEmail: PropTypes.string,
 };
 
 BattleStatus.propTypes = {
@@ -70,12 +73,13 @@ BattleStatus.propTypes = {
 };
 
 BattlePlayers.propTypes = {
-  creator: PropTypes.string.isRequired,
-  opponent: PropTypes.string.isRequired,
+  creatorEmail: PropTypes.string.isRequired,
+  opponentEmail: PropTypes.string.isRequired,
 };
 
 FightBackButton.propTypes = {
-  battlePk: PropTypes.number,
+  battle: PropTypes.object,
+  userEmail: PropTypes.string,
 };
 
 BattleInformation.propTypes = {

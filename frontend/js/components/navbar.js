@@ -10,18 +10,25 @@ const Navbar = ({ user }) => (
           <div className="pk-logo" />
         </a>
       </div>
-      {/* <div className="btns-container">
-        <a href={window.Urls.login()}>
-          <div className="pk-small-btn">Login</div>
-        </a>
-        <a href={window.Urls.signup()}>
-          <div className="pk-small-btn">SignUp</div>
-        </a>
-        <span>Welcome, {user.email}</span>
-        <a href={window.Urls.logout()}>
-          <div className="pk-small-btn">Logout</div>
-        </a>
-      </div> */}
+      <div className="btns-container">
+        {user.email ? (
+          <>
+            <span>Welcome, {user.email}</span>
+            <a href={window.Urls.logout()}>
+              <div className="pk-small-btn">Logout</div>
+            </a>
+          </>
+        ) : (
+          <>
+            <a href={window.Urls.login()}>
+              <div className="pk-small-btn">Login</div>
+            </a>
+            <a href={window.Urls.signup()}>
+              <div className="pk-small-btn">SignUp</div>
+            </a>
+          </>
+        )}
+      </div>
     </div>
   </nav>
 );
