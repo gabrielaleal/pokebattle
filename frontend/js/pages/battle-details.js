@@ -25,14 +25,13 @@ class BattleDetails extends React.Component {
   }
 
   render() {
-    // eslint-disable-next-line no-unused-vars
     const { isLoading, battle } = this.state;
+    const { user } = this.props;
 
     return (
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
-        {isLoading ? <div>Loading...</div> : false}
-        <BattleInformation battle={battle} />
+        {isLoading ? <div>Loading...</div> : <BattleInformation battle={battle} user={user} />}
       </div>
     );
   }
@@ -40,6 +39,7 @@ class BattleDetails extends React.Component {
 
 BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default BattleDetails;

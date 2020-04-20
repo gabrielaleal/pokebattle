@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -32,8 +33,10 @@ function FightBackButton({ battlePk }) {
   );
 }
 
-// if battle winner is not null
 function BattleWinner({ winner }) {
+  if (!winner) {
+    return <div />;
+  }
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Winner</h5>
@@ -44,14 +47,16 @@ function BattleWinner({ winner }) {
   );
 }
 
-function BattleInformation({ battle }) {
+function BattleInformation({ battle, user }) {
   // main component
-  // const { creator, opponent } = battle;
+  const { creator, opponent, winner } = battle;
+  console.log(user);
   return (
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
-      {/* <BattlePlayers creator={creator.email} opponent={opponent.email} /> */}
+      <BattlePlayers creator={creator.email} opponent={opponent.email} />
+      <BattleWinner winner={get(winner, 'email')} />
     </div>
   );
 }
@@ -75,6 +80,7 @@ FightBackButton.propTypes = {
 
 BattleInformation.propTypes = {
   battle: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 export default BattleInformation;
