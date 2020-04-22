@@ -58,11 +58,12 @@ function BattleMatchesInformation({ creatorTeam, opponentTeam, winners }) {
 
 function BattleInfoDetails({ battle, user }) {
   const { creator, opponent, winner } = battle;
+  const showingCondition = user.email === creator.email || winner;
 
   return (
     <div className="content">
-      {winner ? <h4>Battle #{battle.id} Details</h4> : <div />}
-      {user === battle.creator || winner ? (
+      {showingCondition ? <h4>Battle #{battle.id} Details</h4> : <div />}
+      {showingCondition ? (
         <BattlePlayerTeam player={creator} playerTeam={battle.creator_team} />
       ) : (
         <div />

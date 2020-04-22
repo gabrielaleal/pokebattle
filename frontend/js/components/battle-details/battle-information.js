@@ -2,6 +2,8 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import LargeButton from '../large-button';
+
 function BattleStatus({ status }) {
   return (
     <div className="battle-info-container">
@@ -18,19 +20,6 @@ function BattlePlayers({ creatorEmail, opponentEmail }) {
       <div className="subtitle">
         <span>{creatorEmail}</span> challenged <span>{opponentEmail}</span> on this battle!
       </div>
-    </div>
-  );
-}
-
-function FightBackButton({ battle, userEmail }) {
-  if (userEmail !== battle.opponent.email || battle.winner) {
-    return <div />;
-  }
-  return (
-    <div className="battle-team-container">
-      <a href={window.Urls['battles:selectTeam'](battle.id)}>
-        <div className="pk-btn">Fight back!</div>
-      </a>
     </div>
   );
 }
@@ -52,13 +41,19 @@ function BattleWinner({ winnerEmail }) {
 function BattleInformation({ battle, user }) {
   // main component
   const { creator, opponent, winner } = battle;
+  const fightBackURL = window.Urls['battles:selectTeam'](battle.id);
+
   return (
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
       <BattlePlayers creatorEmail={creator.email} opponentEmail={opponent.email} />
       <BattleWinner winnerEmail={get(winner, 'email')} />
-      <FightBackButton battle={battle} userEmail={user.email} />
+      {user.email === opponent.email && !winner ? (
+        <LargeButton text="Fight Back!" url={fightBackURL} />
+      ) : (
+        <div />
+      )}
     </div>
   );
 }
@@ -74,11 +69,6 @@ BattleStatus.propTypes = {
 BattlePlayers.propTypes = {
   creatorEmail: PropTypes.string.isRequired,
   opponentEmail: PropTypes.string.isRequired,
-};
-
-FightBackButton.propTypes = {
-  battle: PropTypes.object,
-  userEmail: PropTypes.string,
 };
 
 BattleInformation.propTypes = {
