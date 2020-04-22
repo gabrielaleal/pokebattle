@@ -1,4 +1,3 @@
-/* eslint-disable sonarjs/no-small-switch */
 import { GET_BATTLE_DETAILS } from '../actions';
 
 const defaultState = {
@@ -6,7 +5,7 @@ const defaultState = {
   isLoading: true,
 };
 
-const battle = (action, state = defaultState) => {
+const battle = (state = defaultState, action) => {
   // take the actual state and update it based on the action
   switch (action.type) {
     case GET_BATTLE_DETAILS:

@@ -9,14 +9,14 @@ import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
   componentDidMount() {
-    const { computedMatch, loadBattle } = this.props;
+    const { computedMatch, getBattleDetails } = this.props;
     const battlePk = computedMatch.params.pk;
-    loadBattle(battlePk);
+    getBattleDetails(battlePk);
   }
 
   render() {
-    const { isLoading, battle } = this.state;
-    const { user } = this.props;
+    const { store, user } = this.props;
+    const { isLoading, battle } = store;
 
     return (
       <div className="pk-container battle-detail">
@@ -35,17 +35,19 @@ class BattleDetails extends React.Component {
 }
 
 BattleDetails.propTypes = {
-  loadBattle: PropTypes.func.isRequired,
   computedMatch: PropTypes.object,
-  user: PropTypes.object,
+  getBattleDetails: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return state.battle;
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  loadBattle: (battlePk) => dispatch(getBattleDetails(battlePk)),
+const mapStateToProps = (state) => ({
+  store: state.battle,
+  user: state.user.data,
 });
+
+const mapDispatchToProps = {
+  getBattleDetails,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
