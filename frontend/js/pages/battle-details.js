@@ -1,28 +1,17 @@
-import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
+import { getBattleDetails } from '../actions/battle-details';
 import BattleInfoDetails from '../components/battle-details/battle-info-details';
 import BattleInformation from '../components/battle-details/battle-information';
 import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battle: {},
-      isLoading: true,
-    };
-  }
-
   componentDidMount() {
-    const { computedMatch } = this.props;
+    const { computedMatch, loadBattle } = this.props;
     const battlePk = computedMatch.params.pk;
-    const url = window.Urls['api:battleDetail'](battlePk);
-    axios.get(url).then((res) => {
-      this.setState({ battle: res.data, isLoading: false });
-      return res.data;
-    });
+    loadBattle(battlePk);
   }
 
   render() {
@@ -46,8 +35,17 @@ class BattleDetails extends React.Component {
 }
 
 BattleDetails.propTypes = {
+  loadBattle: PropTypes.func.isRequired,
   computedMatch: PropTypes.object,
   user: PropTypes.object,
 };
 
-export default BattleDetails;
+const mapStateToProps = (state) => {
+  return state.battle;
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  loadBattle: (battlePk) => dispatch(getBattleDetails(battlePk)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
