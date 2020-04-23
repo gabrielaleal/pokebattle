@@ -7,11 +7,12 @@ import { getUserData } from './actions/user-details';
 import Loading from './components/loading';
 import Navbar from './components/navbar';
 import BattleDetails from './pages/battle-details';
+import SettledBattlesList from './pages/settled-battles-list';
 
 class App extends React.Component {
   componentDidMount() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.props.getUserData();
+    const { getUserData } = this.props;
+    getUserData();
   }
 
   render() {
@@ -27,6 +28,7 @@ class App extends React.Component {
           <Navbar user={user} />
           <div className="block-body">
             <Switch>
+              <SettledBattlesList path="/battles/settled-battles/" />
               <BattleDetails path="/battles/:pk/" user={user} />
             </Switch>
           </div>

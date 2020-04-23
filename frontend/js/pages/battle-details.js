@@ -22,7 +22,7 @@ class BattleDetails extends React.Component {
     return (
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
-        {isLoading || !user ? (
+        {isLoading ? (
           <Loading />
         ) : (
           <>
