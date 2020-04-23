@@ -2,8 +2,8 @@ import { GET_BATTLE_DETAILS, GET_SETTLED_BATTLES_LIST, GET_ONGOING_BATTLES_LIST 
 
 const defaultState = {
   battle: {},
-  settledBattlesList: {},
-  ongoingBattlesList: {},
+  settledBattlesList: [],
+  ongoingBattlesList: [],
   isLoading: true,
 };
 

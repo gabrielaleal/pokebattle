@@ -42,6 +42,13 @@ class SettledBattlesList extends React.Component {
       <div className="pk-container battle-detail">
         <PageTitle title="Settled Battles" />
         <div className="content">
+          {battles.length === 0 ? (
+            <div className="no-battles">
+              <h4>Ops, there are no battles yet!</h4>
+            </div>
+          ) : (
+            <div />
+          )}
           <div className="battle-list">
             {Object.keys(battles).map((key) => (
               <SettledBattleItem key={battles[key].id} battle={battles[key]} />
@@ -54,7 +61,7 @@ class SettledBattlesList extends React.Component {
 }
 
 SettledBattlesList.propTypes = {
-  battles: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  battles: PropTypes.array,
   getSettledBattlesList: PropTypes.func,
 };
 

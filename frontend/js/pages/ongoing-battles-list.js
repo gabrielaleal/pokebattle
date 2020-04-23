@@ -7,10 +7,7 @@ import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/loading';
 import PageTitle from '../components/title';
 
-function BattleWaitingForMeItem({ battle, userEmail }) {
-  if (battle.creator.email === userEmail) {
-    return <div />;
-  }
+function BattleWaitingForMeItem({ battle }) {
   return (
     <a href={window.Urls['battles:battleDetail'](battle.id)}>
       <div className="list-item">
@@ -27,10 +24,7 @@ function BattleWaitingForMeItem({ battle, userEmail }) {
   );
 }
 
-function BattleWaitingForMyOpponentItem({ battle, userEmail }) {
-  if (battle.opponent.email === userEmail) {
-    return <div />;
-  }
+function BattleWaitingForMyOpponentItem({ battle }) {
   return (
     <a href={window.Urls['battles:battleDetail'](battle.id)}>
       <div className="list-item">
@@ -59,7 +53,10 @@ class OngoingBattlesList extends React.Component {
   render() {
     const { battles, user } = this.props;
 
-    console.log(battles);
+    const battlesWaitingForMe = battles.filter((battle) => battle.opponent.email === user.email);
+    const battlesWaitingForOpponent = battles.filter(
+      (battle) => battle.creator.email === user.email
+    );
 
     if (!battles) {
       return <Loading />;
@@ -71,21 +68,33 @@ class OngoingBattlesList extends React.Component {
         <div className="content">
           <div className="battle-list">
             <h4>Battles waiting for me</h4>
-            {Object.keys(battles).map((key) => (
+            {battlesWaitingForMe.length === 0 ? (
+              <div className="no-battles">
+                <div>Ops, there are no battles yet!</div>
+              </div>
+            ) : (
+              <div />
+            )}
+            {Object.keys(battlesWaitingForMe).map((key) => (
               <BattleWaitingForMeItem
-                key={battles[key].id}
-                battle={battles[key]}
-                userEmail={user.email}
+                key={battlesWaitingForMe[key].id}
+                battle={battlesWaitingForMe[key]}
               />
             ))}
           </div>
           <div className="battle-list">
             <h4>Battles waiting for my opponent</h4>
-            {Object.keys(battles).map((key) => (
+            {battlesWaitingForOpponent.length === 0 ? (
+              <div className="no-battles">
+                <div>Ops, there are no battles yet!</div>
+              </div>
+            ) : (
+              <div />
+            )}
+            {Object.keys(battlesWaitingForOpponent).map((key) => (
               <BattleWaitingForMyOpponentItem
-                key={battles[key].id}
-                battle={battles[key]}
-                userEmail={user.email}
+                key={battlesWaitingForOpponent[key].id}
+                battle={battlesWaitingForOpponent[key]}
               />
             ))}
           </div>
@@ -97,18 +106,16 @@ class OngoingBattlesList extends React.Component {
 
 OngoingBattlesList.propTypes = {
   user: PropTypes.object.isRequired,
-  battles: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  battles: PropTypes.array,
   getOngoingBattlesList: PropTypes.func,
 };
 
 BattleWaitingForMeItem.propTypes = {
   battle: PropTypes.object,
-  userEmail: PropTypes.string.isRequired,
 };
 
 BattleWaitingForMyOpponentItem.propTypes = {
   battle: PropTypes.object,
-  userEmail: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
