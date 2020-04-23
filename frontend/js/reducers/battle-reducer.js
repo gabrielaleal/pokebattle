@@ -11,7 +11,7 @@ const battle = (state = defaultState, action) => {
     case GET_BATTLE_DETAILS:
       return {
         ...state,
-        battle: action.payload.results,
+        battle: action.payload,
         isLoading: false,
       };
     default:

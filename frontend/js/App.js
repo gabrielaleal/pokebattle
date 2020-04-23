@@ -3,7 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
-import { getUserData } from './actions/user';
+import { getUserData } from './actions/user-details';
+import Loading from './components/loading';
 import Navbar from './components/navbar';
 import BattleDetails from './pages/battle-details';
 
@@ -15,6 +16,10 @@ class App extends React.Component {
 
   render() {
     const { user } = this.props;
+
+    if (!user) {
+      return <Loading />;
+    }
 
     return (
       <BrowserRouter>

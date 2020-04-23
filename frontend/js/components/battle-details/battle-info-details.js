@@ -15,7 +15,6 @@ function PokemonFromTeam({ pokemon }) {
 }
 
 function BattlePlayerTeam({ player, playerTeam }) {
-  Object.keys(playerTeam).map((pokemon) => console.log(playerTeam[pokemon].id));
   return (
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>

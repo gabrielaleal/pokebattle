@@ -9,7 +9,7 @@ const user = (state = defaultState, action) => {
     case GET_USER_DATA:
       return {
         ...state,
-        data: action.payload.results,
+        data: action.payload,
       };
     default:
       return state;
