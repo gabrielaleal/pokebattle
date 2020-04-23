@@ -17,7 +17,7 @@ export function getSettledBattlesList() {
 }
 
 export function getOngoingBattlesList() {
-  const url = window.Urls['api:settledBattlesList'];
+  const url = window.Urls['api:ongoingBattlesList']();
   const ongoingBattles = axios
     .get(url)
     .then((res) => res.data)

@@ -7,6 +7,7 @@ import { getUserData } from './actions/user-details';
 import Loading from './components/loading';
 import Navbar from './components/navbar';
 import BattleDetails from './pages/battle-details';
+import OngoingBattlesList from './pages/ongoing-battles-list';
 import SettledBattlesList from './pages/settled-battles-list';
 
 class App extends React.Component {
@@ -29,6 +30,7 @@ class App extends React.Component {
           <div className="block-body">
             <Switch>
               <SettledBattlesList path="/battles/settled-battles/" />
+              <OngoingBattlesList path="/battles/ongoing-battles/" />
               <BattleDetails path="/battles/:pk/" user={user} />
             </Switch>
           </div>
