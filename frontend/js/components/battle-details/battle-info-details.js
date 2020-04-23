@@ -33,22 +33,14 @@ function BattleMatchesInformation({ creatorTeam, opponentTeam, winners }) {
       <h5 className="pokemon-font">Matches</h5>
       <div className="match">
         {Object.keys(creatorTeam).map((key, index) => (
-          <>
+          <div key={creatorTeam[key].id}>
             <h6 className="pokemon-font">Round #{index + 1}</h6>
             <div className="round-info-container">
-              <PokemonCard
-                key={creatorTeam[key].id}
-                pokemon={creatorTeam[key]}
-                winner={winners[index]}
-              />
+              <PokemonCard pokemon={creatorTeam[key]} winner={winners[index]} />
               <div className="vs pokemon-font">VS</div>
-              <PokemonCard
-                key={opponentTeam[key].id}
-                pokemon={opponentTeam[key]}
-                winner={winners[index]}
-              />
+              <PokemonCard pokemon={opponentTeam[key]} winner={winners[index]} />
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>
