@@ -2,6 +2,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/loading';
@@ -9,7 +10,7 @@ import PageTitle from '../components/title';
 
 function BattleWaitingForMeItem({ battle }) {
   return (
-    <a href={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
       <div className="list-item">
         <div>
           <h6 className="pokemon-font">Battle #{battle.id}</h6>
@@ -20,13 +21,13 @@ function BattleWaitingForMeItem({ battle }) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
 function BattleWaitingForMyOpponentItem({ battle }) {
   return (
-    <a href={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
       <div className="list-item">
         <div>
           <h6 className="pokemon-font">Battle #{battle.id}</h6>
@@ -40,7 +41,7 @@ function BattleWaitingForMyOpponentItem({ battle }) {
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }
 
