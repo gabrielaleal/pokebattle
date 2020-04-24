@@ -7,6 +7,7 @@ from .battles.endpoints import (
     SelectOpponentTeamEndpoint,
     SettledBattlesListEndpoint,
 )
+from .users.endpoints import UserAuthenticatedEndpoint
 
 
 urlpatterns = [
@@ -20,4 +21,6 @@ urlpatterns = [
     url(r"^battles/settled/$", SettledBattlesListEndpoint.as_view(), name="settled-battles-list"),
     url(r"^battles/ongoing/$", OngoingBattlesListEndpoint.as_view(), name="ongoing-battles-list"),
     url(r"^battles/(?P<pk>[-\w]+)/$", BattleDetailEndpoint.as_view(), name="battle-detail"),
+    # users urls
+    url(r"^users/authenticated/$", UserAuthenticatedEndpoint.as_view(), name="user-authenticated"),
 ]

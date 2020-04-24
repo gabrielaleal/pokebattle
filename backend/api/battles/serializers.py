@@ -1,8 +1,10 @@
 from rest_framework import serializers
 
+from api.pokemon.serializers import PokemonSerializer, PokemonWinnerSerializer
 from api.users.serializers import UserSerializer
 from battles.models import Battle, BattleTeam
 from battles.tasks import run_battle_and_send_result_email
+from battles.utils.battle import get_round_winner
 from battles.utils.email import send_opponent_battle_invitation_email
 from pokemon.helpers import (
     are_pokemon_positions_repeated,
@@ -40,6 +42,83 @@ class BattleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Battle
         fields = "__all__"
+
+
+class BattleTeamSerializer(serializers.ModelSerializer):
+    pokemon_1 = PokemonSerializer()
+    pokemon_2 = PokemonSerializer()
+    pokemon_3 = PokemonSerializer()
+
+    class Meta:
+        model = BattleTeam
+        fields = ("pokemon_1", "pokemon_2", "pokemon_3")
+
+
+class BattleDetailsSerializer(serializers.ModelSerializer):
+    creator_team = serializers.SerializerMethodField()
+    opponent_team = serializers.SerializerMethodField()
+    matches_winners = serializers.SerializerMethodField()
+    creator = UserSerializer()
+    opponent = UserSerializer()
+    winner = UserSerializer()
+
+    def get_creator_team(self, obj):
+        team = BattleTeam.objects.filter(battle=obj, creator=obj.creator).first()
+        # if the creator team doesn't exist yet, just return user data
+        if not team:
+            return {}
+        # if it exists, return the battle team data (which also has the creator information)
+        serializer = BattleTeamSerializer(instance=team)
+        return serializer.data
+
+    def get_opponent_team(self, obj):
+        team = BattleTeam.objects.filter(battle=obj, creator=obj.opponent).first()
+        if not team:
+            return {}
+        serializer = BattleTeamSerializer(instance=team)
+        return serializer.data
+
+    def get_matches_winners(self, obj):
+        if obj.status == "ONGOING":
+            return {}
+        creator_team = BattleTeam.objects.filter(battle=obj, creator=obj.creator).first()
+        opponent_team = BattleTeam.objects.filter(battle=obj, creator=obj.opponent).first()
+        creator_team_pokemon = [
+            creator_team.pokemon_1,
+            creator_team.pokemon_2,
+            creator_team.pokemon_3,
+        ]
+        opponent_team_pokemon = [
+            opponent_team.pokemon_1,
+            opponent_team.pokemon_2,
+            opponent_team.pokemon_3,
+        ]
+
+        winners = []
+
+        for creator_pokemon, opponent_pokemon, position in zip(
+            creator_team_pokemon, opponent_team_pokemon, [1, 2, 3]
+        ):
+            winner = get_round_winner(creator_pokemon, opponent_pokemon)
+            serializer = PokemonWinnerSerializer(instance=winner)
+            data = serializer.data
+            data["position"] = position
+            winners.append(data)
+        return winners
+
+    class Meta:
+        model = Battle
+        fields = (
+            "timestamp",
+            "status",
+            "creator",
+            "creator_team",
+            "opponent_team",
+            "opponent",
+            "winner",
+            "matches_winners",
+            "id",
+        )
 
 
 class CreateBattleSerializer(SelectTeamSerializerMixin):
