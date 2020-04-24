@@ -16,8 +16,6 @@ class App extends React.Component {
 
   componentDidMount() {
     const url = window.Urls['api:userAuthenticated']();
-    this.setState({ user: { name: 'gabriela' } });
-    console.log(url);
     axios.get(url).then((res) => {
       this.setState({ user: res.data });
       return res.data;
