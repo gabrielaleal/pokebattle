@@ -17,7 +17,7 @@ from .utils.email import send_opponent_battle_invitation_email
 
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
-    template_name = "create_battle.html"
+    template_name = "battles/create_battle.html"
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
 
@@ -54,7 +54,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 
 
 class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
-    template_name = "select_opponent_team.html"
+    template_name = "battles/select_opponent_team.html"
     model = BattleTeam
     form_class = SelectOpponentTeamForm
 
@@ -94,7 +94,7 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
 
 
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
-    template_name = "settled_battles_list.html"
+    template_name = "battles/settled_battles_list.html"
     model = Battle
 
     def get_queryset(self):
@@ -105,7 +105,7 @@ class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
 
 
 class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
-    template_name = "on_going_battles_list.html"
+    template_name = "battles/on_going_battles_list.html"
     model = Battle
 
     def get_context_data(self, **kwargs):
@@ -124,7 +124,8 @@ class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
 
 
 class BattleDetailView(LoginRequiredMixin, generic.DetailView):
-    template_name = "battle_details.html"
+    # template_name = "battles/battle_details.html"
+    template_name = "react_templates/battle_details.html"
     model = Battle
 
     def get_context_data(self, **kwargs):

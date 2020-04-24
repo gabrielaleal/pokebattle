@@ -33,7 +33,7 @@ npm-debug.log
 *.map
 
 # General
-/poke-battle/
+/venv/
 /output/
 /cache/
 boilerplate.zip
