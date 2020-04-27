@@ -1,3 +1,4 @@
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -16,13 +17,12 @@ class BattleDetails extends React.Component {
   }
 
   render() {
-    const { store, user } = this.props;
-    const { isLoading, battle } = store;
+    const { isLoading, battle, user } = this.props;
 
     return (
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
-        {isLoading || !user ? (
+        {isLoading && isEmpty(user) ? (
           <Loading />
         ) : (
           <>
@@ -39,11 +39,13 @@ BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
   getBattleDetails: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  store: PropTypes.object.isRequired,
+  battle: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => ({
-  store: state.battle,
+  isLoading: state.battle.loading.details,
+  battle: state.battle.battle,
   user: state.user.data,
 });
 

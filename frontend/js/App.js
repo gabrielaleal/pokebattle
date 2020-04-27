@@ -10,8 +10,8 @@ import BattleDetails from './pages/battle-details';
 
 class App extends React.Component {
   componentDidMount() {
-    // eslint-disable-next-line react/destructuring-assignment
-    this.props.getUserData();
+    const { getUserData } = this.props;
+    getUserData();
   }
 
   render() {

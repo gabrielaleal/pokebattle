@@ -2,7 +2,10 @@ import { GET_BATTLE_DETAILS } from '../actions';
 
 const defaultState = {
   battle: {},
-  isLoading: true,
+  loading: {
+    list: true,
+    details: true,
+  },
 };
 
 const battle = (state = defaultState, action) => {
@@ -12,11 +15,16 @@ const battle = (state = defaultState, action) => {
       return {
         ...state,
         battle: action.payload,
-        isLoading: false,
+        loading: toggleLoading(state.loading, 'details'),
       };
     default:
       return state;
   }
 };
+
+const toggleLoading = (loading, section) => ({
+  ...loading,
+  [section]: !loading.section,
+});
 
 export default battle;

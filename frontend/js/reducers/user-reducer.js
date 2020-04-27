@@ -1,7 +1,7 @@
 import { GET_USER_DATA } from '../actions';
 
 const defaultState = {
-  user: {},
+  data: {},
 };
 
 const user = (state = defaultState, action) => {
