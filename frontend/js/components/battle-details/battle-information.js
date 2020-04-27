@@ -47,9 +47,9 @@ function BattleInformation({ battle, user }) {
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
-      <BattlePlayers creatorEmail={creator.email} opponentEmail={opponent.email} />
+      <BattlePlayers creatorEmail={get(creator, 'email')} opponentEmail={get(opponent, 'email')} />
       <BattleWinner winnerEmail={get(winner, 'email')} />
-      {user.email === opponent.email && !winner ? (
+      {get(user, 'email') === get(opponent, 'email') && !winner ? (
         <LargeButton text="Fight Back!" url={fightBackURL} />
       ) : (
         <div />
@@ -67,13 +67,13 @@ BattleStatus.propTypes = {
 };
 
 BattlePlayers.propTypes = {
-  creatorEmail: PropTypes.string.isRequired,
-  opponentEmail: PropTypes.string.isRequired,
+  creatorEmail: PropTypes.string,
+  opponentEmail: PropTypes.string,
 };
 
 BattleInformation.propTypes = {
-  battle: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  battle: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default BattleInformation;

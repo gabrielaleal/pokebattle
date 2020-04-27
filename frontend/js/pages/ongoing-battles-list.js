@@ -51,16 +51,16 @@ class OngoingBattlesList extends React.Component {
   }
 
   render() {
-    const { battles, user } = this.props;
+    const { battles, user, isLoading } = this.props;
+
+    if (isLoading) {
+      return <Loading />;
+    }
 
     const battlesWaitingForMe = battles.filter((battle) => battle.opponent.email === user.email);
     const battlesWaitingForOpponent = battles.filter(
       (battle) => battle.creator.email === user.email
     );
-
-    if (!battles) {
-      return <Loading />;
-    }
 
     return (
       <div className="pk-container ongoing-battles">
@@ -107,6 +107,7 @@ class OngoingBattlesList extends React.Component {
 OngoingBattlesList.propTypes = {
   user: PropTypes.object.isRequired,
   battles: PropTypes.array,
+  isLoading: PropTypes.bool,
   getOngoingBattlesList: PropTypes.func,
 };
 
@@ -121,6 +122,7 @@ BattleWaitingForMyOpponentItem.propTypes = {
 const mapStateToProps = (state) => ({
   battles: state.battle.ongoingBattlesList,
   user: state.user.data,
+  isLoading: state.battle.loading.list,
 });
 
 const mapDispatchToProps = {
