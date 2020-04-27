@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -52,7 +53,7 @@ function BattleInfoDetails({ battle, user }) {
 
   return (
     <div className="content">
-      {user.email === creator.email || winner ? (
+      {get(user, 'email') === get(creator, 'email') || winner ? (
         <>
           <h4>Battle #{battle.id} Details</h4>
           <BattlePlayerTeam player={creator} playerTeam={battle.creator_team} />
@@ -81,19 +82,19 @@ PokemonFromTeam.propTypes = {
 };
 
 BattlePlayerTeam.propTypes = {
-  player: PropTypes.object.isRequired,
-  playerTeam: PropTypes.object.isRequired,
+  player: PropTypes.object,
+  playerTeam: PropTypes.object,
 };
 
 BattleMatchesInformation.propTypes = {
-  creatorTeam: PropTypes.object.isRequired,
-  opponentTeam: PropTypes.object.isRequired,
-  winners: PropTypes.array.isRequired,
+  creatorTeam: PropTypes.object,
+  opponentTeam: PropTypes.object,
+  winners: PropTypes.array,
 };
 
 BattleInfoDetails.propTypes = {
-  battle: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  battle: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default BattleInfoDetails;

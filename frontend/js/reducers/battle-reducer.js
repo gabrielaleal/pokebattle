@@ -4,7 +4,10 @@ const defaultState = {
   battle: {},
   settledBattlesList: [],
   ongoingBattlesList: [],
-  isLoading: true,
+  loading: {
+    list: true,
+    details: true,
+  },
 };
 
 const battle = (state = defaultState, action) => {
@@ -13,23 +16,28 @@ const battle = (state = defaultState, action) => {
       return {
         ...state,
         battle: action.payload,
-        isLoading: false,
+        loading: toggleLoading(state.loading, 'details'),
       };
     case GET_SETTLED_BATTLES_LIST:
       return {
         ...state,
         settledBattlesList: action.payload,
-        isLoading: false,
+        loading: toggleLoading(state.loading, 'list'),
       };
     case GET_ONGOING_BATTLES_LIST:
       return {
         ...state,
         ongoingBattlesList: action.payload,
-        isLoading: false,
+        loading: toggleLoading(state.loading, 'list'),
       };
     default:
       return state;
   }
 };
+
+const toggleLoading = (loading, section) => ({
+  ...loading,
+  [section]: !loading.section,
+});
 
 export default battle;
