@@ -33,9 +33,9 @@ class SettledBattlesList extends React.Component {
   }
 
   render() {
-    const { battles } = this.props;
+    const { battles, isLoading } = this.props;
 
-    if (!battles) {
+    if (isLoading) {
       return <Loading />;
     }
 
@@ -63,6 +63,7 @@ class SettledBattlesList extends React.Component {
 
 SettledBattlesList.propTypes = {
   battles: PropTypes.array,
+  isLoading: PropTypes.bool,
   getSettledBattlesList: PropTypes.func,
 };
 
@@ -72,6 +73,7 @@ SettledBattleItem.propTypes = {
 
 const mapStateToProps = (state) => ({
   battles: state.battle.settledBattlesList,
+  isLoading: state.battle.loading.list,
 });
 
 const mapDispatchToProps = {

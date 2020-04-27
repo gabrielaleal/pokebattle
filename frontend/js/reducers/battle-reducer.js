@@ -37,7 +37,7 @@ const battle = (state = defaultState, action) => {
 
 const toggleLoading = (loading, section) => ({
   ...loading,
-  [section]: !loading.section,
+  [section]: false,
 });
 
 export default battle;
