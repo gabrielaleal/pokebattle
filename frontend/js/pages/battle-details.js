@@ -1,4 +1,5 @@
 import isEmpty from 'lodash/isEmpty';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -8,6 +9,7 @@ import BattleInfoDetails from '../components/battle-details/battle-info-details'
 import BattleInformation from '../components/battle-details/battle-information';
 import Loading from '../components/loading';
 import PageTitle from '../components/title';
+import { battle } from '../utils/schema';
 
 class BattleDetails extends React.Component {
   componentDidMount() {
@@ -18,6 +20,7 @@ class BattleDetails extends React.Component {
 
   render() {
     const { isLoading, battle, user } = this.props;
+    console.log('-> battle', battle);
 
     return (
       <div className="pk-container battle-detail">
@@ -43,11 +46,16 @@ BattleDetails.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => ({
-  isLoading: state.battle.loading.details,
-  battle: state.battle.battle,
-  user: state.user.data,
-});
+const mapStateToProps = (state) => {
+  const { battles } = state;
+  const denormalizedData = denormalize(battles.battle, battle, battles.entities);
+
+  return {
+    user: state.user.data,
+    isLoading: battles.loading.details,
+    battle: denormalizedData,
+  };
+};
 
 const mapDispatchToProps = {
   getBattleDetails,

@@ -83,12 +83,12 @@ PokemonFromTeam.propTypes = {
 
 BattlePlayerTeam.propTypes = {
   player: PropTypes.object,
-  playerTeam: PropTypes.object,
+  playerTeam: PropTypes.array,
 };
 
 BattleMatchesInformation.propTypes = {
-  creatorTeam: PropTypes.object,
-  opponentTeam: PropTypes.object,
+  creatorTeam: PropTypes.array,
+  opponentTeam: PropTypes.array,
   winners: PropTypes.array,
 };
 
