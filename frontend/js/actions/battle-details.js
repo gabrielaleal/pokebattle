@@ -22,4 +22,4 @@ const getBattleDetails = (battlePk) => {
   };
 };
 
-export { getBattleDetails };
+export default getBattleDetails;
