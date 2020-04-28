@@ -1,4 +1,7 @@
 import axios from 'axios';
+// import { normalize } from 'normalizr';
+
+// import { battle as battleSchema } from '../utils/schema';
 
 import { GET_BATTLE_DETAILS } from '.';
 
@@ -14,6 +17,8 @@ const getBattleDetails = (battlePk) => {
     axios
       .get(url)
       .then((res) => {
+        // const normalizedBattle = normalize(res.data, battleSchema);
+        // console.log('-> normalizedBattle', normalizedBattle);
         return dispatch(getBattleDetailsSuccess(res.data));
       })
       .catch((err) => {
