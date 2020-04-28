@@ -12,8 +12,8 @@ import SettledBattlesList from './pages/settled-battles-list';
 
 class App extends React.Component {
   componentDidMount() {
-    const { getUser } = this.props;
-    getUser();
+    const { getUserData } = this.props;
+    getUserData();
   }
 
   render() {
@@ -41,7 +41,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  getUser: PropTypes.func.isRequired,
+  getUserData: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
@@ -49,8 +49,8 @@ const mapStateToProps = (state) => ({
   user: state.user.data,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getUser: () => dispatch(getUserData()),
-});
+const mapDispatchToProps = {
+  getUserData,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
