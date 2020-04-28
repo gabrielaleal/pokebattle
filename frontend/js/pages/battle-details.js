@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getBattleDetails } from '../actions/battle-details';
+import getBattleDetails from '../actions/battle-details';
 import BattleInfoDetails from '../components/battle-details/battle-info-details';
 import BattleInformation from '../components/battle-details/battle-information';
 import Loading from '../components/loading';
