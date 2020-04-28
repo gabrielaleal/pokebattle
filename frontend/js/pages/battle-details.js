@@ -11,9 +11,9 @@ import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
   componentDidMount() {
-    const { computedMatch, getBattleDetails } = this.props;
+    const { computedMatch, getBattle } = this.props;
     const battlePk = computedMatch.params.pk;
-    getBattleDetails(battlePk);
+    getBattle(battlePk);
   }
 
   render() {
@@ -37,7 +37,7 @@ class BattleDetails extends React.Component {
 
 BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
-  getBattleDetails: PropTypes.func.isRequired,
+  getBattle: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   battle: PropTypes.object.isRequired,
   isLoading: PropTypes.bool,
@@ -49,8 +49,8 @@ const mapStateToProps = (state) => ({
   user: state.user.data,
 });
 
-const mapDispatchToProps = {
-  getBattleDetails,
-};
+const mapDispatchToProps = (dispatch) => ({
+  getBattle: (battlePk) => dispatch(getBattleDetails(battlePk)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
