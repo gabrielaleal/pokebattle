@@ -3,15 +3,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
-import { getUserData } from './actions/user-details';
+import getUserData from './actions/user-details';
 import Loading from './components/loading';
 import Navbar from './components/navbar';
 import BattleDetails from './pages/battle-details';
 
 class App extends React.Component {
   componentDidMount() {
-    const { getUserData } = this.props;
-    getUserData();
+    const { getUser } = this.props;
+    getUser();
   }
 
   render() {
@@ -37,7 +37,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-  getUserData: PropTypes.func.isRequired,
+  getUser: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
 };
 
@@ -45,8 +45,8 @@ const mapStateToProps = (state) => ({
   user: state.user.data,
 });
 
-const mapDispatchToProps = {
-  getUserData,
-};
+const mapDispatchToProps = (dispatch) => ({
+  getUser: () => dispatch(getUserData()),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

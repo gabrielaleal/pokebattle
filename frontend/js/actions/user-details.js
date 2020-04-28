@@ -2,16 +2,24 @@ import axios from 'axios';
 
 import { GET_USER_DATA } from '.';
 
+const getUserDataSuccess = (user) => ({
+  type: GET_USER_DATA,
+  payload: user,
+});
+
 // action creators
-export function getUserData() {
-  const url = window.Urls['api:userAuthenticated']();
-  const user = axios
-    .get(url)
-    .then((res) => res.data)
-    .catch((err) => new Error(err));
-  // since I'm using the middleware, it waits until "battle" gets the data to dispatch the action
-  return {
-    type: GET_USER_DATA,
-    payload: user,
+const getUserData = () => {
+  return (dispatch) => {
+    const url = window.Urls['api:userAuthenticated']();
+    axios
+      .get(url)
+      .then((res) => {
+        return dispatch(getUserDataSuccess(res.data));
+      })
+      .catch((err) => {
+        throw new Error(err);
+      });
   };
-}
+};
+
+export default getUserData;
