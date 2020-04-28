@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { getBattleDetails } from '../actions/battle-details';
+import getBattleDetails from '../actions/battle-details';
 import BattleInfoDetails from '../components/battle-details/battle-info-details';
 import BattleInformation from '../components/battle-details/battle-information';
 import Loading from '../components/loading';
@@ -11,9 +11,9 @@ import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
   componentDidMount() {
-    const { computedMatch, getBattle } = this.props;
+    const { computedMatch, getBattleDetails } = this.props;
     const battlePk = computedMatch.params.pk;
-    getBattle(battlePk);
+    getBattleDetails(battlePk);
   }
 
   render() {
@@ -37,7 +37,7 @@ class BattleDetails extends React.Component {
 
 BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
-  getBattle: PropTypes.func.isRequired,
+  getBattleDetails: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   battle: PropTypes.object.isRequired,
   isLoading: PropTypes.bool,
@@ -49,8 +49,8 @@ const mapStateToProps = (state) => ({
   user: state.user.data,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  getBattle: (battlePk) => dispatch(getBattleDetails(battlePk)),
-});
+const mapDispatchToProps = {
+  getBattleDetails,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
