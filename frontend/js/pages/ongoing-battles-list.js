@@ -1,4 +1,6 @@
+import get from 'lodash/get';
 import moment from 'moment';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -7,10 +9,11 @@ import { Link } from 'react-router-dom';
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/loading';
 import PageTitle from '../components/title';
+import { battleListSchema } from '../utils/schema';
 
 function BattleWaitingForMeItem({ battle }) {
   return (
-    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={{ pathname: `/battles/${battle.id}/`, state: { battle } }}>
       <div className="list-item">
         <div>
           <h6 className="pokemon-font">Battle #{battle.id}</h6>
@@ -27,7 +30,7 @@ function BattleWaitingForMeItem({ battle }) {
 
 function BattleWaitingForMyOpponentItem({ battle }) {
   return (
-    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={{ pathname: `/battles/${battle.id}/`, state: { battle } }}>
       <div className="list-item">
         <div>
           <h6 className="pokemon-font">Battle #{battle.id}</h6>
@@ -53,14 +56,16 @@ class OngoingBattlesList extends React.Component {
 
   render() {
     const { battles, user, isLoading } = this.props;
-
+    console.log(battles);
     if (isLoading) {
       return <Loading />;
     }
 
-    const battlesWaitingForMe = battles.filter((battle) => battle.opponent.email === user.email);
+    const battlesWaitingForMe = battles.filter(
+      (battle) => get(battle.opponent, 'email') === user.email
+    );
     const battlesWaitingForOpponent = battles.filter(
-      (battle) => battle.creator.email === user.email
+      (battle) => get(battle.creator, 'email') === user.email
     );
 
     return (
@@ -120,11 +125,20 @@ BattleWaitingForMyOpponentItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  battles: state.battle.ongoingBattlesList,
-  user: state.user.data,
-  isLoading: state.battle.loading.list,
-});
+const mapStateToProps = (state) => {
+  const { battles } = state;
+  const denormalizedData = denormalize(
+    battles.ongoingBattlesList,
+    battleListSchema,
+    battles.entities
+  );
+
+  return {
+    isLoading: battles.loading.list,
+    battles: denormalizedData,
+    user: state.user.data,
+  };
+};
 
 const mapDispatchToProps = {
   getOngoingBattlesList,

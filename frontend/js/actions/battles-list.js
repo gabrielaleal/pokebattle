@@ -1,15 +1,20 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+
+import { battleListSchema } from '../utils/schema';
 
 import { GET_SETTLED_BATTLES_LIST, GET_ONGOING_BATTLES_LIST } from '.';
 
-const getSettledBattlesSuccess = (battles) => ({
+const getSettledBattlesSuccess = (battles, entities) => ({
   type: GET_SETTLED_BATTLES_LIST,
-  payload: battles,
+  battles,
+  entities,
 });
 
-const getOngoingBattlesSuccess = (battles) => ({
+const getOngoingBattlesSuccess = (battles, entities) => ({
   type: GET_ONGOING_BATTLES_LIST,
-  payload: battles,
+  battles,
+  entities,
 });
 
 // action creators
@@ -19,7 +24,10 @@ const getSettledBattlesList = () => {
     axios
       .get(url)
       .then((res) => {
-        return dispatch(getSettledBattlesSuccess(res.data));
+        const normalizedList = normalize(res.data, battleListSchema);
+        const { users, battle } = normalizedList.entities;
+        const battles = normalizedList.result;
+        return dispatch(getSettledBattlesSuccess(battles, { users, battle }));
       })
       .catch((err) => {
         throw new Error(err);
@@ -33,7 +41,10 @@ const getOngoingBattlesList = () => {
     axios
       .get(url)
       .then((res) => {
-        return dispatch(getOngoingBattlesSuccess(res.data));
+        const normalizedList = normalize(res.data, battleListSchema);
+        const { users, battle } = normalizedList.entities;
+        const battles = normalizedList.result;
+        return dispatch(getOngoingBattlesSuccess(battles, { users, battle }));
       })
       .catch((err) => {
         throw new Error(err);

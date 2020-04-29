@@ -1,3 +1,4 @@
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -6,10 +7,11 @@ import { Link } from 'react-router-dom';
 import { getSettledBattlesList } from '../actions/battles-list';
 import Loading from '../components/loading';
 import PageTitle from '../components/title';
+import { battleListSchema } from '../utils/schema';
 
 function SettledBattleItem({ battle }) {
   return (
-    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={{ pathname: `/battles/${battle.id}/`, state: { battle } }}>
       <div className="list-item settled-battle-item">
         <div>
           <h6 className="pokemon-font">Battle #{battle.id}</h6>
@@ -71,10 +73,19 @@ SettledBattleItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  battles: state.battle.settledBattlesList,
-  isLoading: state.battle.loading.list,
-});
+const mapStateToProps = (state) => {
+  const { battles } = state;
+  const denormalizedData = denormalize(
+    battles.settledBattlesList,
+    battleListSchema,
+    battles.entities
+  );
+
+  return {
+    isLoading: battles.loading.list,
+    battles: denormalizedData,
+  };
+};
 
 const mapDispatchToProps = {
   getSettledBattlesList,

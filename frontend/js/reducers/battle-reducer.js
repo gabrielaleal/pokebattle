@@ -23,13 +23,15 @@ const battles = (state = defaultState, action) => {
     case GET_SETTLED_BATTLES_LIST:
       return {
         ...state,
-        settledBattlesList: action.payload,
+        settledBattlesList: action.battles,
+        entities: action.entities,
         loading: toggleLoading(state.loading, 'list'),
       };
     case GET_ONGOING_BATTLES_LIST:
       return {
         ...state,
-        ongoingBattlesList: action.payload,
+        ongoingBattlesList: action.battles,
+        entities: action.entities,
         loading: toggleLoading(state.loading, 'list'),
       };
     default:

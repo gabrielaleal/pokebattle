@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { normalize } from 'normalizr';
 
-import { battle as battleSchema } from '../utils/schema';
+import { battleSchema } from '../utils/schema';
 
 import { GET_BATTLE_DETAILS } from '.';
 
