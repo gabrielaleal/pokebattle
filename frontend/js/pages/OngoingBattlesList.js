@@ -26,6 +26,7 @@ const BattleWaitingForMeItem = ({ battle }) => {
 
 const BattleWaitingForMyOpponentItem = ({ battle }) => {
   const { id: battleId, creator, opponent, timestamp } = battle;
+  const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
     <a href={window.Urls['battles:battleDetail'](battleId)}>
@@ -35,8 +36,7 @@ const BattleWaitingForMyOpponentItem = ({ battle }) => {
           <span className="list-attribute">Players</span> {creator.email} VS {opponent.email}
         </div>
         <div>
-          <span className="list-attribute">Battle created on</span> {moment(timestamp).format('L')}{' '}
-          at {moment(timestamp).format('LT')}
+          <span className="list-attribute">Battle created on</span> {formattedTimestamp}
         </div>
       </div>
     </a>
