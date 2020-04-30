@@ -84,8 +84,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {
-  getSettledBattlesList,
+// const mapDispatchToProps = {
+//   getSettledBattlesList,
+// };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getSettledBattlesList: () => dispatch(getSettledBattlesList()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettledBattlesList);

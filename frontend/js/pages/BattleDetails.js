@@ -18,6 +18,8 @@ class BattleDetails extends React.Component {
     getBattleDetails(battlePk);
   }
 
+  // try componentWillReceiveProps
+
   render() {
     const { isLoading, battle, user } = this.props;
 
@@ -56,8 +58,14 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = {
-  getBattleDetails,
+// const mapDispatchToProps = {
+//   getBattleDetails,
+// };
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBattleDetails: (battlePk) => dispatch(getBattleDetails(battlePk)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
