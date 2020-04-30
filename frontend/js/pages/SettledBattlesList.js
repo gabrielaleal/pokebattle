@@ -6,7 +6,7 @@ import { getSettledBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
 
-function SettledBattleItem({ battle }) {
+const SettledBattleItem = ({ battle }) => {
   const { id: battleId, creator, opponent, winner } = battle;
 
   return (
@@ -22,7 +22,7 @@ function SettledBattleItem({ battle }) {
       </div>
     </a>
   );
-}
+};
 
 class SettledBattlesList extends React.Component {
   componentDidMount() {

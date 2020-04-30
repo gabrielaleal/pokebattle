@@ -4,16 +4,16 @@ import React from 'react';
 
 import LargeButton from '../LargeButton';
 
-function BattleStatus({ status }) {
+const BattleStatus = ({ status }) => {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Status</h5>
       <div className="subtitle pokemon-font">{status}!</div>
     </div>
   );
-}
+};
 
-function BattlePlayers({ creatorEmail, opponentEmail }) {
+const BattlePlayers = ({ creatorEmail, opponentEmail }) => {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Players</h5>
@@ -22,9 +22,9 @@ function BattlePlayers({ creatorEmail, opponentEmail }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleWinner({ winnerEmail }) {
+const BattleWinner = ({ winnerEmail }) => {
   if (!winnerEmail) {
     return <div />;
   }
@@ -36,9 +36,9 @@ function BattleWinner({ winnerEmail }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleInformation({ battle, user }) {
+const BattleInformation = ({ battle, user }) => {
   // main component
   const { creator, opponent, winner } = battle;
   const fightBackURL = window.Urls['battles:selectTeam'](battle.id);
@@ -56,7 +56,7 @@ function BattleInformation({ battle, user }) {
       )}
     </div>
   );
-}
+};
 
 BattleWinner.propTypes = {
   winnerEmail: PropTypes.string,

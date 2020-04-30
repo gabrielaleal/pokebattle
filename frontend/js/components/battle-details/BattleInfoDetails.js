@@ -4,7 +4,7 @@ import React from 'react';
 
 import PokemonCard from './PokemonCard';
 
-function PokemonFromTeam({ pokemon }) {
+const PokemonFromTeam = ({ pokemon }) => {
   return (
     <div className="pokemon-info-container">
       <div className="pokemon-icon">
@@ -13,9 +13,9 @@ function PokemonFromTeam({ pokemon }) {
       <div className="pokemon-name">{pokemon.name}</div>
     </div>
   );
-}
+};
 
-function BattlePlayerTeam({ player, playerTeam }) {
+const BattlePlayerTeam = ({ player, playerTeam }) => {
   return (
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>
@@ -26,9 +26,9 @@ function BattlePlayerTeam({ player, playerTeam }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleMatchesInformation({ creatorTeam, opponentTeam, winners }) {
+const BattleMatchesInformation = ({ creatorTeam, opponentTeam, winners }) => {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Matches</h5>
@@ -46,9 +46,9 @@ function BattleMatchesInformation({ creatorTeam, opponentTeam, winners }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleInfoDetails({ battle, user }) {
+const BattleInfoDetails = ({ battle, user }) => {
   const { creator, opponent, winner } = battle;
 
   return (
@@ -75,7 +75,7 @@ function BattleInfoDetails({ battle, user }) {
       )}
     </div>
   );
-}
+};
 
 PokemonFromTeam.propTypes = {
   pokemon: PropTypes.object,

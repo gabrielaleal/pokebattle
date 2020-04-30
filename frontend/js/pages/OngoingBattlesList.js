@@ -7,7 +7,7 @@ import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
 
-function BattleWaitingForMeItem({ battle }) {
+const BattleWaitingForMeItem = ({ battle }) => {
   const { id: battleId, creator, timestamp } = battle;
   const formattedDate = moment(timestamp).format('L');
   const formattedTime = moment(timestamp).format('LT');
@@ -23,9 +23,9 @@ function BattleWaitingForMeItem({ battle }) {
       </div>
     </a>
   );
-}
+};
 
-function BattleWaitingForMyOpponentItem({ battle }) {
+const BattleWaitingForMyOpponentItem = ({ battle }) => {
   const { id: battleId, creator, opponent, timestamp } = battle;
 
   return (
@@ -42,11 +42,11 @@ function BattleWaitingForMyOpponentItem({ battle }) {
       </div>
     </a>
   );
-}
+};
 
-function NoBattlesMessage() {
+const NoBattlesMessage = () => {
   return <div className="no-battles">Ops, there are no battles yet!</div>;
-}
+};
 
 class OngoingBattlesList extends React.Component {
   componentDidMount() {
