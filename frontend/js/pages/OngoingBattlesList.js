@@ -7,46 +7,49 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
-import Loading from '../components/loading';
-import PageTitle from '../components/title';
+import Loading from '../components/Loading';
+import PageTitle from '../components/Title';
 import { battleListSchema } from '../utils/schema';
 
-function BattleWaitingForMeItem({ battle }) {
-  return (
-    <Link to={{ pathname: `/battles/${battle.id}/`, state: { battle } }}>
-      <div className="list-item">
-        <div>
-          <h6 className="pokemon-font">Battle #{battle.id}</h6>
-          <div>
-            <span className="list-attribute">{battle.creator.email}</span> challenged you on{' '}
-            {moment(battle.timestamp).format('L')} at {moment(battle.timestamp).format('LT')}. Fight
-            back!
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
+const BattleWaitingForMeItem = ({ battle }) => {
+  const { id: battleId, creator, timestamp } = battle;
+  const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
-function BattleWaitingForMyOpponentItem({ battle }) {
   return (
-    <Link to={{ pathname: `/battles/${battle.id}/`, state: { battle } }}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
+        <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
-          <h6 className="pokemon-font">Battle #{battle.id}</h6>
-          <div>
-            <span className="list-attribute">Players</span> {battle.creator.email} VS{' '}
-            {battle.opponent.email}
-          </div>
-          <div>
-            <span className="list-attribute">Battle created on</span>{' '}
-            {moment(battle.timestamp).format('L')} at {moment(battle.timestamp).format('LT')}
-          </div>
+          <span className="list-attribute">{creator.email}</span> challenged you on{' '}
+          {formattedTimestamp}. Fight back!
         </div>
       </div>
     </Link>
   );
-}
+};
+
+const BattleWaitingForMyOpponentItem = ({ battle }) => {
+  const { id: battleId, creator, opponent, timestamp } = battle;
+  const formattedTimestamp = moment(timestamp).format('L [at] LT');
+
+  return (
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
+      <div className="list-item">
+        <h6 className="pokemon-font">Battle #{battleId}</h6>
+        <div>
+          <span className="list-attribute">Players</span> {creator.email} VS {opponent.email}
+        </div>
+        <div>
+          <span className="list-attribute">Battle created on</span> {formattedTimestamp}
+        </div>
+      </div>
+    </Link>
+  );
+};
+
+const NoBattlesMessage = () => {
+  return <div className="no-battles">Ops, there are no battles yet!</div>;
+};
 
 class OngoingBattlesList extends React.Component {
   componentDidMount() {
@@ -56,7 +59,7 @@ class OngoingBattlesList extends React.Component {
 
   render() {
     const { battles, user, isLoading } = this.props;
-    console.log(battles);
+
     if (isLoading) {
       return <Loading />;
     }
@@ -74,34 +77,16 @@ class OngoingBattlesList extends React.Component {
         <div className="content">
           <div className="battle-list">
             <h4>Battles waiting for me</h4>
-            {battlesWaitingForMe.length === 0 ? (
-              <div className="no-battles">
-                <div>Ops, there are no battles yet!</div>
-              </div>
-            ) : (
-              <div />
-            )}
-            {Object.keys(battlesWaitingForMe).map((key) => (
-              <BattleWaitingForMeItem
-                key={battlesWaitingForMe[key].id}
-                battle={battlesWaitingForMe[key]}
-              />
+            {battlesWaitingForMe.length === 0 && <NoBattlesMessage />}
+            {battlesWaitingForMe.map((battle) => (
+              <BattleWaitingForMeItem key={battle.id} battle={battle} />
             ))}
           </div>
           <div className="battle-list">
             <h4>Battles waiting for my opponent</h4>
-            {battlesWaitingForOpponent.length === 0 ? (
-              <div className="no-battles">
-                <div>Ops, there are no battles yet!</div>
-              </div>
-            ) : (
-              <div />
-            )}
-            {Object.keys(battlesWaitingForOpponent).map((key) => (
-              <BattleWaitingForMyOpponentItem
-                key={battlesWaitingForOpponent[key].id}
-                battle={battlesWaitingForOpponent[key]}
-              />
+            {battlesWaitingForOpponent.length === 0 && <NoBattlesMessage />}
+            {battlesWaitingForOpponent.map((battle) => (
+              <BattleWaitingForMyOpponentItem key={battle.id} battle={battle} />
             ))}
           </div>
         </div>

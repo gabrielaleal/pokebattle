@@ -212,6 +212,7 @@ footer {
         border-bottom: 1px solid white;
         padding: 10px;
         display: flex;
+        flex-direction: column;
         justify-content: space-between;
 
         .list-attribute {
