@@ -9,16 +9,15 @@ import PageTitle from '../components/Title';
 
 const BattleWaitingForMeItem = ({ battle }) => {
   const { id: battleId, creator, timestamp } = battle;
-  const formattedDate = moment(timestamp).format('L');
-  const formattedTime = moment(timestamp).format('LT');
+  const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
     <a href={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
-          <span className="list-attribute">{creator.email}</span> challenged you on {formattedDate}{' '}
-          at {formattedTime}. Fight back!
+          <span className="list-attribute">{creator.email}</span> challenged you on{' '}
+          {formattedTimestamp}. Fight back!
         </div>
       </div>
     </a>
