@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import PokemonCard from './pokemon-card';
+import PokemonCard from './PokemonCard';
 
 function PokemonFromTeam({ pokemon }) {
   return (

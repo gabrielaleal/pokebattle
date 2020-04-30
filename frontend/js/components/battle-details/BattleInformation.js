@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import LargeButton from '../large-button';
+import LargeButton from '../LargeButton';
 
 function BattleStatus({ status }) {
   return (

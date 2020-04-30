@@ -4,8 +4,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
-import Loading from '../components/loading';
-import PageTitle from '../components/title';
+import Loading from '../components/Loading';
+import PageTitle from '../components/Title';
 
 function BattleWaitingForMeItem({ battle }) {
   return (
