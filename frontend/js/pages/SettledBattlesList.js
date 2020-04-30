@@ -4,27 +4,26 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getSettledBattlesList } from '../actions/battles-list';
-import Loading from '../components/loading';
-import PageTitle from '../components/title';
+import Loading from '../components/Loading';
+import PageTitle from '../components/Title';
 
-function SettledBattleItem({ battle }) {
+const SettledBattleItem = ({ battle }) => {
+  const { id: battleId, creator, opponent, winner } = battle;
+
   return (
-    <Link to={window.Urls['battles:battleDetail'](battle.id)}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item settled-battle-item">
+        <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
-          <h6 className="pokemon-font">Battle #{battle.id}</h6>
-          <div>
-            <span className="list-attribute">Players</span> {battle.creator.email} VS{' '}
-            {battle.opponent.email}
-          </div>
-          <div>
-            <span className="list-attribute">Winner</span> {battle.winner.email}
-          </div>
+          <span className="list-attribute">Players</span> {creator.email} VS {opponent.email}
+        </div>
+        <div>
+          <span className="list-attribute">Winner</span> {winner.email}
         </div>
       </div>
     </Link>
   );
-}
+};
 
 class SettledBattlesList extends React.Component {
   componentDidMount() {
@@ -43,12 +42,10 @@ class SettledBattlesList extends React.Component {
       <div className="pk-container battle-detail">
         <PageTitle title="Settled Battles" />
         <div className="content">
-          {battles.length === 0 ? (
+          {battles.length === 0 && (
             <div className="no-battles">
               <h4>Ops, there are no battles yet!</h4>
             </div>
-          ) : (
-            <div />
           )}
           <div className="battle-list">
             {Object.keys(battles).map((key) => (
@@ -71,9 +68,9 @@ SettledBattleItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  battles: state.battle.settledBattlesList,
-  isLoading: state.battle.loading.list,
+const mapStateToProps = ({ battle }) => ({
+  battles: battle.settledBattlesList,
+  isLoading: battle.loading.list,
 });
 
 const mapDispatchToProps = {

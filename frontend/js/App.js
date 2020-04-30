@@ -4,11 +4,11 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 import getUserData from './actions/user-details';
-import Loading from './components/loading';
-import Navbar from './components/navbar';
-import BattleDetails from './pages/battle-details';
-import OngoingBattlesList from './pages/ongoing-battles-list';
-import SettledBattlesList from './pages/settled-battles-list';
+import Loading from './components/Loading';
+import Navbar from './components/Navbar';
+import BattleDetails from './pages/BattleDetails';
+import OngoingBattlesList from './pages/OngoingBattlesList';
+import SettledBattlesList from './pages/SettledBattlesList';
 
 class App extends React.Component {
   componentDidMount() {
