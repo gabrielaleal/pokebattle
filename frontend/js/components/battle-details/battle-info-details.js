@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -15,7 +16,6 @@ function PokemonFromTeam({ pokemon }) {
 }
 
 function BattlePlayerTeam({ player, playerTeam }) {
-  Object.keys(playerTeam).map((pokemon) => console.log(playerTeam[pokemon].id));
   return (
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>
@@ -34,22 +34,14 @@ function BattleMatchesInformation({ creatorTeam, opponentTeam, winners }) {
       <h5 className="pokemon-font">Matches</h5>
       <div className="match">
         {Object.keys(creatorTeam).map((key, index) => (
-          <>
+          <div key={creatorTeam[key].id}>
             <h6 className="pokemon-font">Round #{index + 1}</h6>
             <div className="round-info-container">
-              <PokemonCard
-                key={creatorTeam[key].id}
-                pokemon={creatorTeam[key]}
-                winner={winners[index]}
-              />
+              <PokemonCard pokemon={creatorTeam[key]} winner={winners[index]} />
               <div className="vs pokemon-font">VS</div>
-              <PokemonCard
-                key={opponentTeam[key].id}
-                pokemon={opponentTeam[key]}
-                winner={winners[index]}
-              />
+              <PokemonCard pokemon={opponentTeam[key]} winner={winners[index]} />
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>
@@ -61,7 +53,7 @@ function BattleInfoDetails({ battle, user }) {
 
   return (
     <div className="content">
-      {user.email === creator.email || winner ? (
+      {get(user, 'email') === get(creator, 'email') || winner ? (
         <>
           <h4>Battle #{battle.id} Details</h4>
           <BattlePlayerTeam player={creator} playerTeam={battle.creator_team} />
@@ -90,19 +82,19 @@ PokemonFromTeam.propTypes = {
 };
 
 BattlePlayerTeam.propTypes = {
-  player: PropTypes.object.isRequired,
-  playerTeam: PropTypes.object.isRequired,
+  player: PropTypes.object,
+  playerTeam: PropTypes.object,
 };
 
 BattleMatchesInformation.propTypes = {
-  creatorTeam: PropTypes.object.isRequired,
-  opponentTeam: PropTypes.object.isRequired,
-  winners: PropTypes.array.isRequired,
+  creatorTeam: PropTypes.object,
+  opponentTeam: PropTypes.object,
+  winners: PropTypes.array,
 };
 
 BattleInfoDetails.propTypes = {
-  battle: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  battle: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default BattleInfoDetails;

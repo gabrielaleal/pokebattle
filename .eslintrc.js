@@ -5,7 +5,9 @@ module.exports = {
   extends: ['vinta/recommended'],
   rules: {
     'no-console': 'off',
-    'dot-notation': 'warn'
+    'dot-notation': 'warn',
+    'default-param-last': 'off',
+    'sonarjs/no-small-switch': 'off',
   },
   env: {
     es6: true,

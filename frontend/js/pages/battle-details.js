@@ -1,39 +1,29 @@
-import axios from 'axios';
+import isEmpty from 'lodash/isEmpty';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { connect } from 'react-redux';
 
+import getBattleDetails from '../actions/battle-details';
 import BattleInfoDetails from '../components/battle-details/battle-info-details';
 import BattleInformation from '../components/battle-details/battle-information';
+import Loading from '../components/loading';
 import PageTitle from '../components/title';
 
 class BattleDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battle: {},
-      isLoading: true,
-    };
-  }
-
   componentDidMount() {
-    const { computedMatch } = this.props;
+    const { computedMatch, getBattleDetails } = this.props;
     const battlePk = computedMatch.params.pk;
-    const url = window.Urls['api:battleDetail'](battlePk);
-    axios.get(url).then((res) => {
-      this.setState({ battle: res.data, isLoading: false });
-      return res.data;
-    });
+    getBattleDetails(battlePk);
   }
 
   render() {
-    const { isLoading, battle } = this.state;
-    const { user } = this.props;
+    const { isLoading, battle, user } = this.props;
 
     return (
       <div className="pk-container battle-detail">
         <PageTitle title="Battle Details" />
-        {isLoading ? (
-          <div>Loading...</div>
+        {isLoading && isEmpty(user) ? (
+          <Loading />
         ) : (
           <>
             <BattleInformation battle={battle} user={user} />
@@ -47,7 +37,20 @@ class BattleDetails extends React.Component {
 
 BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
-  user: PropTypes.object,
+  getBattleDetails: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  battle: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool,
 };
 
-export default BattleDetails;
+const mapStateToProps = (state) => ({
+  isLoading: state.battle.loading.details,
+  battle: state.battle.battle,
+  user: state.user.data,
+});
+
+const mapDispatchToProps = {
+  getBattleDetails,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);
