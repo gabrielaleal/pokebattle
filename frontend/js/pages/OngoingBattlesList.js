@@ -8,16 +8,17 @@ import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
 
 function BattleWaitingForMeItem({ battle }) {
+  const { id: battleId, creator, timestamp } = battle;
+  const formattedDate = moment(timestamp).format('L');
+  const formattedTime = moment(timestamp).format('LT');
+
   return (
-    <a href={window.Urls['battles:battleDetail'](battle.id)}>
+    <a href={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
+        <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
-          <h6 className="pokemon-font">Battle #{battle.id}</h6>
-          <div>
-            <span className="list-attribute">{battle.creator.email}</span> challenged you on{' '}
-            {moment(battle.timestamp).format('L')} at {moment(battle.timestamp).format('LT')}. Fight
-            back!
-          </div>
+          <span className="list-attribute">{creator.email}</span> challenged you on {formattedDate}{' '}
+          at {formattedTime}. Fight back!
         </div>
       </div>
     </a>
@@ -25,23 +26,26 @@ function BattleWaitingForMeItem({ battle }) {
 }
 
 function BattleWaitingForMyOpponentItem({ battle }) {
+  const { id: battleId, creator, opponent, timestamp } = battle;
+
   return (
-    <a href={window.Urls['battles:battleDetail'](battle.id)}>
+    <a href={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
+        <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
-          <h6 className="pokemon-font">Battle #{battle.id}</h6>
-          <div>
-            <span className="list-attribute">Players</span> {battle.creator.email} VS{' '}
-            {battle.opponent.email}
-          </div>
-          <div>
-            <span className="list-attribute">Battle created on</span>{' '}
-            {moment(battle.timestamp).format('L')} at {moment(battle.timestamp).format('LT')}
-          </div>
+          <span className="list-attribute">Players</span> {creator.email} VS {opponent.email}
+        </div>
+        <div>
+          <span className="list-attribute">Battle created on</span> {moment(timestamp).format('L')}{' '}
+          at {moment(timestamp).format('LT')}
         </div>
       </div>
     </a>
   );
+}
+
+function NoBattlesMessage() {
+  return <div className="no-battles">Ops, there are no battles yet!</div>;
 }
 
 class OngoingBattlesList extends React.Component {
@@ -68,34 +72,16 @@ class OngoingBattlesList extends React.Component {
         <div className="content">
           <div className="battle-list">
             <h4>Battles waiting for me</h4>
-            {battlesWaitingForMe.length === 0 ? (
-              <div className="no-battles">
-                <div>Ops, there are no battles yet!</div>
-              </div>
-            ) : (
-              <div />
-            )}
-            {Object.keys(battlesWaitingForMe).map((key) => (
-              <BattleWaitingForMeItem
-                key={battlesWaitingForMe[key].id}
-                battle={battlesWaitingForMe[key]}
-              />
+            {battlesWaitingForMe.length === 0 && <NoBattlesMessage />}
+            {battlesWaitingForMe.map((battle) => (
+              <BattleWaitingForMeItem key={battle.id} battle={battle} />
             ))}
           </div>
           <div className="battle-list">
             <h4>Battles waiting for my opponent</h4>
-            {battlesWaitingForOpponent.length === 0 ? (
-              <div className="no-battles">
-                <div>Ops, there are no battles yet!</div>
-              </div>
-            ) : (
-              <div />
-            )}
-            {Object.keys(battlesWaitingForOpponent).map((key) => (
-              <BattleWaitingForMyOpponentItem
-                key={battlesWaitingForOpponent[key].id}
-                battle={battlesWaitingForOpponent[key]}
-              />
+            {battlesWaitingForOpponent.length === 0 && <NoBattlesMessage />}
+            {battlesWaitingForOpponent.map((battle) => (
+              <BattleWaitingForMyOpponentItem key={battle.id} battle={battle} />
             ))}
           </div>
         </div>
@@ -119,10 +105,10 @@ BattleWaitingForMyOpponentItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  battles: state.battle.ongoingBattlesList,
-  user: state.user.data,
-  isLoading: state.battle.loading.list,
+const mapStateToProps = ({ battle, user }) => ({
+  battles: battle.ongoingBattlesList,
+  user: user.data,
+  isLoading: battle.loading.list,
 });
 
 const mapDispatchToProps = {
