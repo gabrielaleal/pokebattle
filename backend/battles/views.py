@@ -17,7 +17,9 @@ from .utils.email import send_opponent_battle_invitation_email
 
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
-    template_name = "battles/create_battle.html"
+    # template_name = "battles/create_battle.html"
+    template_name = "react_templates/create_battle.html"
+
     form_class = CreateBattleForm
     success_url = reverse_lazy("battles:create-battle")
 
