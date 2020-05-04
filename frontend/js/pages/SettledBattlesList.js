@@ -13,7 +13,7 @@ const SettledBattleItem = ({ battle }) => {
   const { id: battleId, creator, opponent, winner } = battle;
 
   return (
-    <Link to={{ pathname: `/battles/${battleId}/`, state: { battle } }}>
+    <Link to={{ pathname: `/battles/${battleId}/`, state: { battle, isLoading: false } }}>
       <div className="list-item settled-battle-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>

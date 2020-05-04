@@ -25,9 +25,9 @@ const getSettledBattlesList = () => {
       .get(url)
       .then((res) => {
         const normalizedList = normalize(res.data, battleListSchema);
-        const { users, battle } = normalizedList.entities;
+        const { users, pokemon, battle } = normalizedList.entities;
         const battles = normalizedList.result;
-        return dispatch(getSettledBattlesSuccess(battles, { users, battle }));
+        return dispatch(getSettledBattlesSuccess(battles, { users, pokemon, battle }));
       })
       .catch((err) => {
         throw new Error(err);

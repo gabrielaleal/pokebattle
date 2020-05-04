@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import isEmpty from 'lodash/isEmpty';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
@@ -12,16 +13,28 @@ import PageTitle from '../components/Title';
 import { battleSchema } from '../utils/schema';
 
 class BattleDetails extends React.Component {
-  componentDidMount() {
-    const { computedMatch, getBattleDetails } = this.props;
-    const battlePk = computedMatch.params.pk;
-    getBattleDetails(battlePk);
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: isEmpty(props.battle),
+    };
   }
 
-  // try componentWillReceiveProps
+  componentDidMount() {
+    const { computedMatch, battle, getBattleDetails } = this.props;
+    if (isEmpty(battle)) {
+      const battlePk = computedMatch.params.pk;
+      getBattleDetails(battlePk).then((res) => {
+        const { isLoading } = this.props;
+        this.setState({ isLoading });
+        return res;
+      });
+    }
+  }
 
   render() {
-    const { isLoading, battle, user } = this.props;
+    const { battle, user } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <div className="pk-container battle-detail">
@@ -47,20 +60,17 @@ BattleDetails.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, { location }) => {
   const { battles } = state;
+  const battle = get(location, 'state.battle');
   const denormalizedData = denormalize(battles.battle, battleSchema, battles.entities);
 
   return {
     user: state.user.data,
     isLoading: battles.loading.details,
-    battle: denormalizedData,
+    battle: !isEmpty(battle) ? battle : denormalizedData,
   };
 };
-
-// const mapDispatchToProps = {
-//   getBattleDetails,
-// };
 
 const mapDispatchToProps = (dispatch) => {
   return {

@@ -15,7 +15,7 @@ const getBattleDetailsSuccess = (battle, entities) => ({
 const getBattleDetails = (battlePk) => {
   return (dispatch) => {
     const url = window.Urls['api:battleDetail'](battlePk);
-    axios
+    return axios
       .get(url)
       .then((res) => {
         const normalizedBattle = normalize(res.data, battleSchema);

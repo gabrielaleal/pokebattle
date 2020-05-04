@@ -38,23 +38,6 @@ class SelectTeamSerializerMixin(serializers.ModelSerializer):
         return data
 
 
-class BattleSerializer(serializers.ModelSerializer):
-    creator = UserSerializer()
-    opponent = UserSerializer()
-    winner = UserSerializer()
-
-    class Meta:
-        model = Battle
-        fields = (
-            "id",
-            "creator",
-            "opponent",
-            "status",
-            "winner",
-            "timestamp",
-        )
-
-
 class BattleTeamSerializer(serializers.ModelSerializer):
     pokemon_1 = PokemonSerializer()
     pokemon_2 = PokemonSerializer()
@@ -65,7 +48,7 @@ class BattleTeamSerializer(serializers.ModelSerializer):
         fields = ("pokemon_1", "pokemon_2", "pokemon_3")
 
 
-class BattleDetailsSerializer(serializers.ModelSerializer):
+class BattleSerializer(serializers.ModelSerializer):
     creator_team = serializers.SerializerMethodField()
     opponent_team = serializers.SerializerMethodField()
     matches_winners = serializers.SerializerMethodField()

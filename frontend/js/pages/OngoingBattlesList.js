@@ -16,7 +16,7 @@ const BattleWaitingForMeItem = ({ battle }) => {
   const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
-    <Link to={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={{ pathname: `/battles/${battleId}/`, state: { battle, isLoading: false } }}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
