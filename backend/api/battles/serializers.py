@@ -39,9 +39,20 @@ class SelectTeamSerializerMixin(serializers.ModelSerializer):
 
 
 class BattleSerializer(serializers.ModelSerializer):
+    creator = UserSerializer()
+    opponent = UserSerializer()
+    winner = UserSerializer()
+
     class Meta:
         model = Battle
-        fields = "__all__"
+        fields = (
+            "id",
+            "creator",
+            "opponent",
+            "status",
+            "winner",
+            "timestamp",
+        )
 
 
 class BattleTeamSerializer(serializers.ModelSerializer):

@@ -1,29 +1,27 @@
-import axios from 'axios';
+import PropTypes from 'prop-types';
 import React from 'react';
-import { hot } from 'react-hot-loader/root';
+import { connect } from 'react-redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
-import Navbar from './components/navbar';
-import BattleDetails from './pages/battle-details';
+import getUserData from './actions/user-details';
+import Loading from './components/Loading';
+import Navbar from './components/Navbar';
+import BattleDetails from './pages/BattleDetails';
+import OngoingBattlesList from './pages/OngoingBattlesList';
+import SettledBattlesList from './pages/SettledBattlesList';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {},
-    };
-  }
-
   componentDidMount() {
-    const url = window.Urls['api:userAuthenticated']();
-    axios.get(url).then((res) => {
-      this.setState({ user: res.data });
-      return res.data;
-    });
+    const { getUserData } = this.props;
+    getUserData();
   }
 
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
+
+    if (!user) {
+      return <Loading />;
+    }
 
     return (
       <BrowserRouter>
@@ -31,6 +29,8 @@ class App extends React.Component {
           <Navbar user={user} />
           <div className="block-body">
             <Switch>
+              <SettledBattlesList path="/battles/settled-battles/" />
+              <OngoingBattlesList path="/battles/ongoing-battles/" />
               <BattleDetails path="/battles/:pk/" user={user} />
             </Switch>
           </div>
@@ -40,4 +40,17 @@ class App extends React.Component {
   }
 }
 
-export default hot(App);
+App.propTypes = {
+  getUserData: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  user: state.user.data,
+});
+
+const mapDispatchToProps = {
+  getUserData,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

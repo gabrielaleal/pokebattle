@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-// eslint-disable-next-line no-unused-vars
 const Navbar = ({ user }) => (
   <nav>
     <div className="pk-nav">
@@ -13,7 +12,7 @@ const Navbar = ({ user }) => (
       <div className="btns-container">
         {user.email ? (
           <>
-            <span>Welcome, {user.email}</span>
+            <span>Welcome, {user.email.split('@')[0]}</span>
             <a href={window.Urls.logout()}>
               <div className="pk-small-btn">Logout</div>
             </a>

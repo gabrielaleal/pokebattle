@@ -2,18 +2,18 @@ import get from 'lodash/get';
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import LargeButton from '../large-button';
+import LargeButton from '../LargeButton';
 
-function BattleStatus({ status }) {
+const BattleStatus = ({ status }) => {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Status</h5>
       <div className="subtitle pokemon-font">{status}!</div>
     </div>
   );
-}
+};
 
-function BattlePlayers({ creatorEmail, opponentEmail }) {
+const BattlePlayers = ({ creatorEmail, opponentEmail }) => {
   return (
     <div className="battle-info-container">
       <h5 className="pokemon-font">Players</h5>
@@ -22,9 +22,9 @@ function BattlePlayers({ creatorEmail, opponentEmail }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleWinner({ winnerEmail }) {
+const BattleWinner = ({ winnerEmail }) => {
   if (!winnerEmail) {
     return <div />;
   }
@@ -36,9 +36,9 @@ function BattleWinner({ winnerEmail }) {
       </div>
     </div>
   );
-}
+};
 
-function BattleInformation({ battle, user }) {
+const BattleInformation = ({ battle, user }) => {
   // main component
   const { creator, opponent, winner } = battle;
   const fightBackURL = window.Urls['battles:selectTeam'](battle.id);
@@ -47,16 +47,16 @@ function BattleInformation({ battle, user }) {
     <div className="content">
       <h4>Battle #{battle.id} Information</h4>
       <BattleStatus status={battle.status} />
-      <BattlePlayers creatorEmail={creator.email} opponentEmail={opponent.email} />
+      <BattlePlayers creatorEmail={get(creator, 'email')} opponentEmail={get(opponent, 'email')} />
       <BattleWinner winnerEmail={get(winner, 'email')} />
-      {user.email === opponent.email && !winner ? (
+      {get(user, 'email') === get(opponent, 'email') && !winner ? (
         <LargeButton text="Fight Back!" url={fightBackURL} />
       ) : (
         <div />
       )}
     </div>
   );
-}
+};
 
 BattleWinner.propTypes = {
   winnerEmail: PropTypes.string,
@@ -67,13 +67,13 @@ BattleStatus.propTypes = {
 };
 
 BattlePlayers.propTypes = {
-  creatorEmail: PropTypes.string.isRequired,
-  opponentEmail: PropTypes.string.isRequired,
+  creatorEmail: PropTypes.string,
+  opponentEmail: PropTypes.string,
 };
 
 BattleInformation.propTypes = {
-  battle: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired,
+  battle: PropTypes.object,
+  user: PropTypes.object,
 };
 
 export default BattleInformation;
