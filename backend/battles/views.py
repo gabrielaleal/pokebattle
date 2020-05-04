@@ -94,7 +94,8 @@ class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
 
 
 class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
-    template_name = "battles/settled_battles_list.html"
+    # template_name = "battles/settled_battles_list.html"
+    template_name = "react_templates/settled_battles_list.html"
     model = Battle
 
     def get_queryset(self):
@@ -105,7 +106,8 @@ class SettledBattlesListView(LoginRequiredMixin, generic.ListView):
 
 
 class OnGoingBattlesListView(LoginRequiredMixin, generic.ListView):
-    template_name = "battles/on_going_battles_list.html"
+    # template_name = "battles/on_going_battles_list.html"
+    template_name = "react_templates/ongoing_battles_list.html"
     model = Battle
 
     def get_context_data(self, **kwargs):

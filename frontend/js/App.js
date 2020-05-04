@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { BrowserRouter, Switch } from 'react-router-dom';
 
 import getUserData from './actions/user-details';
-import Loading from './components/loading';
-import Navbar from './components/navbar';
-import BattleDetails from './pages/battle-details';
+import Loading from './components/Loading';
+import Navbar from './components/Navbar';
+import BattleDetails from './pages/BattleDetails';
+import OngoingBattlesList from './pages/OngoingBattlesList';
+import SettledBattlesList from './pages/SettledBattlesList';
 
 class App extends React.Component {
   componentDidMount() {
@@ -27,6 +29,8 @@ class App extends React.Component {
           <Navbar user={user} />
           <div className="block-body">
             <Switch>
+              <SettledBattlesList path="/battles/settled-battles/" />
+              <OngoingBattlesList path="/battles/ongoing-battles/" />
               <BattleDetails path="/battles/:pk/" user={user} />
             </Switch>
           </div>

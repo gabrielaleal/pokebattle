@@ -4,10 +4,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import getBattleDetails from '../actions/battle-details';
-import BattleInfoDetails from '../components/battle-details/battle-info-details';
-import BattleInformation from '../components/battle-details/battle-information';
-import Loading from '../components/loading';
-import PageTitle from '../components/title';
+import BattleInfoDetails from '../components/battle-details/BattleInfoDetails';
+import BattleInformation from '../components/battle-details/BattleInformation';
+import Loading from '../components/Loading';
+import PageTitle from '../components/Title';
 
 class BattleDetails extends React.Component {
   componentDidMount() {
