@@ -7,6 +7,7 @@ from .battles.endpoints import (
     SelectOpponentTeamEndpoint,
     SettledBattlesListEndpoint,
 )
+from .pokemon.endpoints import ListPokemons
 from .users.endpoints import UserAuthenticatedEndpoint
 
 
@@ -23,4 +24,6 @@ urlpatterns = [
     url(r"^battles/(?P<pk>[-\w]+)/$", BattleDetailEndpoint.as_view(), name="battle-detail"),
     # users urls
     url(r"^users/authenticated/$", UserAuthenticatedEndpoint.as_view(), name="user-authenticated"),
+    # pokemon's urls
+    url(r"^pokemon/list/$", ListPokemons.as_view(), name="pokemon-list"),
 ]
