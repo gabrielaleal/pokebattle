@@ -1,10 +1,10 @@
 import { withFormik } from 'formik';
 import PropTypes from 'prop-types';
 import React from 'react';
-// import Yup from 'yup';
 
+import SelectPokemon from '../components/SelectPokemon';
 import PageTitle from '../components/Title';
-import getOpponentsFromAPI from '../utils/api-helper';
+import { getOpponentsFromAPI } from '../utils/api-helper';
 
 class SelectOpponentField extends React.Component {
   constructor(props) {
@@ -56,6 +56,7 @@ const CreateBattleForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <SelectOpponentField formikBag={{ values, touched, errors, handleChange, handleBlur }} />
+      <SelectPokemon formikBag={{ values, touched, errors, handleChange, handleBlur }} />
       <div className="btn-container">
         <button className="pk-btn" type="submit">
           Submit
