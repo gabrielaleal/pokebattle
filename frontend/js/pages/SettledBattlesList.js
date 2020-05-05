@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getSettledBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
@@ -10,7 +11,7 @@ const SettledBattleItem = ({ battle }) => {
   const { id: battleId, creator, opponent, winner } = battle;
 
   return (
-    <a href={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item settled-battle-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -20,7 +21,7 @@ const SettledBattleItem = ({ battle }) => {
           <span className="list-attribute">Winner</span> {winner.email}
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

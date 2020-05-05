@@ -2,6 +2,7 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
@@ -12,7 +13,7 @@ const BattleWaitingForMeItem = ({ battle }) => {
   const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
-    <a href={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -20,7 +21,7 @@ const BattleWaitingForMeItem = ({ battle }) => {
           {formattedTimestamp}. Fight back!
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
@@ -29,7 +30,7 @@ const BattleWaitingForMyOpponentItem = ({ battle }) => {
   const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
-    <a href={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -39,7 +40,7 @@ const BattleWaitingForMyOpponentItem = ({ battle }) => {
           <span className="list-attribute">Battle created on</span> {formattedTimestamp}
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 

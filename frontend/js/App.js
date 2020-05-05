@@ -31,7 +31,7 @@ class App extends React.Component {
             <Switch>
               <SettledBattlesList path="/battles/settled-battles/" />
               <OngoingBattlesList path="/battles/ongoing-battles/" />
-              <BattleDetails path="/battles/:pk/" user={user} />
+              <BattleDetails path="/battles/:pk/" />
             </Switch>
           </div>
         </div>
