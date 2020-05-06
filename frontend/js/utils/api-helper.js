@@ -9,7 +9,6 @@ const getOpponentsFromAPI = () => {
 
 const getPokemonFromAPI = () => {
   const url = window.Urls['api:pokemonList']();
-  console.log(url);
   return axios.get(url).then((res) => {
     return res.data;
   });

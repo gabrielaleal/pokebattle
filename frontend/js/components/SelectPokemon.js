@@ -1,57 +1,129 @@
 import arrayMove from 'array-move';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Autocomplete from 'react-autocomplete';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 
 import { getPokemonFromAPI } from '../utils/api-helper';
 
-const SelectPokemonField = SortableElement(({ pokemon }) => (
-  /* autocomplete field goes here */ <h3>Pika, {pokemon.name}</h3>
-));
+const shouldItemRender = (item, value) => {
+  if (value === '') {
+    return false;
+  }
 
-const SortablePokemonList = SortableContainer(({ pokemon }) => {
+  return item.name.startsWith(value);
+};
+
+const SelectPokemonField = SortableElement(
+  ({ pokemonList, pokemonValue, valueName, setFieldValue }) => {
+    return (
+      <div className="pk-autocomplete">
+        <Autocomplete
+          getItemValue={(item) => item.name}
+          items={pokemonList}
+          renderItem={(item, isHighlighted) => (
+            <div key={item.id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+              {item.name}
+            </div>
+          )}
+          shouldItemRender={(item, value) => shouldItemRender(item, value)}
+          value={pokemonValue}
+          onChange={(e) => setFieldValue(valueName, e.target.value)}
+          onSelect={(val) => setFieldValue(valueName, val)}
+        />
+      </div>
+    );
+  }
+);
+
+const SortablePokemonList = SortableContainer(({ pokemonList, items, formikBag }) => {
+  const { setFieldValue } = formikBag;
   return (
     <div>
-      {pokemon.map((value, index) => (
-        <SelectPokemonField key={value.id} index={index} value={value} />
+      {items.map((item, index) => (
+        <div key={item.name} className="pk-select">
+          <SelectPokemonField
+            index={index}
+            pokemonList={pokemonList}
+            pokemonValue={item.values}
+            setFieldValue={setFieldValue}
+            valueName={item.name}
+          />
+          {item.errors && item.touched && <div className="field-error">{item.errors}</div>}
+        </div>
       ))}
     </div>
   );
 });
 
-class SelectPokemon extends React.Component {
+class SelectPokemonTeam extends React.Component {
   constructor(props) {
     super(props);
+    const { formikBag } = this.props;
+    const { values, errors, touched } = formikBag;
     this.state = {
-      pokemon: [],
+      pokemonList: [],
+      pokemonTeam: [
+        {
+          name: 'pokemon1',
+          values: values.pokemon1,
+          errors: errors.pokemon1,
+          touched: touched.pokemon1,
+        },
+        {
+          name: 'pokemon2',
+          values: values.pokemon2,
+          errors: errors.pokemon2,
+          touched: touched.pokemon2,
+        },
+        {
+          name: 'pokemon3',
+          values: values.pokemon3,
+          errors: errors.pokemon3,
+          touched: touched.pokemon3,
+        },
+      ],
     };
   }
 
   componentDidMount() {
     getPokemonFromAPI().then((res) => {
-      console.log('-> pokemon:', res);
       this.setState({
-        pokemon: res,
+        pokemonList: res,
       });
       return res;
     });
   }
 
   onSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState(({ pokemon }) => ({
-      pokemon: arrayMove(pokemon, oldIndex, newIndex),
+    this.setState(({ pokemonTeam }) => ({
+      pokemonTeam: arrayMove(pokemonTeam, oldIndex, newIndex),
     }));
   };
 
   render() {
-    const { pokemon } = this.state;
-    return <SortablePokemonList items={pokemon} onSortEnd={this.onSortEnd} />;
+    const { pokemonList, pokemonTeam } = this.state;
+    const { formikBag } = this.props;
+    const { setFieldValue } = formikBag;
+    return (
+      <div>
+        Choose your team:
+        <div className="pk-hint">
+          Once you do, you can drag and drop them to the position they&apos;ll play.
+        </div>
+        <SortablePokemonList
+          formikBag={{ setFieldValue }}
+          items={pokemonTeam}
+          pokemonList={pokemonList}
+          onSortEnd={this.onSortEnd}
+        />
+      </div>
+    );
   }
 }
 
-SelectPokemon.propTypes = {
-  // eslint-disable-next-line react/no-unused-prop-types
+SelectPokemonTeam.propTypes = {
   formikBag: PropTypes.object,
 };
 
-export default SelectPokemon;
+export default SelectPokemonTeam;

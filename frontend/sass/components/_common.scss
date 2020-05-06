@@ -114,10 +114,15 @@ footer {
     padding: 10px 0;
 }
 
+.pk-hint {
+    font-size: 0.8em;
+    color: #848484;
+}
+
 /* Forms style */
 
 .battle-form-field {
-    padding: 5px 0;
+    padding: 8px 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -133,12 +138,27 @@ footer {
     margin-bottom: 20px;
 }
 
+.pk-select {
+    padding: 4px 0;
+
+    .pk-autocomplete {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        background-color: $pk-light-grey;
+        cursor: move;
+    }
+}
+
+
 /* Buttons style */
 
 .btn-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 20px 0;
 }
 

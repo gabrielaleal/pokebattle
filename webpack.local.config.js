@@ -33,6 +33,10 @@ baseConfig.module.rules.push(
     test: /\.jsx?$/,
     exclude: [nodeModulesDir],
     loader: require.resolve('babel-loader'),
+    options: {
+      presets: ['@babel/preset-env', '@babel/preset-react'],
+      plugins: ['@babel/plugin-proposal-class-properties'],
+    },
   },
   // {
   //   test: /\.(woff(2)?|eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
