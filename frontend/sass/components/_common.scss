@@ -135,7 +135,7 @@ footer {
     width: fit-content;
     text-align: center;
     padding: 10px 34px;
-    margin-bottom: 20px;
+    margin: auto;
 }
 
 .pk-select {
@@ -147,6 +147,13 @@ footer {
         justify-content: center;
         padding: 10px;
         background-color: $pk-light-grey;
+    }
+
+    .pk-sort-handler {
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-self: center;
         cursor: move;
     }
 }
@@ -193,8 +200,8 @@ footer {
     color: #fff;
     width: fit-content;
     margin: auto;
-    margin-top: 20px;
-    padding: 25px;
+    margin: 5px 0 15px 0;
+    padding: 15px;
     box-shadow: 3px 3px 5px 0px #cccccc;
     border-radius: 5px;
     text-align: center;

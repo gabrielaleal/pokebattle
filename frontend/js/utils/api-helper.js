@@ -14,4 +14,19 @@ const getPokemonFromAPI = () => {
   });
 };
 
-export { getOpponentsFromAPI, getPokemonFromAPI };
+const getCookie = (cname) => {
+  const name = `${cname}=`;
+  const decodedCookie = decodeURIComponent(document.cookie);
+  const ca = decodedCookie.split(';');
+  for (let c of ca) {
+    while (c.charAt(0) === ' ') {
+      c = c.slice(1);
+    }
+    if (c.indexOf(name) === 0) {
+      return c.slice(name.length, c.length);
+    }
+  }
+  return '';
+};
+
+export { getOpponentsFromAPI, getPokemonFromAPI, getCookie };
