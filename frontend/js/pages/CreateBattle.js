@@ -1,13 +1,12 @@
 /* eslint-disable babel/camelcase */
-import axios from 'axios';
 import { withFormik } from 'formik';
-import get from 'lodash/get';
+import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 import SelectPokemonTeam from '../components/SelectPokemon';
 import PageTitle from '../components/Title';
-import { getOpponentsFromAPI, getCookie } from '../utils/api-helper';
+import { getOpponentsFromAPI, postOnAPI } from '../utils/api-helper';
 
 class SelectOpponentField extends React.Component {
   constructor(props) {
@@ -59,8 +58,8 @@ const CreateBattleForm = (props) => {
   const {
     values,
     touched,
-    errors,
     status,
+    errors,
     handleChange,
     handleBlur,
     handleSubmit,
@@ -123,7 +122,7 @@ const CreateBattleEnhancedForm = withFormik({
 
     return errors;
   },
-  handleSubmit: (values, { setFieldError, setSubmitting, setStatus }) => {
+  handleSubmit: (values, { setStatus, setFieldError, resetForm }) => {
     const url = window.Urls['api:createBattle']();
     const data = {
       opponent_id: values.opponent,
@@ -134,21 +133,19 @@ const CreateBattleEnhancedForm = withFormik({
       pokemon_3: values.pokemon3,
       pokemon_3_position: values.ordering.indexOf('pokemon3') + 1,
     };
-    const headers = {
-      'X-CSRFToken': getCookie('csrftoken'),
-    };
-    axios
-      .post(url, data, {
-        headers,
-      })
+    postOnAPI(url, data)
       .then((res) => {
-        console.log(res);
-        setStatus({ success: 'Battle created!' });
-        setSubmitting(false);
+        resetForm();
+        setStatus({
+          success: `Battle #${res.data.battle_id} created! Now wait for your opponent to fight back!`,
+        });
         return res;
       })
       .catch((err) => {
-        setFieldError('general', err.response.data.non_field_errors[0]);
+        if (err.response.status === 400) {
+          setFieldError('general', err.response.data.non_field_errors[0]);
+        }
+        throw err;
       });
   },
   displayName: 'BattleForm',

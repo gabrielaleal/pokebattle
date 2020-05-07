@@ -14,6 +14,14 @@ const getPokemonFromAPI = () => {
   });
 };
 
+const postOnAPI = (url, data) => {
+  const headers = {
+    'X-CSRFToken': getCookie('csrftoken'),
+  };
+  console.log('inside post on api');
+  return axios.post(url, data, { headers });
+};
+
 const getCookie = (cname) => {
   const name = `${cname}=`;
   const decodedCookie = decodeURIComponent(document.cookie);
@@ -29,4 +37,4 @@ const getCookie = (cname) => {
   return '';
 };
 
-export { getOpponentsFromAPI, getPokemonFromAPI, getCookie };
+export { getOpponentsFromAPI, getPokemonFromAPI, postOnAPI, getCookie };

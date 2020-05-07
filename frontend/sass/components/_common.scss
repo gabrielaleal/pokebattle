@@ -130,12 +130,15 @@ footer {
 }
 
 .messages {
-    border-radius: 15px;
-    border: 1px solid;
-    width: fit-content;
-    text-align: center;
-    padding: 10px 34px;
+    background-color: $pk-blue;
+    color: #fff;
     margin: auto;
+    margin: 5px 0 15px 0;
+    padding: 15px;
+    box-shadow: 3px 3px 5px 0px #cccccc;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: 600;
 }
 
 .pk-select {
