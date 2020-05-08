@@ -7,60 +7,14 @@ import { Redirect } from 'react-router-dom';
 
 import PageTitle from '../components/PageTitle';
 import SelectPokemonTeam from '../components/SelectPokemon';
-import { getOpponentsFromAPI, postOnAPI } from '../utils/api-helper';
+import { postOnAPI } from '../utils/api-helper';
 
-class SelectOpponentField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opponents: [],
-    };
-  }
-
-  componentDidMount() {
-    const { opponents } = this.state;
-    getOpponentsFromAPI().then((res) => {
-      this.setState({
-        opponents: res,
-      });
-      return opponents;
-    });
-  }
-
-  render() {
-    const { opponents } = this.state;
-    const { formikBag } = this.props;
-    const { values, handleChange, handleBlur, errors, touched } = formikBag;
-
-    return (
-      <div style={{ display: 'grid' }}>
-        <label htmlFor="opponentSelect">Opponent:</label>
-        <select
-          id="opponentSelect"
-          name="opponent"
-          value={values.opponent}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        >
-          <option label="Select your opponent" value="" />
-          {opponents.map((opponent) => (
-            <option key={opponent.id} label={opponent.email} value={opponent.id} />
-          ))}
-        </select>
-        {errors.opponent && touched.opponent && (
-          <div className="field-error">{errors.opponent}</div>
-        )}
-      </div>
-    );
-  }
-}
-
-const CreateBattleForm = (props) => {
+const SelectBattleTeamForm = (props) => {
   const {
     values,
     touched,
-    status,
     errors,
+    status,
     handleChange,
     handleBlur,
     handleSubmit,
@@ -70,11 +24,16 @@ const CreateBattleForm = (props) => {
   return (
     <div>
       {errors.general && <div className="error">{errors.general}</div>}
-      {get(status, 'success') && <Redirect push to={`/battles/${status.battle_created}`} />}
+      {get(status, 'success') && (
+        <Redirect
+          push
+          to={{
+            pathname: `/battles/${status.battle}/`,
+            state: { update: true },
+          }}
+        />
+      )}
       <form onSubmit={handleSubmit}>
-        <div className="battle-form-field">
-          <SelectOpponentField formikBag={{ values, touched, errors, handleChange, handleBlur }} />
-        </div>
         <div className="battle-form-field">
           <SelectPokemonTeam
             formikBag={{ values, touched, errors, handleChange, handleBlur, setFieldValue }}
@@ -90,9 +49,8 @@ const CreateBattleForm = (props) => {
   );
 };
 
-const CreateBattleEnhancedForm = withFormik({
+const SelectBattleTeamEnhancedForm = withFormik({
   mapPropsToValues: () => ({
-    opponent: '',
     pokemon1: null,
     pokemon1Query: '',
     pokemon2: null,
@@ -104,10 +62,6 @@ const CreateBattleEnhancedForm = withFormik({
   // Custom sync validation
   validate: (values) => {
     const errors = {};
-
-    if (!values.opponent) {
-      errors.opponent = 'Required';
-    }
 
     if (!values.pokemon1) {
       errors.pokemon1 = 'Required';
@@ -123,10 +77,10 @@ const CreateBattleEnhancedForm = withFormik({
 
     return errors;
   },
-  handleSubmit: (values, { setStatus, setFieldError, resetForm }) => {
-    const url = window.Urls['api:createBattle']();
+  handleSubmit: (values, { props, setFieldError, resetForm, setStatus }) => {
+    const { battlePk } = props;
+    const url = window.Urls['api:selectTeam'](battlePk);
     const data = {
-      opponent_id: values.opponent,
       pokemon_1: values.pokemon1,
       pokemon_1_position: values.ordering.indexOf('pokemon1') + 1,
       pokemon_2: values.pokemon2,
@@ -139,7 +93,7 @@ const CreateBattleEnhancedForm = withFormik({
         resetForm();
         setStatus({
           success: true,
-          battle_created: res.data.battle_id,
+          battle: battlePk,
         });
         return res;
       })
@@ -150,21 +104,39 @@ const CreateBattleEnhancedForm = withFormik({
         throw err;
       });
   },
-  displayName: 'BattleForm',
-})(CreateBattleForm);
+  displayName: 'SelectBattleTeamForm',
+})(SelectBattleTeamForm);
 
-const CreateBattle = () => {
-  return (
-    <div className="pk-container create-battle">
-      <PageTitle title="Create Battle" />
-      <div className="content">
-        <CreateBattleEnhancedForm />
+class SelectOpponentTeam extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      battlePk: '',
+    };
+  }
+
+  componentDidMount() {
+    const { computedMatch } = this.props;
+    this.setState({
+      battlePk: computedMatch.params.pk,
+    });
+  }
+
+  render() {
+    const { battlePk } = this.state;
+
+    return (
+      <div className="pk-container create-battle">
+        <PageTitle title="Select Team" />
+        <div className="content">
+          <SelectBattleTeamEnhancedForm battlePk={battlePk} />
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
-CreateBattleForm.propTypes = {
+SelectBattleTeamForm.propTypes = {
   values: PropTypes.object,
   touched: PropTypes.object,
   errors: PropTypes.object,
@@ -175,8 +147,8 @@ CreateBattleForm.propTypes = {
   handleSubmit: PropTypes.func,
 };
 
-SelectOpponentField.propTypes = {
-  formikBag: PropTypes.object,
+SelectOpponentTeam.propTypes = {
+  computedMatch: PropTypes.object,
 };
 
-export default CreateBattle;
+export default SelectOpponentTeam;

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
-import PageTitle from '../components/Title';
+import PageTitle from '../components/PageTitle';
 import { battleListSchema } from '../utils/schema';
 
 const BattleWaitingForMeItem = ({ battle }) => {
@@ -124,10 +124,6 @@ const mapStateToProps = (state) => {
     user: state.user.data,
   };
 };
-
-// const mapDispatchToProps = {
-//   getOngoingBattlesList,
-// };
 
 const mapDispatchToProps = (dispatch) => {
   return {

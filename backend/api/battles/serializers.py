@@ -182,6 +182,7 @@ class SelectOpponentTeamSerializer(SelectTeamSerializerMixin):
         )
 
     def validate(self, data):
+        data = super().validate(data)
         pokemon = [
             data["pokemon_1"],
             data["pokemon_2"],

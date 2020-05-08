@@ -56,7 +56,8 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 
 
 class SelectOpponentTeamView(LoginRequiredMixin, generic.CreateView):
-    template_name = "battles/select_opponent_team.html"
+    # template_name = "battles/select_opponent_team.html"
+    template_name = "react_templates/select_opponent_team.html"
     model = BattleTeam
     form_class = SelectOpponentTeamForm
 

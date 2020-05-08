@@ -1,12 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function LargeButton({ text, url }) {
   return (
     <div className="battle-team-container">
-      <a href={url}>
+      <Link to={url}>
         <div className="pk-btn">{text}</div>
-      </a>
+      </Link>
     </div>
   );
 }

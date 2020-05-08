@@ -18,7 +18,6 @@ const postOnAPI = (url, data) => {
   const headers = {
     'X-CSRFToken': getCookie('csrftoken'),
   };
-  console.log('inside post on api');
   return axios.post(url, data, { headers });
 };
 

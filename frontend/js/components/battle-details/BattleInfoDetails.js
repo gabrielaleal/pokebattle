@@ -17,7 +17,6 @@ const PokemonFromTeam = ({ pokemon }) => {
 };
 
 const BattlePlayerTeam = ({ player, playerTeam }) => {
-  console.log(playerTeam);
   return (
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>

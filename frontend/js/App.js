@@ -9,6 +9,7 @@ import Navbar from './components/Navbar';
 import BattleDetails from './pages/BattleDetails';
 import CreateBattle from './pages/CreateBattle';
 import OngoingBattlesList from './pages/OngoingBattlesList';
+import SelectOpponentTeam from './pages/SelectOpponentTeam';
 import SettledBattlesList from './pages/SettledBattlesList';
 
 class App extends React.Component {
@@ -33,6 +34,7 @@ class App extends React.Component {
               <CreateBattle path="/battles/create/" />
               <SettledBattlesList path="/battles/settled/" />
               <OngoingBattlesList path="/battles/ongoing/" />
+              <SelectOpponentTeam path="/battles/select-team/:pk/" />
               <BattleDetails path="/battles/:pk/" />
             </Switch>
           </div>
