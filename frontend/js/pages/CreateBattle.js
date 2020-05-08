@@ -3,6 +3,7 @@ import { withFormik } from 'formik';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import SelectPokemonTeam from '../components/SelectPokemon';
 import PageTitle from '../components/Title';
@@ -69,7 +70,15 @@ const CreateBattleForm = (props) => {
   return (
     <div>
       {errors.general && <div className="error">{errors.general}</div>}
-      {get(status, 'success') && <div className="messages">{status.success}</div>}
+      {get(status, 'success') && (
+        <div className="messages">
+          Battle #{status.success} created! Click{' '}
+          <Link className="link" to={`/battles/${status.success}`}>
+            here
+          </Link>{' '}
+          to check the battle page while you wait for your opponent to fight back.
+        </div>
+      )}
       <form onSubmit={handleSubmit}>
         <div className="battle-form-field">
           <SelectOpponentField formikBag={{ values, touched, errors, handleChange, handleBlur }} />
@@ -137,7 +146,7 @@ const CreateBattleEnhancedForm = withFormik({
       .then((res) => {
         resetForm();
         setStatus({
-          success: `Battle #${res.data.battle_id} created! Now wait for your opponent to fight back!`,
+          success: res.data.battle_id,
         });
         return res;
       })
