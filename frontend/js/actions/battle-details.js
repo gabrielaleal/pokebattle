@@ -1,20 +1,27 @@
 import axios from 'axios';
+import { normalize } from 'normalizr';
+
+import { battleSchema } from '../utils/schema';
 
 import { GET_BATTLE_DETAILS } from '.';
 
-const getBattleDetailsSuccess = (battle) => ({
+const getBattleDetailsSuccess = (battle, entities) => ({
   type: GET_BATTLE_DETAILS,
-  payload: battle,
+  battle,
+  entities,
 });
 
 // action creators
 const getBattleDetails = (battlePk) => {
   return (dispatch) => {
     const url = window.Urls['api:battleDetail'](battlePk);
-    axios
+    return axios
       .get(url)
       .then((res) => {
-        return dispatch(getBattleDetailsSuccess(res.data));
+        const normalizedBattle = normalize(res.data, battleSchema);
+        const { pokemon, users } = normalizedBattle.entities;
+        const battle = normalizedBattle.entities.battle[normalizedBattle.result];
+        return dispatch(getBattleDetailsSuccess(battle, { pokemon, users }));
       })
       .catch((err) => {
         throw new Error(err);

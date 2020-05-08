@@ -1,3 +1,5 @@
+import { map } from 'lodash';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -6,12 +8,13 @@ import { Link } from 'react-router-dom';
 import { getSettledBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
+import { battleListSchema } from '../utils/schema';
 
 const SettledBattleItem = ({ battle }) => {
   const { id: battleId, creator, opponent, winner } = battle;
 
   return (
-    <Link to={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={{ pathname: `/battles/${battleId}/`, state: { battle, isLoading: false } }}>
       <div className="list-item settled-battle-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -48,8 +51,8 @@ class SettledBattlesList extends React.Component {
             </div>
           )}
           <div className="battle-list">
-            {Object.keys(battles).map((key) => (
-              <SettledBattleItem key={battles[key].id} battle={battles[key]} />
+            {map(battles, (value, key) => (
+              <SettledBattleItem key={key} battle={value} />
             ))}
           </div>
         </div>
@@ -68,13 +71,24 @@ SettledBattleItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = ({ battle }) => ({
-  battles: battle.settledBattlesList,
-  isLoading: battle.loading.list,
-});
+const mapStateToProps = (state) => {
+  const { battles } = state;
+  const denormalizedData = denormalize(
+    battles.settledBattlesList,
+    battleListSchema,
+    battles.entities
+  );
 
-const mapDispatchToProps = {
-  getSettledBattlesList,
+  return {
+    isLoading: battles.loading.list,
+    battles: denormalizedData,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getSettledBattlesList: () => dispatch(getSettledBattlesList()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SettledBattlesList);

@@ -1,4 +1,5 @@
-import get from 'lodash/get';
+/* eslint-disable babel/camelcase */
+import { get, isEqual, map } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -8,9 +9,9 @@ const PokemonFromTeam = ({ pokemon }) => {
   return (
     <div className="pokemon-info-container">
       <div className="pokemon-icon">
-        <img alt="pokemon img" height="90px" src={pokemon.img_url} />
+        <img alt="pokemon img" height="90px" src={get(pokemon, 'img_url')} />
       </div>
-      <div className="pokemon-name">{pokemon.name}</div>
+      <div className="pokemon-name">{get(pokemon, 'name')}</div>
     </div>
   );
 };
@@ -20,8 +21,8 @@ const BattlePlayerTeam = ({ player, playerTeam }) => {
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>
       <div className="battle-team-container">
-        {Object.keys(playerTeam).map((pokemon) => (
-          <PokemonFromTeam key={playerTeam[pokemon].name} pokemon={playerTeam[pokemon]} />
+        {map(playerTeam, (value, key) => (
+          <PokemonFromTeam key={key} pokemon={value} />
         ))}
       </div>
     </div>
@@ -33,13 +34,13 @@ const BattleMatchesInformation = ({ creatorTeam, opponentTeam, winners }) => {
     <div className="battle-info-container">
       <h5 className="pokemon-font">Matches</h5>
       <div className="match">
-        {Object.keys(creatorTeam).map((key, index) => (
-          <div key={creatorTeam[key].id}>
-            <h6 className="pokemon-font">Round #{index + 1}</h6>
+        {map(creatorTeam, (value, key) => (
+          <div key={key}>
+            <h6 className="pokemon-font">Round #{key + 1}</h6>
             <div className="round-info-container">
-              <PokemonCard pokemon={creatorTeam[key]} winner={winners[index]} />
+              <PokemonCard pokemon={value} winner={winners[key]} />
               <div className="vs pokemon-font">VS</div>
-              <PokemonCard pokemon={opponentTeam[key]} winner={winners[index]} />
+              <PokemonCard pokemon={opponentTeam[key]} winner={winners[key]} />
             </div>
           </div>
         ))}
@@ -49,25 +50,27 @@ const BattleMatchesInformation = ({ creatorTeam, opponentTeam, winners }) => {
 };
 
 const BattleInfoDetails = ({ battle, user }) => {
-  const { creator, opponent, winner } = battle;
+  const { creator, opponent, winner, creator_team, opponent_team, matches_winners } = battle;
+
+  if (!creator_team || !opponent_team) return null;
 
   return (
     <div className="content">
-      {get(user, 'email') === get(creator, 'email') || winner ? (
+      {isEqual(get(user, 'email'), get(creator, 'email')) || winner ? (
         <>
           <h4>Battle #{battle.id} Details</h4>
-          <BattlePlayerTeam player={creator} playerTeam={battle.creator_team} />
+          <BattlePlayerTeam player={creator} playerTeam={creator_team} />
         </>
       ) : (
         <div />
       )}
       {winner ? (
         <>
-          <BattlePlayerTeam player={opponent} playerTeam={battle.opponent_team} />
+          <BattlePlayerTeam player={opponent} playerTeam={opponent_team} />
           <BattleMatchesInformation
-            creatorTeam={battle.creator_team}
-            opponentTeam={battle.opponent_team}
-            winners={battle.matches_winners}
+            creatorTeam={creator_team}
+            opponentTeam={opponent_team}
+            winners={matches_winners}
           />
         </>
       ) : (
@@ -83,12 +86,12 @@ PokemonFromTeam.propTypes = {
 
 BattlePlayerTeam.propTypes = {
   player: PropTypes.object,
-  playerTeam: PropTypes.object,
+  playerTeam: PropTypes.array,
 };
 
 BattleMatchesInformation.propTypes = {
-  creatorTeam: PropTypes.object,
-  opponentTeam: PropTypes.object,
+  creatorTeam: PropTypes.array,
+  opponentTeam: PropTypes.array,
   winners: PropTypes.array,
 };
 

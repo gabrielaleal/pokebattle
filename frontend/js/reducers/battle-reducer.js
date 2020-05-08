@@ -2,6 +2,7 @@ import { GET_BATTLE_DETAILS, GET_SETTLED_BATTLES_LIST, GET_ONGOING_BATTLES_LIST 
 
 const defaultState = {
   battle: {},
+  entities: {},
   settledBattlesList: [],
   ongoingBattlesList: [],
   loading: {
@@ -10,24 +11,27 @@ const defaultState = {
   },
 };
 
-const battle = (state = defaultState, action) => {
+const battles = (state = defaultState, action) => {
   switch (action.type) {
     case GET_BATTLE_DETAILS:
       return {
         ...state,
-        battle: action.payload,
+        battle: action.battle,
+        entities: action.entities,
         loading: toggleLoading(state.loading, 'details'),
       };
     case GET_SETTLED_BATTLES_LIST:
       return {
         ...state,
-        settledBattlesList: action.payload,
+        settledBattlesList: action.battles,
+        entities: action.entities,
         loading: toggleLoading(state.loading, 'list'),
       };
     case GET_ONGOING_BATTLES_LIST:
       return {
         ...state,
-        ongoingBattlesList: action.payload,
+        ongoingBattlesList: action.battles,
+        entities: action.entities,
         loading: toggleLoading(state.loading, 'list'),
       };
     default:
@@ -40,4 +44,4 @@ const toggleLoading = (loading, section) => ({
   [section]: false,
 });
 
-export default battle;
+export default battles;

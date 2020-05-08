@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 
-import battle from './battle-reducer';
+import battles from './battle-reducer';
 import user from './user-reducer';
 
 const rootReducer = combineReducers({
-  battle,
+  battles,
   user,
 });
 
