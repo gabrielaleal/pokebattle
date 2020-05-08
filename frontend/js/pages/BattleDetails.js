@@ -1,4 +1,5 @@
-import isEmpty from 'lodash/isEmpty';
+import { get, isEmpty } from 'lodash';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -8,16 +9,31 @@ import BattleInfoDetails from '../components/battle-details/BattleInfoDetails';
 import BattleInformation from '../components/battle-details/BattleInformation';
 import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
+import { battleSchema } from '../utils/schema';
 
 class BattleDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: isEmpty(props.battle),
+    };
+  }
+
   componentDidMount() {
-    const { computedMatch, getBattleDetails } = this.props;
-    const battlePk = computedMatch.params.pk;
-    getBattleDetails(battlePk);
+    const { computedMatch, battle, getBattleDetails } = this.props;
+    if (isEmpty(battle)) {
+      const battlePk = computedMatch.params.pk;
+      getBattleDetails(battlePk).then((res) => {
+        const { isLoading } = this.props;
+        this.setState({ isLoading });
+        return res;
+      });
+    }
   }
 
   render() {
-    const { isLoading, battle, user } = this.props;
+    const { battle, user } = this.props;
+    const { isLoading } = this.state;
 
     return (
       <div className="pk-container battle-detail">
@@ -43,14 +59,22 @@ BattleDetails.propTypes = {
   isLoading: PropTypes.bool,
 };
 
-const mapStateToProps = (state) => ({
-  isLoading: state.battle.loading.details,
-  battle: state.battle.battle,
-  user: state.user.data,
-});
+const mapStateToProps = (state, { location }) => {
+  const { battles } = state;
+  const battle = get(location, 'state.battle');
+  const denormalizedData = denormalize(battles.battle, battleSchema, battles.entities);
 
-const mapDispatchToProps = {
-  getBattleDetails,
+  return {
+    user: state.user.data,
+    isLoading: battles.loading.details,
+    battle: !isEmpty(battle) ? battle : denormalizedData,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getBattleDetails: (battlePk) => dispatch(getBattleDetails(battlePk)),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BattleDetails);

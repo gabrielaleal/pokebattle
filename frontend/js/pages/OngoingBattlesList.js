@@ -1,18 +1,22 @@
+import { get, isEqual } from 'lodash';
 import moment from 'moment';
+import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
 import PageTitle from '../components/Title';
+import { battleListSchema } from '../utils/schema';
 
 const BattleWaitingForMeItem = ({ battle }) => {
   const { id: battleId, creator, timestamp } = battle;
   const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
-    <a href={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={{ pathname: `/battles/${battleId}/`, state: { battle, isLoading: false } }}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -20,7 +24,7 @@ const BattleWaitingForMeItem = ({ battle }) => {
           {formattedTimestamp}. Fight back!
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
@@ -29,7 +33,7 @@ const BattleWaitingForMyOpponentItem = ({ battle }) => {
   const formattedTimestamp = moment(timestamp).format('L [at] LT');
 
   return (
-    <a href={window.Urls['battles:battleDetail'](battleId)}>
+    <Link to={window.Urls['battles:battleDetail'](battleId)}>
       <div className="list-item">
         <h6 className="pokemon-font">Battle #{battleId}</h6>
         <div>
@@ -39,7 +43,7 @@ const BattleWaitingForMyOpponentItem = ({ battle }) => {
           <span className="list-attribute">Battle created on</span> {formattedTimestamp}
         </div>
       </div>
-    </a>
+    </Link>
   );
 };
 
@@ -60,9 +64,11 @@ class OngoingBattlesList extends React.Component {
       return <Loading />;
     }
 
-    const battlesWaitingForMe = battles.filter((battle) => battle.opponent.email === user.email);
-    const battlesWaitingForOpponent = battles.filter(
-      (battle) => battle.creator.email === user.email
+    const battlesWaitingForMe = battles.filter((battle) =>
+      isEqual(get(battle.opponent, 'email'), user.email)
+    );
+    const battlesWaitingForOpponent = battles.filter((battle) =>
+      isEqual(get(battle.creator, 'email'), user.email)
     );
 
     return (
@@ -104,14 +110,25 @@ BattleWaitingForMyOpponentItem.propTypes = {
   battle: PropTypes.object,
 };
 
-const mapStateToProps = ({ battle, user }) => ({
-  battles: battle.ongoingBattlesList,
-  user: user.data,
-  isLoading: battle.loading.list,
-});
+const mapStateToProps = (state) => {
+  const { battles } = state;
+  const denormalizedData = denormalize(
+    battles.ongoingBattlesList,
+    battleListSchema,
+    battles.entities
+  );
 
-const mapDispatchToProps = {
-  getOngoingBattlesList,
+  return {
+    isLoading: battles.loading.list,
+    battles: denormalizedData,
+    user: state.user.data,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getOngoingBattlesList: () => dispatch(getOngoingBattlesList()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(OngoingBattlesList);

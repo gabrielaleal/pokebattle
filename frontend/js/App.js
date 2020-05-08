@@ -29,9 +29,9 @@ class App extends React.Component {
           <Navbar user={user} />
           <div className="block-body">
             <Switch>
-              <SettledBattlesList path="/battles/settled-battles/" />
-              <OngoingBattlesList path="/battles/ongoing-battles/" />
-              <BattleDetails path="/battles/:pk/" user={user} />
+              <SettledBattlesList path="/battles/settled/" />
+              <OngoingBattlesList path="/battles/ongoing/" />
+              <BattleDetails path="/battles/:pk/" />
             </Switch>
           </div>
         </div>
