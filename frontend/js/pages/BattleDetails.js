@@ -1,5 +1,4 @@
-import get from 'lodash/get';
-import isEmpty from 'lodash/isEmpty';
+import { get, isEmpty } from 'lodash';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';

@@ -1,11 +1,11 @@
-import get from 'lodash/get';
+import { get, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
 function PokemonCard({ pokemon, winner }) {
   return (
     <div className="card pokemon-font">
-      {get(pokemon, 'name') === get(winner, 'name') ? (
+      {isEqual(get(pokemon, 'name'), get(winner, 'name')) ? (
         <div className="winner">
           <img alt="crown" height="56px" src="/static/img/icons/pixel-crown.png" />
         </div>

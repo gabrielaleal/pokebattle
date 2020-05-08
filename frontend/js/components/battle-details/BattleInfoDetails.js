@@ -1,5 +1,5 @@
 /* eslint-disable babel/camelcase */
-import get from 'lodash/get';
+import { get, isEqual, map } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -17,12 +17,13 @@ const PokemonFromTeam = ({ pokemon }) => {
 };
 
 const BattlePlayerTeam = ({ player, playerTeam }) => {
+  console.log(playerTeam);
   return (
     <div className="battle-info-container">
       <div className="pokemon-font">{player.email} team</div>
       <div className="battle-team-container">
-        {Object.keys(playerTeam).map((pokemon) => (
-          <PokemonFromTeam key={get(playerTeam[pokemon], 'name')} pokemon={playerTeam[pokemon]} />
+        {map(playerTeam, (value, key) => (
+          <PokemonFromTeam key={key} pokemon={value} />
         ))}
       </div>
     </div>
@@ -34,13 +35,13 @@ const BattleMatchesInformation = ({ creatorTeam, opponentTeam, winners }) => {
     <div className="battle-info-container">
       <h5 className="pokemon-font">Matches</h5>
       <div className="match">
-        {Object.keys(creatorTeam).map((key, index) => (
-          <div key={get(creatorTeam[key], 'id')}>
-            <h6 className="pokemon-font">Round #{index + 1}</h6>
+        {map(creatorTeam, (value, key) => (
+          <div key={key}>
+            <h6 className="pokemon-font">Round #{key + 1}</h6>
             <div className="round-info-container">
-              <PokemonCard pokemon={creatorTeam[key]} winner={winners[index]} />
+              <PokemonCard pokemon={value} winner={winners[key]} />
               <div className="vs pokemon-font">VS</div>
-              <PokemonCard pokemon={opponentTeam[key]} winner={winners[index]} />
+              <PokemonCard pokemon={opponentTeam[key]} winner={winners[key]} />
             </div>
           </div>
         ))}
@@ -56,7 +57,7 @@ const BattleInfoDetails = ({ battle, user }) => {
 
   return (
     <div className="content">
-      {get(user, 'email') === get(creator, 'email') || winner ? (
+      {isEqual(get(user, 'email'), get(creator, 'email')) || winner ? (
         <>
           <h4>Battle #{battle.id} Details</h4>
           <BattlePlayerTeam player={creator} playerTeam={creator_team} />

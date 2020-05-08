@@ -1,3 +1,4 @@
+import { map } from 'lodash';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -50,8 +51,8 @@ class SettledBattlesList extends React.Component {
             </div>
           )}
           <div className="battle-list">
-            {Object.keys(battles).map((key) => (
-              <SettledBattleItem key={battles[key].id} battle={battles[key]} />
+            {map(battles, (value, key) => (
+              <SettledBattleItem key={key} battle={value} />
             ))}
           </div>
         </div>

@@ -12,12 +12,10 @@ from battles.models import Battle, BattleTeam
 from battles.tests.mixins import MakePokemonMixin
 
 
-class CreateBattleEndpointTest(APITestCaseUtils):
+class CreateBattleEndpointTest(MakePokemonMixin, APITestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.pokemon_1 = mommy.make("pokemon.Pokemon", attack=50, defense=60, hp=40)
-        self.pokemon_2 = mommy.make("pokemon.Pokemon", attack=50, defense=50, hp=40)
-        self.pokemon_3 = mommy.make("pokemon.Pokemon", attack=40, defense=50, hp=50)
+        self.pokemon_1, self.pokemon_2, self.pokemon_3 = self._make_pokemon()
 
     # test pokemon sum
     def test_if_pokemon_sum_valid_fails(self):
@@ -228,9 +226,17 @@ class SelectOpponentTeamEndpointTest(MakePokemonMixin, APITestCaseUtils):
         )
 
 
-class SettledBattlesListEndpointTest(APITestCaseUtils):
+class SettledBattlesListEndpointTest(MakePokemonMixin, APITestCaseUtils):
     def setUp(self):
         super().setUp()
+        self.user_1_pokemon_1, self.user_1_pokemon_2, self.user_1_pokemon_3 = self._make_pokemon()
+        self.user_2_pokemon_1, self.user_2_pokemon_2, self.user_2_pokemon_3 = self._make_pokemon()
+        (
+            self.random_user_pokemon_1,
+            self.random_user_pokemon_2,
+            self.random_user_pokemon_3,
+        ) = self._make_pokemon()
+
         # created battles that will match or not according to the test case
         self.battle_1 = mommy.make(
             "battles.Battle",
@@ -240,6 +246,23 @@ class SettledBattlesListEndpointTest(APITestCaseUtils):
             pk=1,
             winner=self.user_1,
         )
+        self.user_1_battle_1_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_1,
+            battle=self.battle_1,
+            pokemon_1=self.user_1_pokemon_1,
+            pokemon_2=self.user_1_pokemon_2,
+            pokemon_3=self.user_1_pokemon_3,
+        )
+        self.user_2_battle_1_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_1,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
+        )
+
         self.battle_2 = mommy.make(
             "battles.Battle",
             creator=self.user_1,
@@ -248,9 +271,35 @@ class SettledBattlesListEndpointTest(APITestCaseUtils):
             pk=2,
             winner=self.user_2,
         )
-        self.battle_3 = mommy.make(
-            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ON_GOING", pk=3
+        self.user_1_battle_2_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_1,
+            battle=self.battle_2,
+            pokemon_1=self.user_1_pokemon_1,
+            pokemon_2=self.user_1_pokemon_2,
+            pokemon_3=self.user_1_pokemon_3,
         )
+        self.user_2_battle_2_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_2,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
+        )
+
+        self.battle_3 = mommy.make(
+            "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING", pk=3
+        )
+        self.user_1_battle_3_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_1,
+            battle=self.battle_3,
+            pokemon_1=self.user_1_pokemon_1,
+            pokemon_2=self.user_1_pokemon_2,
+            pokemon_3=self.user_1_pokemon_3,
+        )
+
         self.battle_4 = mommy.make(
             "battles.Battle",
             creator=self.random_user,
@@ -258,6 +307,22 @@ class SettledBattlesListEndpointTest(APITestCaseUtils):
             status="SETTLED",
             pk=4,
             winner=self.random_user,
+        )
+        self.random_user_battle_4_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.random_user,
+            battle=self.battle_4,
+            pokemon_1=self.random_user_pokemon_1,
+            pokemon_2=self.random_user_pokemon_2,
+            pokemon_3=self.random_user_pokemon_3,
+        )
+        self.user_2_battle_4_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_4,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
         )
 
     def test_matching_queryset_success(self):
@@ -277,20 +342,66 @@ class SettledBattlesListEndpointTest(APITestCaseUtils):
         self.assertNotIn(not_matching_battles.data, response.json())
 
 
-class OngoingBattlesListEndpointTest(APITestCaseUtils):
+class OngoingBattlesListEndpointTest(MakePokemonMixin, APITestCaseUtils):
     def setUp(self):
         super().setUp()
+        self.user_1_pokemon_1, self.user_1_pokemon_2, self.user_1_pokemon_3 = self._make_pokemon()
+        self.user_2_pokemon_1, self.user_2_pokemon_2, self.user_2_pokemon_3 = self._make_pokemon()
+
         self.battle_1 = mommy.make(
             "battles.Battle", creator=self.user_1, opponent=self.user_2, status="ONGOING"
         )
+        self.user_1_battle_1_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_1,
+            battle=self.battle_1,
+            pokemon_1=self.user_1_pokemon_1,
+            pokemon_2=self.user_1_pokemon_2,
+            pokemon_3=self.user_1_pokemon_3,
+        )
+
         self.battle_2 = mommy.make(
             "battles.Battle", creator=self.user_1, opponent=self.user_2, status="SETTLED"
         )
+        self.user_1_battle_2_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_1,
+            battle=self.battle_2,
+            pokemon_1=self.user_1_pokemon_1,
+            pokemon_2=self.user_1_pokemon_2,
+            pokemon_3=self.user_1_pokemon_3,
+        )
+        self.user_2_battle_2_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_2,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
+        )
+
         self.battle_3 = mommy.make(
             "battles.Battle", creator=self.user_2, opponent=self.random_user, status="ONGOING"
         )
+        self.user_2_battle_3_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_3,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
+        )
+
         self.battle_4 = mommy.make(
             "battles.Battle", creator=self.user_2, opponent=self.user_1, status="ONGOING"
+        )
+        self.user_2_battle_4_team = mommy.make(
+            "battles.BattleTeam",
+            creator=self.user_2,
+            battle=self.battle_4,
+            pokemon_1=self.user_2_pokemon_1,
+            pokemon_2=self.user_2_pokemon_2,
+            pokemon_3=self.user_2_pokemon_3,
         )
 
     def test_matching_queryset_success(self):

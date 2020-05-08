@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import { get, isEqual } from 'lodash';
 import moment from 'moment';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
@@ -64,11 +64,11 @@ class OngoingBattlesList extends React.Component {
       return <Loading />;
     }
 
-    const battlesWaitingForMe = battles.filter(
-      (battle) => get(battle.opponent, 'email') === user.email
+    const battlesWaitingForMe = battles.filter((battle) =>
+      isEqual(get(battle.opponent, 'email'), user.email)
     );
-    const battlesWaitingForOpponent = battles.filter(
-      (battle) => get(battle.creator, 'email') === user.email
+    const battlesWaitingForOpponent = battles.filter((battle) =>
+      isEqual(get(battle.creator, 'email'), user.email)
     );
 
     return (
