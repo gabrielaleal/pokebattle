@@ -8,7 +8,7 @@ import getBattleDetails from '../actions/battle-details';
 import BattleInfoDetails from '../components/battle-details/BattleInfoDetails';
 import BattleInformation from '../components/battle-details/BattleInformation';
 import Loading from '../components/Loading';
-import PageTitle from '../components/Title';
+import PageTitle from '../components/PageTitle';
 import { battleSchema } from '../utils/schema';
 
 class BattleDetails extends React.Component {
@@ -20,8 +20,8 @@ class BattleDetails extends React.Component {
   }
 
   componentDidMount() {
-    const { computedMatch, battle, getBattleDetails } = this.props;
-    if (isEmpty(battle)) {
+    const { computedMatch, location, battle, getBattleDetails } = this.props;
+    if (isEmpty(battle) || get(location.state, 'update')) {
       const battlePk = computedMatch.params.pk;
       getBattleDetails(battlePk).then((res) => {
         const { isLoading } = this.props;
@@ -53,6 +53,7 @@ class BattleDetails extends React.Component {
 
 BattleDetails.propTypes = {
   computedMatch: PropTypes.object,
+  location: PropTypes.object,
   getBattleDetails: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   battle: PropTypes.object.isRequired,
