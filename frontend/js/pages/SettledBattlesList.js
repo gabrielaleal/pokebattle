@@ -85,10 +85,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = {
-//   getSettledBattlesList,
-// };
-
 const mapDispatchToProps = (dispatch) => {
   return {
     getSettledBattlesList: () => dispatch(getSettledBattlesList()),

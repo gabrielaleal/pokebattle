@@ -125,10 +125,6 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = {
-//   getOngoingBattlesList,
-// };
-
 const mapDispatchToProps = (dispatch) => {
   return {
     getOngoingBattlesList: () => dispatch(getOngoingBattlesList()),
