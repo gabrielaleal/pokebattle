@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import { get, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -49,7 +49,7 @@ const BattleInformation = ({ battle, user }) => {
       <BattleStatus status={battle.status} />
       <BattlePlayers creatorEmail={get(creator, 'email')} opponentEmail={get(opponent, 'email')} />
       <BattleWinner winnerEmail={get(winner, 'email')} />
-      {get(user, 'email') === get(opponent, 'email') && !winner ? (
+      {isEqual(get(user, 'email'), get(opponent, 'email')) && !winner ? (
         <LargeButton text="Fight Back!" url={fightBackURL} />
       ) : (
         <div />

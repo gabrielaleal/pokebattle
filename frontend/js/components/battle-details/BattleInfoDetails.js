@@ -1,5 +1,5 @@
 /* eslint-disable babel/camelcase */
-import get from 'lodash/get';
+import { get, isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -56,7 +56,7 @@ const BattleInfoDetails = ({ battle, user }) => {
 
   return (
     <div className="content">
-      {get(user, 'email') === get(creator, 'email') || winner ? (
+      {isEqual(get(user, 'email'), get(creator, 'email')) || winner ? (
         <>
           <h4>Battle #{battle.id} Details</h4>
           <BattlePlayerTeam player={creator} playerTeam={creator_team} />
