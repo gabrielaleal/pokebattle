@@ -125,6 +125,7 @@ class CreateBattleSerializer(SelectTeamSerializerMixin):
     winner = UserSerializer(source="battle.winner", read_only=True)
     status = serializers.CharField(read_only=True)
     timestamp = serializers.DateTimeField(source="battle.timestamp", read_only=True)
+    battle_id = serializers.PrimaryKeyRelatedField(source="battle.id", read_only=True)
 
     class Meta:
         model = BattleTeam
@@ -141,6 +142,7 @@ class CreateBattleSerializer(SelectTeamSerializerMixin):
             "creator",
             "status",
             "winner",
+            "battle_id",
         )
 
     def create(self, validated_data):  # same as the form_valid method on the view
@@ -180,6 +182,7 @@ class SelectOpponentTeamSerializer(SelectTeamSerializerMixin):
         )
 
     def validate(self, data):
+        data = super().validate(data)
         pokemon = [
             data["pokemon_1"],
             data["pokemon_2"],

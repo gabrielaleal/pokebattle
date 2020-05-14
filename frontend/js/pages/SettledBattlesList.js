@@ -1,13 +1,13 @@
 import { map } from 'lodash';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getSettledBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
-import PageTitle from '../components/Title';
+import PageTitle from '../components/PageTitle';
 import { battleListSchema } from '../utils/schema';
 
 const SettledBattleItem = ({ battle }) => {
@@ -28,38 +28,33 @@ const SettledBattleItem = ({ battle }) => {
   );
 };
 
-class SettledBattlesList extends React.Component {
-  componentDidMount() {
-    const { getSettledBattlesList } = this.props;
+const SettledBattlesList = ({ battles, isLoading, getSettledBattlesList }) => {
+  useEffect(() => {
     getSettledBattlesList();
+  });
+
+  if (isLoading) {
+    return <Loading />;
   }
 
-  render() {
-    const { battles, isLoading } = this.props;
-
-    if (isLoading) {
-      return <Loading />;
-    }
-
-    return (
-      <div className="pk-container battle-detail">
-        <PageTitle title="Settled Battles" />
-        <div className="content">
-          {battles.length === 0 && (
-            <div className="no-battles">
-              <h4>Ops, there are no battles yet!</h4>
-            </div>
-          )}
-          <div className="battle-list">
-            {map(battles, (value, key) => (
-              <SettledBattleItem key={key} battle={value} />
-            ))}
+  return (
+    <div className="pk-container battle-detail">
+      <PageTitle title="Settled Battles" />
+      <div className="content">
+        {battles.length === 0 && (
+          <div className="no-battles">
+            <h4>Ops, there are no battles yet!</h4>
           </div>
+        )}
+        <div className="battle-list">
+          {map(battles, (value, key) => (
+            <SettledBattleItem key={key} battle={value} />
+          ))}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 SettledBattlesList.propTypes = {
   battles: PropTypes.array,

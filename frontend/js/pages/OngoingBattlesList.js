@@ -2,13 +2,13 @@ import { get, isEqual } from 'lodash';
 import moment from 'moment';
 import { denormalize } from 'normalizr';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getOngoingBattlesList } from '../actions/battles-list';
 import Loading from '../components/Loading';
-import PageTitle from '../components/Title';
+import PageTitle from '../components/PageTitle';
 import { battleListSchema } from '../utils/schema';
 
 const BattleWaitingForMeItem = ({ battle }) => {
@@ -51,49 +51,44 @@ const NoBattlesMessage = () => {
   return <div className="no-battles">Ops, there are no battles yet!</div>;
 };
 
-class OngoingBattlesList extends React.Component {
-  componentDidMount() {
-    const { getOngoingBattlesList } = this.props;
+const OngoingBattlesList = ({ battles, isLoading, getOngoingBattlesList, user }) => {
+  useEffect(() => {
     getOngoingBattlesList();
+  });
+
+  if (isLoading) {
+    return <Loading />;
   }
 
-  render() {
-    const { battles, user, isLoading } = this.props;
+  const battlesWaitingForMe = battles.filter((battle) =>
+    isEqual(get(battle.opponent, 'email'), user.email)
+  );
+  const battlesWaitingForOpponent = battles.filter((battle) =>
+    isEqual(get(battle.creator, 'email'), user.email)
+  );
 
-    if (isLoading) {
-      return <Loading />;
-    }
-
-    const battlesWaitingForMe = battles.filter((battle) =>
-      isEqual(get(battle.opponent, 'email'), user.email)
-    );
-    const battlesWaitingForOpponent = battles.filter((battle) =>
-      isEqual(get(battle.creator, 'email'), user.email)
-    );
-
-    return (
-      <div className="pk-container ongoing-battles">
-        <PageTitle title="Ongoing Battles" />
-        <div className="content">
-          <div className="battle-list">
-            <h4>Battles waiting for me</h4>
-            {battlesWaitingForMe.length === 0 && <NoBattlesMessage />}
-            {battlesWaitingForMe.map((battle) => (
-              <BattleWaitingForMeItem key={battle.id} battle={battle} />
-            ))}
-          </div>
-          <div className="battle-list">
-            <h4>Battles waiting for my opponent</h4>
-            {battlesWaitingForOpponent.length === 0 && <NoBattlesMessage />}
-            {battlesWaitingForOpponent.map((battle) => (
-              <BattleWaitingForMyOpponentItem key={battle.id} battle={battle} />
-            ))}
-          </div>
+  return (
+    <div className="pk-container ongoing-battles">
+      <PageTitle title="Ongoing Battles" />
+      <div className="content">
+        <div className="battle-list">
+          <h4>Battles waiting for me</h4>
+          {battlesWaitingForMe.length === 0 && <NoBattlesMessage />}
+          {battlesWaitingForMe.map((battle) => (
+            <BattleWaitingForMeItem key={battle.id} battle={battle} />
+          ))}
+        </div>
+        <div className="battle-list">
+          <h4>Battles waiting for my opponent</h4>
+          {battlesWaitingForOpponent.length === 0 && <NoBattlesMessage />}
+          {battlesWaitingForOpponent.map((battle) => (
+            <BattleWaitingForMyOpponentItem key={battle.id} battle={battle} />
+          ))}
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 OngoingBattlesList.propTypes = {
   user: PropTypes.object.isRequired,

@@ -114,10 +114,15 @@ footer {
     padding: 10px 0;
 }
 
+.pk-hint {
+    font-size: 0.8em;
+    color: #848484;
+}
+
 /* Forms style */
 
 .battle-form-field {
-    padding: 5px 0;
+    padding: 8px 0;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -125,13 +130,42 @@ footer {
 }
 
 .messages {
-    border-radius: 15px;
-    border: 1px solid;
-    width: fit-content;
+    background-color: $pk-blue;
+    color: #fff;
+    margin: auto;
+    margin: 5px 0 15px 0;
+    padding: 15px;
+    box-shadow: 3px 3px 5px 0px #cccccc;
+    border-radius: 5px;
     text-align: center;
-    padding: 10px 34px;
-    margin-bottom: 20px;
+    font-weight: 600;
+
+    .link {
+        text-decoration: underline;
+        color: #fff;
+    }
 }
+
+.pk-select {
+    padding: 4px 0;
+
+    .pk-autocomplete {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+        background-color: $pk-light-grey;
+    }
+
+    .pk-sort-handler {
+        width: 50px;
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        cursor: move;
+    }
+}
+
 
 /* Buttons style */
 
@@ -139,6 +173,7 @@ footer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding: 20px 0;
 }
 
@@ -173,8 +208,8 @@ footer {
     color: #fff;
     width: fit-content;
     margin: auto;
-    margin-top: 20px;
-    padding: 25px;
+    margin: 5px 0 15px 0;
+    padding: 15px;
     box-shadow: 3px 3px 5px 0px #cccccc;
     border-radius: 5px;
     text-align: center;

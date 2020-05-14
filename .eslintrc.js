@@ -8,6 +8,11 @@ module.exports = {
     'dot-notation': 'warn',
     'default-param-last': 'off',
     'sonarjs/no-small-switch': 'off',
+    'jsx-a11y/label-has-associated-control': [ 'error', {
+      'required': {
+        'some': [ 'nesting', 'id'  ]
+      }
+    }],
   },
   env: {
     es6: true,
