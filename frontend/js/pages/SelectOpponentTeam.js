@@ -2,11 +2,11 @@
 import { withFormik } from 'formik';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import PageTitle from '../components/PageTitle';
-import SelectPokemonTeam from '../components/SelectPokemon';
+import SelectPokemonTeam from '../components/SelectPokemonTeam';
 import { postOnAPI } from '../utils/api-helper';
 
 const SelectBattleTeamForm = (props) => {
@@ -107,34 +107,22 @@ const SelectBattleTeamEnhancedForm = withFormik({
   displayName: 'SelectBattleTeamForm',
 })(SelectBattleTeamForm);
 
-class SelectOpponentTeam extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battlePk: '',
-    };
-  }
+const SelectOpponentTeam = ({ computedMatch }) => {
+  const [battlePk, setBattlePk] = useState('');
 
-  componentDidMount() {
-    const { computedMatch } = this.props;
-    this.setState({
-      battlePk: computedMatch.params.pk,
-    });
-  }
+  useEffect(() => {
+    setBattlePk(computedMatch.params.pk);
+  });
 
-  render() {
-    const { battlePk } = this.state;
-
-    return (
-      <div className="pk-container create-battle">
-        <PageTitle title="Select Team" />
-        <div className="content">
-          <SelectBattleTeamEnhancedForm battlePk={battlePk} />
-        </div>
+  return (
+    <div className="pk-container create-battle">
+      <PageTitle title="Select Team" />
+      <div className="content">
+        <SelectBattleTeamEnhancedForm battlePk={battlePk} />
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 SelectBattleTeamForm.propTypes = {
   values: PropTypes.object,

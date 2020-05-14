@@ -1,6 +1,6 @@
 import arrayMove from 'array-move';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Autocomplete from 'react-autocomplete';
 import { SortableContainer, SortableElement, SortableHandle } from 'react-sortable-hoc';
 
@@ -65,58 +65,42 @@ const SortablePokemonList = SortableContainer(({ pokemonList, items, formikBag }
   );
 });
 
-class SelectPokemonTeam extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      pokemonList: [],
-      pokemonTeam: ['pokemon1', 'pokemon2', 'pokemon3'],
-    };
-  }
+const SelectPokemonTeam = ({ formikBag }) => {
+  const [pokemonList, setPokemonList] = useState([]);
+  const [pokemonTeam, setPokemonTeam] = useState(['pokemon1', 'pokemon2', 'pokemon3']);
 
-  componentDidMount() {
+  useEffect(() => {
     getPokemonFromAPI().then((res) => {
-      this.setState({
-        pokemonList: res,
-      });
+      setPokemonList(res);
       return res;
     });
-  }
+  });
 
-  onSortEnd = ({ oldIndex, newIndex }) => {
-    this.setState(({ pokemonTeam }) => {
-      const newPokemonOrder = arrayMove(pokemonTeam, oldIndex, newIndex);
-      const { formikBag } = this.props;
-      const { setFieldValue } = formikBag;
-      setFieldValue('ordering', newPokemonOrder);
-      return {
-        pokemonTeam: newPokemonOrder,
-      };
-    });
+  const onSortEnd = ({ oldIndex, newIndex }) => {
+    const newPokemonOrder = arrayMove(pokemonTeam, oldIndex, newIndex);
+    const { setFieldValue } = formikBag;
+    setFieldValue('ordering', newPokemonOrder);
+    setPokemonTeam(newPokemonOrder);
   };
 
-  render() {
-    const { pokemonList, pokemonTeam } = this.state;
-    const { formikBag } = this.props;
-    const { values, errors, touched, setFieldValue } = formikBag;
+  const { values, errors, touched, setFieldValue } = formikBag;
 
-    return (
-      <div>
-        Choose your team:
-        <div className="pk-hint">
-          Once you do, you can drag and drop them to the position they&apos;ll play.
-        </div>
-        <SortablePokemonList
-          formikBag={{ values, errors, touched, setFieldValue }}
-          items={pokemonTeam}
-          pokemonList={pokemonList}
-          useDragHandle
-          onSortEnd={this.onSortEnd}
-        />
+  return (
+    <div>
+      Choose your team:
+      <div className="pk-hint">
+        Once you do, you can drag and drop them to the position they&apos;ll play.
       </div>
-    );
-  }
-}
+      <SortablePokemonList
+        formikBag={{ values, errors, touched, setFieldValue }}
+        items={pokemonTeam}
+        pokemonList={pokemonList}
+        useDragHandle
+        onSortEnd={onSortEnd}
+      />
+    </div>
+  );
+};
 
 SelectPokemonTeam.propTypes = {
   formikBag: PropTypes.object,

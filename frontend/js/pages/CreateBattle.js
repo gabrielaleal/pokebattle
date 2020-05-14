@@ -2,58 +2,56 @@
 import { withFormik } from 'formik';
 import { get } from 'lodash';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 
 import PageTitle from '../components/PageTitle';
-import SelectPokemonTeam from '../components/SelectPokemon';
+import SelectPokemonTeam from '../components/SelectPokemonTeam';
 import { getOpponentsFromAPI, postOnAPI } from '../utils/api-helper';
 
-class SelectOpponentField extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      opponents: [],
-    };
-  }
+const SelectOpponentField = ({ formikBag }) => {
+  const [opponents, setOpponents] = useState([]);
 
-  componentDidMount() {
-    const { opponents } = this.state;
+  useEffect(() => {
+    /*
+      Whenever a new effect runs, the previous effect's mounted is set to false (line 28)
+      and we only update the state when it is true (line 23). This makes sure that my
+      getOpponentsFromAPI action is only dispatched on the latest request.
+    */
+    let mounted = true;
     getOpponentsFromAPI().then((res) => {
-      this.setState({
-        opponents: res,
-      });
-      return opponents;
+      if (mounted) {
+        setOpponents(res);
+      }
+      return res;
     });
-  }
 
-  render() {
-    const { opponents } = this.state;
-    const { formikBag } = this.props;
-    const { values, handleChange, handleBlur, errors, touched } = formikBag;
+    // clean up
+    mounted = false;
+    return () => mounted;
+  });
 
-    return (
-      <div style={{ display: 'grid' }}>
-        <label htmlFor="opponentSelect">Opponent:</label>
-        <select
-          id="opponentSelect"
-          name="opponent"
-          value={values.opponent}
-          onBlur={handleBlur}
-          onChange={handleChange}
-        >
-          <option label="Select your opponent" value="" />
-          {opponents.map((opponent) => (
-            <option key={opponent.id} label={opponent.email} value={opponent.id} />
-          ))}
-        </select>
-        {errors.opponent && touched.opponent && (
-          <div className="field-error">{errors.opponent}</div>
-        )}
-      </div>
-    );
-  }
-}
+  const { values, handleChange, handleBlur, errors, touched } = formikBag;
+
+  return (
+    <div style={{ display: 'grid' }}>
+      <label htmlFor="opponentSelect">Opponent:</label>
+      <select
+        id="opponentSelect"
+        name="opponent"
+        value={values.opponent}
+        onBlur={handleBlur}
+        onChange={handleChange}
+      >
+        <option label="Select your opponent" value="" />
+        {opponents.map((opponent) => (
+          <option key={opponent.id} label={opponent.email} value={opponent.id} />
+        ))}
+      </select>
+      {errors.opponent && touched.opponent && <div className="field-error">{errors.opponent}</div>}
+    </div>
+  );
+};
 
 const CreateBattleForm = (props) => {
   const {
